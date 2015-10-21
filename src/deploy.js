@@ -3,7 +3,7 @@
  * @description Deployment related tasks
  */
 
-module.exports = function deploy(bucketEnv) {
+module.exports = function deployGulpTasks(bucketEnv) {
   var gulp = require('gulp');
   var gulpAwspublish = require('gulp-awspublish');
   var minimist = require('minimist');

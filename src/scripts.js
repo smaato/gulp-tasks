@@ -3,7 +3,7 @@
  * @description Script related tasks
  */
 
-module.exports = function scripts(src, dst) {
+module.exports = function scriptGulpTasks(src, dst) {
   var babelify = require('babelify');
   var browserify = require('browserify');
   var gulp = require('gulp');

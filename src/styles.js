@@ -3,7 +3,7 @@
  * @description Style related tasks
  */
 
-module.exports = function styles(src, dst) {
+module.exports = function styleGulpTasks(src, dst) {
   var autoprefixer = require('autoprefixer');
   var cssMqpacker = require('css-mqpacker');
   var del = require('del');

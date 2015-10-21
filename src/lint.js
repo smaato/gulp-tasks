@@ -2,7 +2,7 @@
  * @description Lint related tasks
  */
 
-module.exports = function lint(src) {
+module.exports = function lintGulpTasks(src) {
   var gulp = require('gulp');
   var gulpEslint = require('gulp-eslint');
 
