@@ -3,12 +3,13 @@
  * @description Deployment related tasks
  */
 
-module.exports = function deployGulpTasks(bucketEnv) {
+module.exports = function deployGulpTasks(bucketEnv, src) {
   var gulp = require('gulp');
   var gulpAwspublish = require('gulp-awspublish');
   var minimist = require('minimist');
 
   var BUCKET_ENV = bucketEnv || 'AWS_S3_BUCKET';
+  var DEPLOY_SRC = src || './dist/**/*.*';
 
   /**
    * @description AWS S3 deployment task
@@ -35,7 +36,7 @@ module.exports = function deployGulpTasks(bucketEnv) {
       },
       secretAccessKey: commandLineArguments.secretAccessKey || process.env.AWS_SECRET_ACCESS_KEY
     });
-    return gulp.src('./dist/**/*.*')
+    return gulp.src(DEPLOY_SRC)
       .pipe(publisher.publish())
       .pipe(publisher.sync())
       .pipe(gulpAwspublish.reporter());
