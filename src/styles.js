@@ -3,14 +3,14 @@
  * @description Style related tasks
  */
 
-module.exports = function styleGulpTasks(src, dst) {
+// Compass and PostCSS
+module.exports.compassAndPostcss = function compassAndPostcss(src, dst) {
   var autoprefixer = require('autoprefixer');
   var cssMqpacker = require('css-mqpacker');
   var del = require('del');
   var gulp = require('gulp');
   var gulpCompass = require('gulp-compass');
   var gulpConnect = require('gulp-connect');
-  var gulpCssmin = require('gulp-cssmin');
   var gulpPostcss = require('gulp-postcss');
   var gulpRename = require('gulp-rename');
   var gulpReplace = require('gulp-replace');
@@ -63,7 +63,7 @@ module.exports = function styleGulpTasks(src, dst) {
     ]);
   });
 
-  gulp.task('sass', function sass(callback) {
+  gulp.task('styles', function styles(callback) {
     runSequence(
       'compass',
       'postCss',
@@ -72,11 +72,20 @@ module.exports = function styleGulpTasks(src, dst) {
       callback
     );
   });
+};
 
-  gulp.task('minifyCss', function minifyCss() {
-    return gulp.src((STYLES_DST + '/dist.css'))
+// clean-css
+module.exports.cleanCss = function cleanCss(src) {
+  var gulp = require('gulp');
+  var gulpCssmin = require('gulp-cssmin');
+  var gulpRename = require('gulp-rename');
+
+  var STYLES_SRC = src || './dist/css';
+
+  gulp.task('minifyStyles', function minifyStyles() {
+    return gulp.src((STYLES_SRC + '/dist.css'))
       .pipe(gulpCssmin())
       .pipe(gulpRename('dist.min.css'))
-      .pipe(gulp.dest(STYLES_DST));
+      .pipe(gulp.dest(STYLES_SRC));
   });
 };

@@ -1,17 +1,16 @@
+
 /**
  * @description Lint related tasks
  */
 
-module.exports = function lintGulpTasks(src) {
+// ESLint
+module.exports.eslint = function eslint(src) {
   var gulp = require('gulp');
   var gulpEslint = require('gulp-eslint');
 
   var LINT_SRC = src || [];
 
-  /**
-   * @description ESLint
-   */
-  gulp.task('eslint', function eslint() {
+  gulp.task('lint', function lint() {
     return gulp.src(LINT_SRC)
       .pipe(gulpEslint())
       .pipe(gulpEslint.format())

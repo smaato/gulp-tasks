@@ -3,13 +3,14 @@
  * @description Local web server tasks
  */
 
-module.exports = function localWebServerGulpTasks(config) {
+// Connect
+module.exports.connect = function connect(config) {
   var gulp = require('gulp');
   var gulpConnect = require('gulp-connect');
 
   var CONNECT_CFG = config || {};
 
-  gulp.task('connect', function connect() {
+  gulp.task('serveLocally', function serveLocally() {
     gulpConnect.server(CONNECT_CFG);
   });
 };

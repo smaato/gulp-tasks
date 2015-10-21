@@ -3,13 +3,12 @@
  * @description Script related tasks
  */
 
-module.exports = function scriptGulpTasks(src, dst) {
+// Browserify, Babelify, Watchify
+module.exports.browserifyAndWatchify = function browserifyAndWatchify(src, dst) {
   var babelify = require('babelify');
   var browserify = require('browserify');
   var gulp = require('gulp');
   var gulpConnect = require('gulp-connect');
-  var gulpRename = require('gulp-rename');
-  var gulpUglify = require('gulp-uglify');
   var gulpUtil = require('gulp-util');
   var vinylSourceStream = require('vinyl-source-stream');
   var watchify = require('watchify');
@@ -66,20 +65,29 @@ module.exports = function scriptGulpTasks(src, dst) {
     return writeScriptsFromBundle(bundler.bundle());
   }
 
-  gulp.task('browserifyScripts', function browserifyScripts() {
+  gulp.task('scripts', function scripts() {
     return bundleUsingBrowserify(false);
   });
 
-  gulp.task('browserifyScriptsAndWatch', function browserifyScriptsAndWatch() {
+  gulp.task('scriptsThenWatch', function scriptsThenWatch() {
     return bundleUsingBrowserify(true);
   });
+};
 
-  gulp.task('minifyJs', function minifyJs() {
-    return gulp.src((SCRIPTS_DST + '/dist.js'))
+// UglifyJS
+module.exports.uglify = function uglify(src) {
+  var gulp = require('gulp');
+  var gulpRename = require('gulp-rename');
+  var gulpUglify = require('gulp-uglify');
+
+  var SCRIPTS_SRC = src || './dist/js';
+
+  gulp.task('minifyScripts', function minifyScripts() {
+    return gulp.src((SCRIPTS_SRC + '/dist.js'))
       .pipe(gulpUglify({
         mangle: true
       }))
       .pipe(gulpRename('dist.min.js'))
-      .pipe(gulp.dest(SCRIPTS_DST));
+      .pipe(gulp.dest(SCRIPTS_SRC));
   });
 };

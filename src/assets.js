@@ -3,7 +3,8 @@
  * @description Asset related tasks
  */
 
-module.exports = function assetGulpTasks(src, dst) {
+// Copy and trigger live reload
+module.exports.copy = function copy(src, dst) {
   var gulp = require('gulp');
   var gulpConnect = require('gulp-connect');
 

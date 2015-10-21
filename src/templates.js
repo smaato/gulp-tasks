@@ -3,7 +3,8 @@
  * @description Template related tasks
  */
 
-module.exports = function templateGulpTasks(src, dst) {
+// Jade
+module.exports.jade = function jade(src, dst) {
   var gulp = require('gulp');
   var gulpConnect = require('gulp-connect');
   var gulpJade = require('gulp-jade');
@@ -11,7 +12,7 @@ module.exports = function templateGulpTasks(src, dst) {
   var TEMPLATES_DST = dst || './dist';
   var TEMPLATES_SRC = src || [];
 
-  gulp.task('jade', function jade() {
+  gulp.task('templates', function templates() {
     return gulp.src(TEMPLATES_SRC)
       .pipe(gulpJade({
         locals: {
