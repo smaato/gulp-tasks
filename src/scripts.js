@@ -3,12 +3,12 @@
  * @description Script related tasks
  */
 
-// Browserify, Babelify, Watchify
+// Browserify, Browserify-HMR, Babelify, Watchify
 module.exports.browserifyAndWatchify = function browserifyAndWatchify(src, dst) {
   var babelify = require('babelify');
   var browserify = require('browserify');
+  var browserifyHmr = require('browserify-hmr');
   var gulp = require('gulp');
-  var gulpConnect = require('gulp-connect');
   var gulpUtil = require('gulp-util');
   var vinylSourceStream = require('vinyl-source-stream');
   var watchify = require('watchify');
@@ -30,8 +30,7 @@ module.exports.browserifyAndWatchify = function browserifyAndWatchify(src, dst) 
     var writeScriptsFromBundle = function writeScriptsFromBundle(bundle) {
       return bundle
         .pipe(vinylSourceStream('dist.js'))
-        .pipe(gulp.dest(SCRIPTS_DST))
-        .pipe(gulpConnect.reload());
+        .pipe(gulp.dest(SCRIPTS_DST));
     };
     var bundler;
     var startTime;
@@ -40,11 +39,12 @@ module.exports.browserifyAndWatchify = function browserifyAndWatchify(src, dst) 
       BROWSERIFY_CFG = watchify.args;
     }
 
-    BROWSERIFY_CFG.debug = !process.env.GULP_IS_PRODUCTION;
+    BROWSERIFY_CFG.debug = (process.env.NODE_ENV !== 'production');
 
     bundler = browserify(SCRIPTS_SRC, BROWSERIFY_CFG);
 
     if (withWatchify) {
+      bundler.plugin(browserifyHmr);
       bundler = watchify(bundler);
     }
 
