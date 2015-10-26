@@ -13,8 +13,12 @@ module.exports.copy = function copy(config) {
     src: []
   };
 
+  if (!ASSETS_CFG.dst || !ASSETS_CFG.src) {
+    throw new Error('Invalid configuration');
+  }
+
   gulp.task('assets', function assets() {
-    gulp
+    return gulp
       .src(ASSETS_CFG.src)
       .pipe(gulp.dest(ASSETS_CFG.dst))
       .pipe(gulpConnect.reload());
