@@ -4,13 +4,15 @@
  */
 
 // AWS SDK
-module.exports.awsS3 = function awsS3(bucketEnv, src) {
+module.exports.awsS3 = function awsS3(config) {
   var gulp = require('gulp');
   var gulpAwspublish = require('gulp-awspublish');
   var minimist = require('minimist');
 
-  var BUCKET_ENV = bucketEnv || 'AWS_S3_BUCKET';
-  var DEPLOY_SRC = src || './dist/**/*.*';
+  var DEPLOY_CFG = config || {
+    bucketEnv: 'AWS_S3_BUCKET',
+    src: './dist/**/*.*'
+  };
 
   gulp.task('deploy', function deploy() {
     /*
@@ -32,11 +34,11 @@ module.exports.awsS3 = function awsS3(bucketEnv, src) {
     var publisher = gulpAwspublish.create({
       accessKeyId: commandLineArguments.accessKeyId || process.env.AWS_ACCESS_KEY_ID,
       params: {
-        Bucket: commandLineArguments.bucket || process.env[BUCKET_ENV]
+        Bucket: commandLineArguments.bucket || process.env[DEPLOY_CFG.bucketEnv]
       },
       secretAccessKey: commandLineArguments.secretAccessKey || process.env.AWS_SECRET_ACCESS_KEY
     });
-    return gulp.src(DEPLOY_SRC)
+    return gulp.src(DEPLOY_CFG.src)
       .pipe(publisher.publish())
       .pipe(publisher.sync())
       .pipe(gulpAwspublish.reporter());

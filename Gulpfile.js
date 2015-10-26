@@ -1,7 +1,11 @@
+
 var gulp = require('gulp');
+var lintGulpTaskCollection = require('./src/lint');
 
 var LINT_SRC = './**/*.js';
 
-require('./src/lint').eslint(LINT_SRC);
+lintGulpTaskCollection.eslint({
+  src: LINT_SRC
+});
 
 gulp.task('default', ['lint']);

@@ -4,7 +4,7 @@
  */
 
 // Browserify, Browserify-HMR, Babelify, Watchify
-module.exports.browserifyAndWatchify = function browserifyAndWatchify(src, dst) {
+module.exports.browserifyAndWatchify = function browserifyAndWatchify(config) {
   var babelify = require('babelify');
   var browserify = require('browserify');
   var browserifyHmr = require('browserify-hmr');
@@ -14,8 +14,10 @@ module.exports.browserifyAndWatchify = function browserifyAndWatchify(src, dst) 
   var watchify = require('watchify');
 
   var BROWSERIFY_CFG = {};
-  var SCRIPTS_DST = dst || './dist/js';
-  var SCRIPTS_SRC = src || '';
+  var SCRIPTS_CFG = config || {
+    dst: './dist/js',
+    src: ''
+  };
 
   function bundleUsingBrowserify(withWatchify) {
     /*
@@ -30,7 +32,7 @@ module.exports.browserifyAndWatchify = function browserifyAndWatchify(src, dst) 
     var writeScriptsFromBundle = function writeScriptsFromBundle(bundle) {
       return bundle
         .pipe(vinylSourceStream('dist.js'))
-        .pipe(gulp.dest(SCRIPTS_DST));
+        .pipe(gulp.dest(SCRIPTS_CFG.dst));
     };
     var bundler;
     var startTime;
@@ -41,7 +43,7 @@ module.exports.browserifyAndWatchify = function browserifyAndWatchify(src, dst) 
 
     BROWSERIFY_CFG.debug = (process.env.NODE_ENV !== 'production');
 
-    bundler = browserify(SCRIPTS_SRC, BROWSERIFY_CFG);
+    bundler = browserify(SCRIPTS_CFG.src, BROWSERIFY_CFG);
 
     if (withWatchify) {
       bundler.plugin(browserifyHmr);
@@ -75,19 +77,21 @@ module.exports.browserifyAndWatchify = function browserifyAndWatchify(src, dst) 
 };
 
 // UglifyJS
-module.exports.uglify = function uglify(src) {
+module.exports.uglify = function uglify(config) {
   var gulp = require('gulp');
   var gulpRename = require('gulp-rename');
   var gulpUglify = require('gulp-uglify');
 
-  var SCRIPTS_SRC = src || './dist/js';
+  var SCRIPTS_CFG = config || {
+    src: './dist/js'
+  };
 
   gulp.task('minifyScripts', function minifyScripts() {
-    return gulp.src((SCRIPTS_SRC + '/dist.js'))
+    return gulp.src((SCRIPTS_CFG.src + '/dist.js'))
       .pipe(gulpUglify({
         mangle: true
       }))
       .pipe(gulpRename('dist.min.js'))
-      .pipe(gulp.dest(SCRIPTS_SRC));
+      .pipe(gulp.dest(SCRIPTS_CFG.src));
   });
 };
