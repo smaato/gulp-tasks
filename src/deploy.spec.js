@@ -24,12 +24,18 @@ describe('Deploy Gulp Task Collection', () => {
       }).toThrow();
     });
 
-    it('can be called without a configuration', () => {
-      expect(deployGulpTaskCollection.awsS3).not.toThrow();
+    it('can be called with a valid configuration', () => {
+      expect(() => {
+        deployGulpTaskCollection.awsS3({
+          bucketEnv: 'AWS_S3_BUCKET',
+          src: './dist/**/*.*',
+          taskName: 'deployTest'
+        });
+      }).not.toThrow();
     });
 
     it('registers a gulp task', () => {
-      expect(gulp.tasks.deploy).toBeDefined();
+      expect(gulp.tasks.deployTest).toBeDefined();
     });
   });
 });
