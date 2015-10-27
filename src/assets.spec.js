@@ -26,7 +26,9 @@ describe('Assets Gulp Task Collection', () => {
 
       expect(() => {
         return assetsGulpTaskCollection.copy({
-          src: []
+          src: [
+            './src/assets/**/*'
+          ]
         });
       }).toThrow();
     });
@@ -35,7 +37,9 @@ describe('Assets Gulp Task Collection', () => {
       expect(() => {
         assetsGulpTaskCollection.copy({
           dst: './dist/assets',
-          src: [],
+          src: [
+            './src/assets/**/*'
+          ],
           taskName: 'assetsTest'
         });
       }).not.toThrow();

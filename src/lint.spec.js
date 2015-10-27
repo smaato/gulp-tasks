@@ -22,7 +22,9 @@ describe('Lint Gulp Task Collection', () => {
     it('can be called with a valid configuration', () => {
       expect(() => {
         lintGulpTaskCollection.eslint({
-          src: [],
+          src: [
+            './src/**/*.js'
+          ],
           taskName: 'lintTest'
         });
       }).not.toThrow();

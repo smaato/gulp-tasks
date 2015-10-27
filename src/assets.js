@@ -10,7 +10,9 @@ module.exports.copy = (config) => {
 
   var ASSETS_CONFIG = config || {
     dst: './dist/assets',
-    src: []
+    src: [
+      './src/assets/**/*'
+    ]
   };
 
   if (!ASSETS_CONFIG.dst || !ASSETS_CONFIG.src) {

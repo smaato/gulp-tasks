@@ -9,7 +9,9 @@ module.exports.eslint = (config) => {
   var gulpEslint = require('gulp-eslint');
 
   var LINT_CONFIG = config || {
-    src: []
+    src: [
+      './src/**/*.js'
+    ]
   };
 
   if (!LINT_CONFIG.src) {
