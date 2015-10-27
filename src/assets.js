@@ -4,23 +4,23 @@
  */
 
 // Copy and trigger live reload
-module.exports.copy = function copy(config) {
+module.exports.copy = (config) => {
   var gulp = require('gulp');
   var gulpConnect = require('gulp-connect');
 
-  var ASSETS_CFG = config || {
+  var ASSETS_CONFIG = config || {
     dst: './dist/assets',
     src: []
   };
 
-  if (!ASSETS_CFG.dst || !ASSETS_CFG.src) {
+  if (!ASSETS_CONFIG.dst || !ASSETS_CONFIG.src) {
     throw new Error('Invalid configuration');
   }
 
-  gulp.task('assets', function assets() {
+  gulp.task('assets', () => {
     return gulp
-      .src(ASSETS_CFG.src)
-      .pipe(gulp.dest(ASSETS_CFG.dst))
+      .src(ASSETS_CONFIG.src)
+      .pipe(gulp.dest(ASSETS_CONFIG.dst))
       .pipe(gulpConnect.reload());
   });
 };

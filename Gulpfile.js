@@ -9,9 +9,11 @@ lintGulpTaskCollection.eslint({
   src: LINT_SRC
 });
 
-gulp.task('test', ['lint'], function test() {
+gulp.task('test', ['lint'], () => {
   return gulp.src('./src/**/*.js')
-    .pipe(gulpJasmine());
+    .pipe(gulpJasmine({
+      verbose: true
+    }));
 });
 
 gulp.task('default', ['test']);

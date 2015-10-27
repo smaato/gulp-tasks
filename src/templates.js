@@ -4,24 +4,24 @@
  */
 
 // Jade
-module.exports.jade = function jade(config) {
+module.exports.jade = (config) => {
   var gulp = require('gulp');
   var gulpConnect = require('gulp-connect');
   var gulpJade = require('gulp-jade');
 
-  var TEMPLATES_CFG = config || {
+  var TEMPLATES_CONFIG = config || {
     dst: './dist',
     src: []
   };
 
-  gulp.task('templates', function templates() {
-    return gulp.src(TEMPLATES_CFG.src)
+  gulp.task('templates', () => {
+    return gulp.src(TEMPLATES_CONFIG.src)
       .pipe(gulpJade({
         locals: {
           DATE_TIME: (new Date().getTime())
         }
       }))
-      .pipe(gulp.dest(TEMPLATES_CFG.dst))
+      .pipe(gulp.dest(TEMPLATES_CONFIG.dst))
       .pipe(gulpConnect.reload());
   });
 };

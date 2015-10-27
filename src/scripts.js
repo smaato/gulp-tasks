@@ -4,7 +4,7 @@
  */
 
 // Browserify, Browserify-HMR, Babelify, Watchify
-module.exports.browserifyAndWatchify = function browserifyAndWatchify(config) {
+module.exports.browserifyAndWatchify = (config) => {
   var babelify = require('babelify');
   var browserify = require('browserify');
   var browserifyHmr = require('browserify-hmr');
@@ -13,13 +13,13 @@ module.exports.browserifyAndWatchify = function browserifyAndWatchify(config) {
   var vinylSourceStream = require('vinyl-source-stream');
   var watchify = require('watchify');
 
-  var BROWSERIFY_CFG = {};
-  var SCRIPTS_CFG = config || {
+  var BROWSERIFY_CONFIG = {};
+  var SCRIPTS_CONFIG = config || {
     dst: './dist/js',
     src: ''
   };
 
-  function bundleUsingBrowserify(withWatchify) {
+  var bundleUsingBrowserify = (withWatchify) => {
     /*
     Watchify, a watch mode for browserify builds, will be enabled if
     withWatchify is true. The task will not exit and if a source file is changed
@@ -29,21 +29,21 @@ module.exports.browserifyAndWatchify = function browserifyAndWatchify(config) {
     If withWatchify is false the scripts will only be written once and the task
     will exit.
     */
-    var writeScriptsFromBundle = function writeScriptsFromBundle(bundle) {
+    var writeScriptsFromBundle = (bundle) => {
       return bundle
         .pipe(vinylSourceStream('dist.js'))
-        .pipe(gulp.dest(SCRIPTS_CFG.dst));
+        .pipe(gulp.dest(SCRIPTS_CONFIG.dst));
     };
     var bundler;
     var startTime;
 
     if (withWatchify) {
-      BROWSERIFY_CFG = watchify.args;
+      BROWSERIFY_CONFIG = watchify.args;
     }
 
-    BROWSERIFY_CFG.debug = (process.env.NODE_ENV !== 'production');
+    BROWSERIFY_CONFIG.debug = (process.env.NODE_ENV !== 'production');
 
-    bundler = browserify(SCRIPTS_CFG.src, BROWSERIFY_CFG);
+    bundler = browserify(SCRIPTS_CONFIG.src, BROWSERIFY_CONFIG);
 
     if (withWatchify) {
       bundler.plugin(browserifyHmr);
@@ -53,45 +53,45 @@ module.exports.browserifyAndWatchify = function browserifyAndWatchify(config) {
     bundler.transform(babelify);
 
     if (withWatchify) {
-      bundler.on('update', function update() {
+      bundler.on('update', () => {
         gulpUtil.log('Starting to update scripts');
         startTime = (new Date().getTime());
 
         writeScriptsFromBundle(bundler.bundle())
-          .on('end', function end() {
+          .on('end', () => {
             gulpUtil.log('Finished updating scripts after', ((new Date().getTime()) - startTime), 'ms');
           });
       });
     }
 
     return writeScriptsFromBundle(bundler.bundle());
-  }
+  };
 
-  gulp.task('scripts', function scripts() {
+  gulp.task('scripts', () => {
     return bundleUsingBrowserify(false);
   });
 
-  gulp.task('scriptsThenWatch', function scriptsThenWatch() {
+  gulp.task('scriptsThenWatch', () => {
     return bundleUsingBrowserify(true);
   });
 };
 
 // UglifyJS
-module.exports.uglify = function uglify(config) {
+module.exports.uglify = (config) => {
   var gulp = require('gulp');
   var gulpRename = require('gulp-rename');
   var gulpUglify = require('gulp-uglify');
 
-  var SCRIPTS_CFG = config || {
+  var SCRIPTS_CONFIG = config || {
     src: './dist/js'
   };
 
-  gulp.task('minifyScripts', function minifyScripts() {
-    return gulp.src((SCRIPTS_CFG.src + '/dist.js'))
+  gulp.task('minifyScripts', () => {
+    return gulp.src((SCRIPTS_CONFIG.src + '/dist.js'))
       .pipe(gulpUglify({
         mangle: true
       }))
       .pipe(gulpRename('dist.min.js'))
-      .pipe(gulp.dest(SCRIPTS_CFG.src));
+      .pipe(gulp.dest(SCRIPTS_CONFIG.src));
   });
 };

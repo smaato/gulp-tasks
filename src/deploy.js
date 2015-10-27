@@ -4,17 +4,17 @@
  */
 
 // AWS SDK
-module.exports.awsS3 = function awsS3(config) {
+module.exports.awsS3 = (config) => {
   var gulp = require('gulp');
   var gulpAwspublish = require('gulp-awspublish');
   var minimist = require('minimist');
 
-  var DEPLOY_CFG = config || {
+  var DEPLOY_CONFIG = config || {
     bucketEnv: 'AWS_S3_BUCKET',
     src: './dist/**/*.*'
   };
 
-  gulp.task('deploy', function deploy() {
+  gulp.task('deploy', () => {
     /*
     To manually deploy the working copy the following command can be used:
     gulp deploy --accessKeyId=XXX --bucket=XXX --secretAccessKey=XXX
@@ -34,11 +34,11 @@ module.exports.awsS3 = function awsS3(config) {
     var publisher = gulpAwspublish.create({
       accessKeyId: commandLineArguments.accessKeyId || process.env.AWS_ACCESS_KEY_ID,
       params: {
-        Bucket: commandLineArguments.bucket || process.env[DEPLOY_CFG.bucketEnv]
+        Bucket: commandLineArguments.bucket || process.env[DEPLOY_CONFIG.bucketEnv]
       },
       secretAccessKey: commandLineArguments.secretAccessKey || process.env.AWS_SECRET_ACCESS_KEY
     });
-    return gulp.src(DEPLOY_CFG.src)
+    return gulp.src(DEPLOY_CONFIG.src)
       .pipe(publisher.publish())
       .pipe(publisher.sync())
       .pipe(gulpAwspublish.reporter());

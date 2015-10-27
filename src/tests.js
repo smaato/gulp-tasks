@@ -4,14 +4,14 @@
  */
 
 // Karma
-module.exports.karma = function karma(config) {
+module.exports.karma = (config) => {
   var gulp = require('gulp');
   var karmaServer = require('karma').Server;
 
-  var KARMA_CFG = config || {};
+  var KARMA_CONFIG = config || {};
 
-  gulp.task('unit', function karmaGulpTask(callback) {
-    return karmaServer.start(KARMA_CFG, function exitGulp(exitStatus) {
+  gulp.task('unit', (callback) => {
+    return karmaServer.start(KARMA_CONFIG, (exitStatus) => {
       if (exitStatus) {
         throw new Error('Unit testing failed');
       } else {
@@ -22,7 +22,7 @@ module.exports.karma = function karma(config) {
 };
 
 // Nightwatch
-module.exports.nightwatch = function nightwatch(config) {
+module.exports.nightwatch = (config) => {
   var del = require('del');
   var gulp = require('gulp');
   var gulpBabel = require('gulp-babel');
@@ -31,60 +31,60 @@ module.exports.nightwatch = function nightwatch(config) {
   var gulpReplace = require('gulp-replace');
   var runSequence = require('run-sequence');
 
-  var NIGHTWATCH_CFG = config || {
+  var NIGHTWATCH_CONFIG = config || {
     connect: {},
     dir: './e2e/',
     shim: '',
     wasNightwatchFailing: false
   };
 
-  gulp.task('e2e:startConnect', function e2eStartConnect() {
-    gulpConnect.server(NIGHTWATCH_CFG.connect);
+  gulp.task('e2e:startConnect', () => {
+    gulpConnect.server(NIGHTWATCH_CONFIG.connect);
   });
 
-  gulp.task('e2e:clean', function e2eClean(callback) {
+  gulp.task('e2e:clean', (callback) => {
     return del([
-      NIGHTWATCH_CFG.dir + 'dist/**/*',
-      NIGHTWATCH_CFG.dir + 'dist/'
+      NIGHTWATCH_CONFIG.dir + 'dist/**/*',
+      NIGHTWATCH_CONFIG.dir + 'dist/'
     ], callback);
   });
 
-  gulp.task('e2e:compileTests', function e2eCompileTests() {
-    return gulp.src(NIGHTWATCH_CFG.dir + 'src/**/*.js')
+  gulp.task('e2e:compileTests', () => {
+    return gulp.src(NIGHTWATCH_CONFIG.dir + 'src/**/*.js')
       .pipe(gulpBabel())
-      .pipe(gulp.dest(NIGHTWATCH_CFG.dir + 'dist'));
+      .pipe(gulp.dest(NIGHTWATCH_CONFIG.dir + 'dist'));
   });
 
-  gulp.task('e2e:addShim', function e2eAddShim() {
+  gulp.task('e2e:addShim', () => {
     return gulp.src(['./dist/index.html'])
-      .pipe(gulpReplace('<script', (NIGHTWATCH_CFG.shim + '<script')))
+      .pipe(gulpReplace('<script', (NIGHTWATCH_CONFIG.shim + '<script')))
       .pipe(gulp.dest('./dist/'));
   });
 
-  gulp.task('e2e:nightwatch', function e2eNightwatch() {
+  gulp.task('e2e:nightwatch', () => {
     return gulp.src('')
       .pipe(gulpNightwatch({
-        configFile: NIGHTWATCH_CFG.dir + 'config/nightwatch.json',
+        configFile: NIGHTWATCH_CONFIG.dir + 'config/nightwatch.json',
         cliArgs: ['--env phantomjs']
       }))
-      .on('error', function continueGulp() {
+      .on('error', () => {
         // If there's an error we need to complete the task and remove the shim
-        NIGHTWATCH_CFG.wasNightwatchFailing = true;
+        NIGHTWATCH_CONFIG.wasNightwatchFailing = true;
         this.emit('end');
       });
   });
 
-  gulp.task('e2e:removeShim', function e2eRemoveShim() {
+  gulp.task('e2e:removeShim', () => {
     return gulp.src(['./dist/index.html'])
-      .pipe(gulpReplace((NIGHTWATCH_CFG.shim + '<script'), '<script'))
+      .pipe(gulpReplace((NIGHTWATCH_CONFIG.shim + '<script'), '<script'))
       .pipe(gulp.dest('./dist/'));
   });
 
-  gulp.task('e2e:stopConnect', function e2eStopConnect() {
+  gulp.task('e2e:stopConnect', () => {
     gulpConnect.serverClose();
   });
 
-  gulp.task('e2e', function nightwatchGulpTask(callback) {
+  gulp.task('e2e', (callback) => {
     runSequence(
       'e2e:startConnect',
       'e2e:clean',
@@ -93,8 +93,8 @@ module.exports.nightwatch = function nightwatch(config) {
       'e2e:nightwatch',
       'e2e:removeShim',
       'e2e:stopConnect',
-      function catchNightwatchFail(error) {
-        if (NIGHTWATCH_CFG.wasNightwatchFailing) {
+      (error) => {
+        if (NIGHTWATCH_CONFIG.wasNightwatchFailing) {
           throw new Error('E2E testing failed');
         }
         callback(error);
