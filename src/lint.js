@@ -12,6 +12,10 @@ module.exports.eslint = (config) => {
     src: []
   };
 
+  if (!LINT_CONFIG.src) {
+    throw new Error('Invalid configuration');
+  }
+
   gulp.task((LINT_CONFIG.taskName || 'lint'), () => {
     return gulp.src(LINT_CONFIG.src)
       .pipe(gulpEslint())
