@@ -18,10 +18,16 @@ module.exports.compassAndPostcss = (config) => {
 
   var STYLES_CONFIG = config || {
     dst: './dist/css',
-    src: []
+    src: [
+      './src/**/*.scss'
+    ]
   };
 
-  gulp.task('compass', () => {
+  if (!STYLES_CONFIG.dst || !STYLES_CONFIG.src) {
+    throw new Error('Invalid configuration');
+  }
+
+  gulp.task(((STYLES_CONFIG.taskName || 'styles') + ':compass'), () => {
     return gulp.src(STYLES_CONFIG.src)
       .pipe(gulpCompass({
         css: STYLES_CONFIG.dst,
@@ -35,7 +41,7 @@ module.exports.compassAndPostcss = (config) => {
       .pipe(gulp.dest(STYLES_CONFIG.dst));
   });
 
-  gulp.task('postCss', () => {
+  gulp.task(((STYLES_CONFIG.taskName || 'styles') + ':postCss'), () => {
     return gulp.src((STYLES_CONFIG.dst + '/index.css'))
       .pipe(gulpPostcss([
         autoprefixer({
@@ -46,7 +52,7 @@ module.exports.compassAndPostcss = (config) => {
       .pipe(gulp.dest(STYLES_CONFIG.dst));
   });
 
-  gulp.task('renameDstIndexCss', () => {
+  gulp.task(((STYLES_CONFIG.taskName || 'styles') + ':renameDstIndexCss'), () => {
     return gulp.src((STYLES_CONFIG.dst + '/*'))
       // Replace occurences of index.css with dist.css inside of files
       .pipe(gulpReplace('index.css', 'dist.css'))
@@ -58,7 +64,7 @@ module.exports.compassAndPostcss = (config) => {
       .pipe(gulpConnect.reload());
   });
 
-  gulp.task('deleteDstIndexCss', () => {
+  gulp.task(((STYLES_CONFIG.taskName || 'styles') + ':deleteDstIndexCss'), () => {
     return del([
       (STYLES_CONFIG.dst + '/index.css'),
       (STYLES_CONFIG.dst + '/index.css.map')
@@ -67,10 +73,10 @@ module.exports.compassAndPostcss = (config) => {
 
   gulp.task((STYLES_CONFIG.taskName || 'styles'), (callback) => {
     runSequence(
-      'compass',
-      'postCss',
-      'renameDstIndexCss',
-      'deleteDstIndexCss',
+      ((STYLES_CONFIG.taskName || 'styles') + ':compass'),
+      ((STYLES_CONFIG.taskName || 'styles') + ':postCss'),
+      ((STYLES_CONFIG.taskName || 'styles') + ':renameDstIndexCss'),
+      ((STYLES_CONFIG.taskName || 'styles') + ':deleteDstIndexCss'),
       callback
     );
   });
@@ -85,6 +91,10 @@ module.exports.cleanCss = (config) => {
   var STYLES_CONFIG = config || {
     src: './dist/css'
   };
+
+  if (!STYLES_CONFIG.src) {
+    throw new Error('Invalid configuration');
+  }
 
   gulp.task((STYLES_CONFIG.taskName || 'minifyStyles'), () => {
     return gulp.src((STYLES_CONFIG.src + '/dist.css'))
