@@ -75,7 +75,7 @@ module.exports.browserifyAndWatchify = (config) => {
     return bundleUsingBrowserify(false);
   });
 
-  gulp.task(((SCRIPTS_CONFIG.taskName + 'ThenWatch') || 'scriptsThenWatch'), () => {
+  gulp.task(((SCRIPTS_CONFIG.taskName || 'scripts') + 'ThenWatch'), () => {
     return bundleUsingBrowserify(true);
   });
 };
