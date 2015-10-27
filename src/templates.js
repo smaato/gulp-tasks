@@ -11,8 +11,14 @@ module.exports.jade = (config) => {
 
   var TEMPLATES_CONFIG = config || {
     dst: './dist',
-    src: []
+    src: [
+      './src/**/*.jade'
+    ]
   };
+
+  if (!TEMPLATES_CONFIG.dst || !TEMPLATES_CONFIG.src) {
+    throw new Error('Invalid configuration');
+  }
 
   gulp.task((TEMPLATES_CONFIG.taskName || 'templates'), () => {
     return gulp.src(TEMPLATES_CONFIG.src)
