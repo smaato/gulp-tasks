@@ -19,7 +19,7 @@ describe('Deploy Gulp Task Collection', () => {
 
       expect(() => {
         return deployGulpTaskCollection.awsS3({
-          bucketEnv: 'AWS_S3_BUCKET'
+          bucketEnv: 'SHOULD_NOT_EXIST'
         });
       }).toThrow();
     });
@@ -27,8 +27,8 @@ describe('Deploy Gulp Task Collection', () => {
     it('can be called with a valid configuration', () => {
       expect(() => {
         deployGulpTaskCollection.awsS3({
-          bucketEnv: 'AWS_S3_BUCKET',
-          src: './dist/**/*.*',
+          bucketEnv: 'SHOULD_NOT_EXIST',
+          src: './shouldNotExist/dist/**/*.*',
           taskName: 'deployTest'
         });
       }).not.toThrow();

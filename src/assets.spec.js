@@ -20,14 +20,14 @@ describe('Assets Gulp Task Collection', () => {
 
       expect(() => {
         return assetsGulpTaskCollection.copy({
-          dst: './dist/assets'
+          dst: './shouldNotExist/dist/assets'
         });
       }).toThrow();
 
       expect(() => {
         return assetsGulpTaskCollection.copy({
           src: [
-            './src/assets/**/*'
+            './shouldNotExist/src/assets/**/*'
           ]
         });
       }).toThrow();
@@ -36,9 +36,9 @@ describe('Assets Gulp Task Collection', () => {
     it('can be called with a valid configuration', () => {
       expect(() => {
         assetsGulpTaskCollection.copy({
-          dst: './dist/assets',
+          dst: './shouldNotExist/dist/assets',
           src: [
-            './src/assets/**/*'
+            './shouldNotExist/src/assets/**/*'
           ],
           taskName: 'assetsTest'
         });

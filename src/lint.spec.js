@@ -23,7 +23,7 @@ describe('Lint Gulp Task Collection', () => {
       expect(() => {
         lintGulpTaskCollection.eslint({
           src: [
-            './src/**/*.js'
+            './shouldNotExist/src/**/*.js'
           ],
           taskName: 'lintTest'
         });

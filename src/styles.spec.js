@@ -19,14 +19,14 @@ describe('Styles Gulp Task Collection', () => {
 
       expect(() => {
         return stylesGulpTaskCollection.compassAndPostcss({
-          dst: './dist/css'
+          dst: './shouldNotExist/dist/css'
         });
       }).toThrow();
 
       expect(() => {
         return stylesGulpTaskCollection.compassAndPostcss({
           src: [
-            './src/**/*.scss'
+            './shouldNotExist/src/**/*.scss'
           ]
         });
       }).toThrow();
@@ -35,9 +35,9 @@ describe('Styles Gulp Task Collection', () => {
     it('can be called with a valid configuration', () => {
       expect(() => {
         stylesGulpTaskCollection.compassAndPostcss({
-          dst: './dist/css',
+          dst: './shouldNotExist/dist/css',
           src: [
-            './src/**/*.scss'
+            './shouldNotExist/src/**/*.scss'
           ],
           taskName: 'stylesTest'
         });
@@ -67,7 +67,7 @@ describe('Styles Gulp Task Collection', () => {
     it('can be called with a valid configuration', () => {
       expect(() => {
         stylesGulpTaskCollection.cleanCss({
-          src: './dist/css',
+          src: './shouldNotExist/dist/css',
           taskName: 'minifyStylesTest'
         });
       }).not.toThrow();

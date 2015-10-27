@@ -20,14 +20,14 @@ describe('Templates Gulp Task Collection', () => {
 
       expect(() => {
         return templatesGulpTaskCollection.jade({
-          dst: './dist'
+          dst: './shouldNotExist/dist'
         });
       }).toThrow();
 
       expect(() => {
         return templatesGulpTaskCollection.jade({
           src: [
-            './src/**/*.jade'
+            './shouldNotExist/src/**/*.jade'
           ]
         });
       }).toThrow();
@@ -36,9 +36,9 @@ describe('Templates Gulp Task Collection', () => {
     it('can be called with a valid configuration', () => {
       expect(() => {
         templatesGulpTaskCollection.jade({
-          dst: './dist',
+          dst: './shouldNotExist/dist',
           src: [
-            './src/**/*.jade'
+            './shouldNotExist/src/**/*.jade'
           ],
           taskName: 'templatesTest'
         });

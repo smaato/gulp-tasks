@@ -19,13 +19,13 @@ describe('Scripts Gulp Task Collection', () => {
 
       expect(() => {
         return scriptsGulpTaskCollection.browserifyAndWatchify({
-          dst: './dist/js'
+          dst: './shouldNotExist/dist/js'
         });
       }).toThrow();
 
       expect(() => {
         return scriptsGulpTaskCollection.browserifyAndWatchify({
-          src: './src/index.js'
+          src: './shouldNotExist/src/index.js'
         });
       }).toThrow();
     });
@@ -33,8 +33,8 @@ describe('Scripts Gulp Task Collection', () => {
     it('can be called with a valid configuration', () => {
       expect(() => {
         scriptsGulpTaskCollection.browserifyAndWatchify({
-          dst: './dist/js',
-          src: './src/index.js',
+          dst: './shouldNotExist/dist/js',
+          src: './shouldNotExist/src/index.js',
           taskName: 'scriptsTest'
         });
       }).not.toThrow();
@@ -60,7 +60,7 @@ describe('Scripts Gulp Task Collection', () => {
     it('can be called with a valid configuration', () => {
       expect(() => {
         scriptsGulpTaskCollection.uglify({
-          src: './dist/js',
+          src: './shouldNotExist/dist/js',
           taskName: 'minifyScriptsTest'
         });
       }).not.toThrow();
