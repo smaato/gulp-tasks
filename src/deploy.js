@@ -18,7 +18,7 @@ module.exports.awsS3 = (config) => {
     throw new Error('Invalid configuration');
   }
 
-  gulp.task('deploy', () => {
+  gulp.task((DEPLOY_CONFIG.taskName || 'deploy'), () => {
     /*
     To manually deploy the working copy the following command can be used:
     gulp deploy --accessKeyId=XXX --bucket=XXX --secretAccessKey=XXX

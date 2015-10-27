@@ -14,7 +14,7 @@ module.exports.jade = (config) => {
     src: []
   };
 
-  gulp.task('templates', () => {
+  gulp.task((TEMPLATES_CONFIG.taskName || 'templates'), () => {
     return gulp.src(TEMPLATES_CONFIG.src)
       .pipe(gulpJade({
         locals: {

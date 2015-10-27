@@ -67,11 +67,11 @@ module.exports.browserifyAndWatchify = (config) => {
     return writeScriptsFromBundle(bundler.bundle());
   };
 
-  gulp.task('scripts', () => {
+  gulp.task((SCRIPTS_CONFIG.taskName || 'scripts'), () => {
     return bundleUsingBrowserify(false);
   });
 
-  gulp.task('scriptsThenWatch', () => {
+  gulp.task(((SCRIPTS_CONFIG.taskName + 'ThenWatch') || 'scriptsThenWatch'), () => {
     return bundleUsingBrowserify(true);
   });
 };
@@ -86,7 +86,7 @@ module.exports.uglify = (config) => {
     src: './dist/js'
   };
 
-  gulp.task('minifyScripts', () => {
+  gulp.task((SCRIPTS_CONFIG.taskName || 'minifyScripts'), () => {
     return gulp.src((SCRIPTS_CONFIG.src + '/dist.js'))
       .pipe(gulpUglify({
         mangle: true

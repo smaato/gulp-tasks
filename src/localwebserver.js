@@ -10,7 +10,7 @@ module.exports.connect = (config) => {
 
   var CONNECT_CONFIG = config || {};
 
-  gulp.task('serveLocally', () => {
+  gulp.task((CONNECT_CONFIG.taskName || 'serveLocally'), () => {
     gulpConnect.server(CONNECT_CONFIG);
   });
 };

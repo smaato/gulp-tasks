@@ -17,7 +17,7 @@ module.exports.copy = (config) => {
     throw new Error('Invalid configuration');
   }
 
-  gulp.task('assets', () => {
+  gulp.task((ASSETS_CONFIG.taskName || 'assets'), () => {
     return gulp
       .src(ASSETS_CONFIG.src)
       .pipe(gulp.dest(ASSETS_CONFIG.dst))

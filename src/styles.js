@@ -65,7 +65,7 @@ module.exports.compassAndPostcss = (config) => {
     ]);
   });
 
-  gulp.task('styles', (callback) => {
+  gulp.task((STYLES_CONFIG.taskName || 'styles'), (callback) => {
     runSequence(
       'compass',
       'postCss',
@@ -86,7 +86,7 @@ module.exports.cleanCss = (config) => {
     src: './dist/css'
   };
 
-  gulp.task('minifyStyles', () => {
+  gulp.task((STYLES_CONFIG.taskName || 'minifyStyles'), () => {
     return gulp.src((STYLES_CONFIG.src + '/dist.css'))
       .pipe(gulpCssmin())
       .pipe(gulpRename('dist.min.css'))

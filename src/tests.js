@@ -10,7 +10,7 @@ module.exports.karma = (config) => {
 
   var KARMA_CONFIG = config || {};
 
-  gulp.task('unit', (callback) => {
+  gulp.task((KARMA_CONFIG.taskName || 'unit'), (callback) => {
     return karmaServer.start(KARMA_CONFIG, (exitStatus) => {
       if (exitStatus) {
         throw new Error('Unit testing failed');
@@ -84,7 +84,7 @@ module.exports.nightwatch = (config) => {
     gulpConnect.serverClose();
   });
 
-  gulp.task('e2e', (callback) => {
+  gulp.task((NIGHTWATCH_CONFIG.taskName || 'e2e'), (callback) => {
     runSequence(
       'e2e:startConnect',
       'e2e:clean',

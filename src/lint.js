@@ -12,7 +12,7 @@ module.exports.eslint = (config) => {
     src: []
   };
 
-  gulp.task('lint', () => {
+  gulp.task((LINT_CONFIG.taskName || 'lint'), () => {
     return gulp.src(LINT_CONFIG.src)
       .pipe(gulpEslint())
       .pipe(gulpEslint.format())
