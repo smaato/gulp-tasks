@@ -8,7 +8,7 @@ describe('Assets Gulp Task Collection', () => {
     expect(assetsGulpTaskCollection).toBeDefined();
   });
 
-  describe('Copy Gulp Task Definition', () => {
+  describe('Copy Gulp Task Declaration', () => {
     it('is defined', () => {
       expect(assetsGulpTaskCollection.copy).toBeDefined();
     });
@@ -41,6 +41,13 @@ describe('Assets Gulp Task Collection', () => {
 
     describe('Copy Gulp Task', () => {
       beforeEach((done) => {
+        /*
+        The provided done function has to be called to proceed and therefore
+        allows to do async operations here
+        runSequence runs gulp tasks in order and accepts a callback as the last
+        argument which is used to ensure that the assets gulp task finished
+        before assertions are evaluated
+        */
         runSequence(
           'assets',
           done
