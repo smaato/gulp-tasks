@@ -14,6 +14,10 @@ module.exports.awsS3 = (config) => {
     src: './dist/**/*.*'
   };
 
+  if (!DEPLOY_CONFIG.src) {
+    throw new Error('Invalid configuration');
+  }
+
   gulp.task('deploy', () => {
     /*
     To manually deploy the working copy the following command can be used:
