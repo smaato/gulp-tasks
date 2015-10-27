@@ -16,8 +16,12 @@ module.exports.browserifyAndWatchify = (config) => {
   var BROWSERIFY_CONFIG = {};
   var SCRIPTS_CONFIG = config || {
     dst: './dist/js',
-    src: ''
+    src: './src/index.js'
   };
+
+  if (!SCRIPTS_CONFIG.dst || !SCRIPTS_CONFIG.src) {
+    throw new Error('Invalid configuration');
+  }
 
   var bundleUsingBrowserify = (withWatchify) => {
     /*
@@ -85,6 +89,10 @@ module.exports.uglify = (config) => {
   var SCRIPTS_CONFIG = config || {
     src: './dist/js'
   };
+
+  if (!SCRIPTS_CONFIG.src) {
+    throw new Error('Invalid configuration');
+  }
 
   gulp.task((SCRIPTS_CONFIG.taskName || 'minifyScripts'), () => {
     return gulp.src((SCRIPTS_CONFIG.src + '/dist.js'))
