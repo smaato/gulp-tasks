@@ -3,10 +3,11 @@ var gulp = require('gulp');
 var gulpJasmine = require('gulp-jasmine');
 var lintGulpTaskCollection = require('./src/lint');
 
-var LINT_SRC = './**/*.js';
-
 lintGulpTaskCollection.eslint({
-  src: LINT_SRC
+  src: [
+    './*.js',
+    './src/**/*.js'
+  ]
 });
 
 gulp.task('test', ['lint'], () => {
