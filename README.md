@@ -10,7 +10,7 @@ Set up Gulp: https://github.com/gulpjs/gulp/blob/master/docs/getting-started.md
 Install this repository as an NPM dependency to integrate its gulp tasks:
 
 In your package.json:
-```json
+```
 {
   ...
   "devDependencies": {
@@ -44,22 +44,14 @@ gulp lint
 
 ## Available Gulp Tasks
 
-assets
-├--copy
-deploy
-├--awsS3
-lint
-├--eslint
-localWebServer
-├--connect
-scripts
-├--browserifyAndWatchify
-├--uglify
-styles
-├--compassAndPostcss
-├--minifyCss
-templates
-├--jade
-tests
-├--karma
-├--nightwatch
+### assets.copy
+### deploy.awsS3
+### lint.eslint
+### localWebServer.connect
+### scripts.browserifyAndWatchify
+### scripts.uglify
+### styles.compassAndPostcss
+### styles.minifyCss
+### templates.jade
+### tests.karma
+### tests.nightwatch
