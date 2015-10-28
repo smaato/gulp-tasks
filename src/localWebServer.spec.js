@@ -1,7 +1,7 @@
 
 describe('Local Web Server Gulp Task Module', () => {
   var gulp = require('gulp');
-  var localWebServer = require('./localwebserver.js');
+  var localWebServer = require('./localWebServer.js');
 
   it('is an object', () => {
     expect(typeof localWebServer).toBe('object');
