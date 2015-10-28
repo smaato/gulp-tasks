@@ -41,3 +41,25 @@ Use 'lint' in other gulp tasks or run it from the command line:
 ```bash
 gulp lint
 ```
+
+## Available Gulp Tasks
+
+assets
+├--copy
+deploy
+├--awsS3
+lint
+├--eslint
+localWebServer
+├--connect
+scripts
+├--browserifyAndWatchify
+├--uglify
+styles
+├--compassAndPostcss
+├--minifyCss
+templates
+├--jade
+tests
+├--karma
+├--nightwatch
