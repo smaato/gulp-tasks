@@ -1,20 +1,20 @@
 
-describe('Tests Gulp Task Collection', () => {
+describe('Tests Gulp Task Module', () => {
   var gulp = require('gulp');
-  var testsGulpTaskCollection = require('./tests.js');
+  var tests = require('./tests.js');
 
-  it('can be imported', () => {
-    expect(testsGulpTaskCollection).toBeDefined();
+  it('is an object', () => {
+    expect(typeof tests).toBe('object');
   });
 
   describe('Karma Gulp Task Declaration', () => {
-    it('is defined', () => {
-      expect(testsGulpTaskCollection.karma).toBeDefined();
+    it('is a function', () => {
+      expect(typeof tests.karma).toBe('function');
     });
 
     it('can be called with a valid configuration', () => {
       expect(() => {
-        testsGulpTaskCollection.karma({
+        tests.karma({
           taskName: 'unitTest'
         });
       }).not.toThrow();
@@ -26,39 +26,27 @@ describe('Tests Gulp Task Collection', () => {
   });
 
   describe('Nightwatch Gulp Task Declaration', () => {
-    it('is defined', () => {
-      expect(testsGulpTaskCollection.nightwatch).toBeDefined();
+    it('is a function', () => {
+      expect(typeof tests.nightwatch).toBe('function');
     });
 
     it('can not be called with an invalid configuration', () => {
       expect(() => {
-        return testsGulpTaskCollection.nightwatch({});
-      }).toThrow();
-
-      expect(() => {
-        return testsGulpTaskCollection.nightwatch({
-          connect: {
-            root: './shouldNotExist/dist'
-          }
+        return tests.nightwatch({
+          connect: false
         });
       }).toThrow();
 
       expect(() => {
-        return testsGulpTaskCollection.nightwatch({
-          dir: './shouldNotExist/e2e/'
-        });
-      }).toThrow();
-
-      expect(() => {
-        return testsGulpTaskCollection.nightwatch({
-          shim: '<script></script>'
+        return tests.nightwatch({
+          dir: false
         });
       }).toThrow();
     });
 
     it('can be called with a valid configuration', () => {
       expect(() => {
-        testsGulpTaskCollection.nightwatch({
+        tests.nightwatch({
           connect: {
             root: './shouldNotExist/dist'
           },

@@ -1,32 +1,28 @@
 
-describe('Deploy Gulp Task Collection', () => {
-  var deployGulpTaskCollection = require('./deploy.js');
+describe('Deploy Gulp Task Module', () => {
+  var deploy = require('./deploy.js');
   var gulp = require('gulp');
 
-  it('can be imported', () => {
-    expect(deployGulpTaskCollection).toBeDefined();
+  it('is an object', () => {
+    expect(typeof deploy).toBe('object');
   });
 
   describe('AWS S3 Gulp Task Declaration', () => {
-    it('is defined', () => {
-      expect(deployGulpTaskCollection.awsS3).toBeDefined();
+    it('is a function', () => {
+      expect(typeof deploy.awsS3).toBe('function');
     });
 
     it('can not be called with an invalid configuration', () => {
       expect(() => {
-        return deployGulpTaskCollection.awsS3({});
-      }).toThrow();
-
-      expect(() => {
-        return deployGulpTaskCollection.awsS3({
-          bucketEnv: 'SHOULD_NOT_EXIST'
+        return deploy.awsS3({
+          src: false
         });
       }).toThrow();
     });
 
     it('can be called with a valid configuration', () => {
       expect(() => {
-        deployGulpTaskCollection.awsS3({
+        deploy.awsS3({
           bucketEnv: 'SHOULD_NOT_EXIST',
           src: './shouldNotExist/dist/**/*.*',
           taskName: 'deployTest'

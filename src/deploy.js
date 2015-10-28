@@ -9,16 +9,17 @@ module.exports.awsS3 = (config) => {
   var gulpAwspublish = require('gulp-awspublish');
   var minimist = require('minimist');
 
-  var DEPLOY_CONFIG = config || {
+  var DEPLOY_CONFIG = Object.assign({
     bucketEnv: 'AWS_S3_BUCKET',
-    src: './dist/**/*.*'
-  };
+    src: './dist/**/*.*',
+    taskName: 'deploy'
+  }, config);
 
   if (!DEPLOY_CONFIG.src) {
-    throw new Error('Invalid configuration');
+    throw new Error('Invalid configuration: value of src needs to be a glob or an array of globs.');
   }
 
-  gulp.task((DEPLOY_CONFIG.taskName || 'deploy'), () => {
+  gulp.task(DEPLOY_CONFIG.taskName, () => {
     /*
     To manually deploy the working copy the following command can be used:
     gulp deploy --accessKeyId=XXX --bucket=XXX --secretAccessKey=XXX

@@ -1,20 +1,20 @@
 
-describe('Local Web Server Gulp Task Collection', () => {
+describe('Local Web Server Gulp Task Module', () => {
   var gulp = require('gulp');
-  var localWebServerGulpTaskCollection = require('./localwebserver.js');
+  var localWebServer = require('./localwebserver.js');
 
-  it('can be imported', () => {
-    expect(localWebServerGulpTaskCollection).toBeDefined();
+  it('is an object', () => {
+    expect(typeof localWebServer).toBe('object');
   });
 
   describe('Connect Gulp Task Declaration', () => {
-    it('is defined', () => {
-      expect(localWebServerGulpTaskCollection.connect).toBeDefined();
+    it('is a function', () => {
+      expect(typeof localWebServer.connect).toBe('function');
     });
 
     it('can be called with a valid configuration', () => {
       expect(() => {
-        localWebServerGulpTaskCollection.connect({
+        localWebServer.connect({
           taskName: 'localWebServerTest'
         });
       }).not.toThrow();

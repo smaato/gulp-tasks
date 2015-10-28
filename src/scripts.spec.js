@@ -1,38 +1,34 @@
 
-describe('Scripts Gulp Task Collection', () => {
+describe('Scripts Gulp Task Module', () => {
   var gulp = require('gulp');
-  var scriptsGulpTaskCollection = require('./scripts.js');
+  var scripts = require('./scripts.js');
 
-  it('can be imported', () => {
-    expect(scriptsGulpTaskCollection).toBeDefined();
+  it('is an object', () => {
+    expect(typeof scripts).toBe('object');
   });
 
   describe('Browserify/Watchify Gulp Task Declaration', () => {
-    it('is defined', () => {
-      expect(scriptsGulpTaskCollection.browserifyAndWatchify).toBeDefined();
+    it('is a function', () => {
+      expect(typeof scripts.browserifyAndWatchify).toBe('function');
     });
 
     it('can not be called with an invalid configuration', () => {
       expect(() => {
-        return scriptsGulpTaskCollection.browserifyAndWatchify({});
-      }).toThrow();
-
-      expect(() => {
-        return scriptsGulpTaskCollection.browserifyAndWatchify({
-          dst: './shouldNotExist/dist/js'
+        return scripts.browserifyAndWatchify({
+          dst: false
         });
       }).toThrow();
 
       expect(() => {
-        return scriptsGulpTaskCollection.browserifyAndWatchify({
-          src: './shouldNotExist/src/index.js'
+        return scripts.browserifyAndWatchify({
+          src: false
         });
       }).toThrow();
     });
 
     it('can be called with a valid configuration', () => {
       expect(() => {
-        scriptsGulpTaskCollection.browserifyAndWatchify({
+        scripts.browserifyAndWatchify({
           dst: './shouldNotExist/dist/js',
           src: './shouldNotExist/src/index.js',
           taskName: 'scriptsTest'
@@ -47,19 +43,21 @@ describe('Scripts Gulp Task Collection', () => {
   });
 
   describe('Uglify Gulp Task Declaration', () => {
-    it('is defined', () => {
-      expect(scriptsGulpTaskCollection.uglify).toBeDefined();
+    it('is a function', () => {
+      expect(typeof scripts.uglify).toBe('function');
     });
 
     it('can not be called with an invalid configuration', () => {
       expect(() => {
-        return scriptsGulpTaskCollection.uglify({});
+        return scripts.uglify({
+          src: false
+        });
       }).toThrow();
     });
 
     it('can be called with a valid configuration', () => {
       expect(() => {
-        scriptsGulpTaskCollection.uglify({
+        scripts.uglify({
           src: './shouldNotExist/dist/js',
           taskName: 'minifyScriptsTest'
         });

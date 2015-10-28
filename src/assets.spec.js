@@ -1,45 +1,37 @@
 
-describe('Assets Gulp Task Collection', () => {
-  var assetsGulpTaskCollection = require('./assets.js');
+describe('Assets Gulp Task Module', () => {
+  var assets = require('./assets.js');
   var gulp = require('gulp');
   var runSequence = require('run-sequence');
 
-  it('can be imported', () => {
-    expect(assetsGulpTaskCollection).toBeDefined();
+  it('is an object', () => {
+    expect(typeof assets).toBe('object');
   });
 
   describe('Copy Gulp Task Declaration', () => {
-    it('is defined', () => {
-      expect(assetsGulpTaskCollection.copy).toBeDefined();
+    it('is a function', () => {
+      expect(typeof assets.copy).toBe('function');
     });
 
     it('can not be called with an invalid configuration', () => {
       expect(() => {
-        return assetsGulpTaskCollection.copy({});
-      }).toThrow();
-
-      expect(() => {
-        return assetsGulpTaskCollection.copy({
-          dst: './shouldNotExist/dist/assets'
+        return assets.copy({
+          dst: false
         });
       }).toThrow();
 
       expect(() => {
-        return assetsGulpTaskCollection.copy({
-          src: [
-            './shouldNotExist/src/assets/**/*'
-          ]
+        return assets.copy({
+          src: false
         });
       }).toThrow();
     });
 
     it('can be called with a valid configuration', () => {
       expect(() => {
-        assetsGulpTaskCollection.copy({
+        assets.copy({
           dst: './shouldNotExist/dist/assets',
-          src: [
-            './shouldNotExist/src/assets/**/*'
-          ],
+          src: './shouldNotExist/src/assets/**/*',
           taskName: 'assetsTest'
         });
       }).not.toThrow();

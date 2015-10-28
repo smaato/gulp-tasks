@@ -1,45 +1,37 @@
 
-describe('Templates Gulp Task Collection', () => {
+describe('Templates Gulp Task Module', () => {
   var gulp = require('gulp');
   var runSequence = require('run-sequence');
-  var templatesGulpTaskCollection = require('./templates.js');
+  var templates = require('./templates.js');
 
-  it('can be imported', () => {
-    expect(templatesGulpTaskCollection).toBeDefined();
+  it('is an object', () => {
+    expect(typeof templates).toBe('object');
   });
 
   describe('Jade Gulp Task Declaration', () => {
-    it('is defined', () => {
-      expect(templatesGulpTaskCollection.jade).toBeDefined();
+    it('is a function', () => {
+      expect(typeof templates.jade).toBe('function');
     });
 
     it('can not be called with an invalid configuration', () => {
       expect(() => {
-        return templatesGulpTaskCollection.jade({});
-      }).toThrow();
-
-      expect(() => {
-        return templatesGulpTaskCollection.jade({
-          dst: './shouldNotExist/dist'
+        return templates.jade({
+          dst: false
         });
       }).toThrow();
 
       expect(() => {
-        return templatesGulpTaskCollection.jade({
-          src: [
-            './shouldNotExist/src/**/*.jade'
-          ]
+        return templates.jade({
+          src: false
         });
       }).toThrow();
     });
 
     it('can be called with a valid configuration', () => {
       expect(() => {
-        templatesGulpTaskCollection.jade({
+        templates.jade({
           dst: './shouldNotExist/dist',
-          src: [
-            './shouldNotExist/src/**/*.jade'
-          ],
+          src: './shouldNotExist/src/**/*.jade',
           taskName: 'templatesTest'
         });
       }).not.toThrow();

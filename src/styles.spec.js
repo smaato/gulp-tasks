@@ -1,44 +1,36 @@
 
-describe('Styles Gulp Task Collection', () => {
+describe('Styles Gulp Task Module', () => {
   var gulp = require('gulp');
-  var stylesGulpTaskCollection = require('./styles.js');
+  var styles = require('./styles.js');
 
-  it('can be imported', () => {
-    expect(stylesGulpTaskCollection).toBeDefined();
+  it('is an object', () => {
+    expect(typeof styles).toBe('object');
   });
 
   describe('Compass/Postcss Gulp Task Declaration', () => {
-    it('is defined', () => {
-      expect(stylesGulpTaskCollection.compassAndPostcss).toBeDefined();
+    it('is a function', () => {
+      expect(typeof styles.compassAndPostcss).toBe('function');
     });
 
     it('can not be called with an invalid configuration', () => {
       expect(() => {
-        return stylesGulpTaskCollection.compassAndPostcss({});
-      }).toThrow();
-
-      expect(() => {
-        return stylesGulpTaskCollection.compassAndPostcss({
-          dst: './shouldNotExist/dist/css'
+        return styles.compassAndPostcss({
+          dst: false
         });
       }).toThrow();
 
       expect(() => {
-        return stylesGulpTaskCollection.compassAndPostcss({
-          src: [
-            './shouldNotExist/src/**/*.scss'
-          ]
+        return styles.compassAndPostcss({
+          src: false
         });
       }).toThrow();
     });
 
     it('can be called with a valid configuration', () => {
       expect(() => {
-        stylesGulpTaskCollection.compassAndPostcss({
+        styles.compassAndPostcss({
           dst: './shouldNotExist/dist/css',
-          src: [
-            './shouldNotExist/src/**/*.scss'
-          ],
+          src: './shouldNotExist/src/**/*.scss',
           taskName: 'stylesTest'
         });
       }).not.toThrow();
@@ -54,19 +46,21 @@ describe('Styles Gulp Task Collection', () => {
   });
 
   describe('clean-css Gulp Task Declaration', () => {
-    it('is defined', () => {
-      expect(stylesGulpTaskCollection.cleanCss).toBeDefined();
+    it('is a function', () => {
+      expect(typeof styles.minifyCss).toBe('function');
     });
 
     it('can not be called with an invalid configuration', () => {
       expect(() => {
-        return stylesGulpTaskCollection.cleanCss({});
+        return styles.minifyCss({
+          src: false
+        });
       }).toThrow();
     });
 
     it('can be called with a valid configuration', () => {
       expect(() => {
-        stylesGulpTaskCollection.cleanCss({
+        styles.minifyCss({
           src: './shouldNotExist/dist/css',
           taskName: 'minifyStylesTest'
         });

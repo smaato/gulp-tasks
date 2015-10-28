@@ -14,13 +14,14 @@ module.exports.browserifyAndWatchify = (config) => {
   var watchify = require('watchify');
 
   var BROWSERIFY_CONFIG = {};
-  var SCRIPTS_CONFIG = config || {
+  var SCRIPTS_CONFIG = Object.assign({
     dst: './dist/js',
-    src: './src/index.js'
-  };
+    src: './src/index.js',
+    taskName: 'scripts'
+  }, config);
 
   if (!SCRIPTS_CONFIG.dst || !SCRIPTS_CONFIG.src) {
-    throw new Error('Invalid configuration');
+    throw new Error('Invalid configuration: value of dst needs to be a path and value of src needs to be a glob or an array of globs.');
   }
 
   var bundleUsingBrowserify = (withWatchify) => {
@@ -71,11 +72,11 @@ module.exports.browserifyAndWatchify = (config) => {
     return writeScriptsFromBundle(bundler.bundle());
   };
 
-  gulp.task((SCRIPTS_CONFIG.taskName || 'scripts'), () => {
+  gulp.task(SCRIPTS_CONFIG.taskName, () => {
     return bundleUsingBrowserify(false);
   });
 
-  gulp.task(((SCRIPTS_CONFIG.taskName || 'scripts') + 'ThenWatch'), () => {
+  gulp.task((SCRIPTS_CONFIG.taskName + 'ThenWatch'), () => {
     return bundleUsingBrowserify(true);
   });
 };
@@ -86,15 +87,16 @@ module.exports.uglify = (config) => {
   var gulpRename = require('gulp-rename');
   var gulpUglify = require('gulp-uglify');
 
-  var SCRIPTS_CONFIG = config || {
-    src: './dist/js'
-  };
+  var SCRIPTS_CONFIG = Object.assign({
+    src: './dist/js',
+    taskName: 'minifyScripts'
+  }, config);
 
   if (!SCRIPTS_CONFIG.src) {
-    throw new Error('Invalid configuration');
+    throw new Error('Invalid configuration: value of src needs to be a glob or an array of globs.');
   }
 
-  gulp.task((SCRIPTS_CONFIG.taskName || 'minifyScripts'), () => {
+  gulp.task(SCRIPTS_CONFIG.taskName, () => {
     return gulp.src((SCRIPTS_CONFIG.src + '/dist.js'))
       .pipe(gulpUglify({
         mangle: true

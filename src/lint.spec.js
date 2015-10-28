@@ -1,30 +1,30 @@
 
-describe('Lint Gulp Task Collection', () => {
+describe('Lint Gulp Task Module', () => {
   var gulp = require('gulp');
-  var lintGulpTaskCollection = require('./lint.js');
+  var lint = require('./lint.js');
   var runSequence = require('run-sequence');
 
-  it('can be imported', () => {
-    expect(lintGulpTaskCollection).toBeDefined();
+  it('is an object', () => {
+    expect(typeof lint).toBe('object');
   });
 
   describe('ESLint Gulp Task Declaration', () => {
-    it('is defined', () => {
-      expect(lintGulpTaskCollection.eslint).toBeDefined();
+    it('is a function', () => {
+      expect(typeof lint.eslint).toBe('function');
     });
 
     it('can not be called with an invalid configuration', () => {
       expect(() => {
-        return lintGulpTaskCollection.eslint({});
+        return lint.eslint({
+          src: false
+        });
       }).toThrow();
     });
 
     it('can be called with a valid configuration', () => {
       expect(() => {
-        lintGulpTaskCollection.eslint({
-          src: [
-            './shouldNotExist/src/**/*.js'
-          ],
+        lint.eslint({
+          src: './shouldNotExist/src/**/*.js',
           taskName: 'lintTest'
         });
       }).not.toThrow();
