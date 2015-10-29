@@ -1,0 +1,11 @@
+// Added jsx-quotes and react/jsx-quotes to remove deprecation warning ("The react/jsx-quotes rule is deprecated. Please use the jsx-quotes rule instead.")
+{
+  "env": {
+    "jasmine": true
+  },
+  "extends": "eslint-config-airbnb-es5",
+  "rules": {
+    "jsx-quotes": [2, "prefer-double"],
+    "react/jsx-quotes": 0
+  }
+}
