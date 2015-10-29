@@ -1,7 +1,7 @@
 {
   "name": "gulp-tasks",
   "private": true,
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "Collection of reusable gulp tasks",
   "scripts": {
     "test": "gulp"
