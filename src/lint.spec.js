@@ -49,7 +49,7 @@ describe('Lint Gulp Task Module', () => {
         );
       });
 
-      it('can be executed', () => {
+      it('completes successfully', () => {
         expect(gulp.tasks.lintTest.done).toBe(true);
       });
     });

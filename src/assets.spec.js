@@ -56,7 +56,7 @@ describe('Assets Gulp Task Module', () => {
         );
       });
 
-      it('can be executed', () => {
+      it('completes successfully', () => {
         expect(gulp.tasks.assetsTest.done).toBe(true);
       });
     });
