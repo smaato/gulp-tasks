@@ -1,63 +1,59 @@
 
-describe('Templates Gulp Task Module', () => {
-  const gulp = require('gulp');
-  const runSequence = require('run-sequence');
-  const templates = require('./templates.js');
+const gulp = require('gulp');
+const runSequence = require('run-sequence');
+const templates = require('./templates.js');
 
-  it('is an object', () => {
-    expect(typeof templates).toBe('object');
-  });
-
-  describe('Jade Gulp Task Declaration', () => {
+describe('templates module', () => {
+  describe('jade method', () => {
     it('is a function', () => {
       expect(typeof templates.jade).toBe('function');
     });
 
-    it('can not be called with an invalid configuration', () => {
-      expect(() => {
-        return templates.jade({
-          dst: false,
-        });
-      }).toThrow();
-
-      expect(() => {
-        return templates.jade({
-          src: false,
-        });
-      }).toThrow();
-    });
-
-    it('can be called with a valid configuration', () => {
-      expect(() => {
-        templates.jade({
-          dst: './shouldNotExist/dist',
-          src: './shouldNotExist/src/**/*.jade',
-          taskName: 'templatesTest',
-        });
-      }).not.toThrow();
-    });
-
     it('registers a gulp task', () => {
-      expect(gulp.tasks.templatesTest).toBeDefined();
+      templates.jade({
+        taskName: 'templatesJadeRegistration',
+      });
+      expect(gulp.tasks.templatesJadeRegistration).toBeDefined();
     });
 
-    describe('Jade Gulp Task', () => {
-      beforeEach((done) => {
-        /*
-        The provided done function has to be called to proceed and therefore
-        allows to do async operations here
-        runSequence runs gulp tasks in order and accepts a callback as the last
-        argument which is used to ensure that the gulp task finished before
-        assertions are evaluated
-        */
-        runSequence(
-          'templatesTest',
-          done
-        );
+    describe('configuration', () => {
+      it('throws errors when it contains falsy paths', () => {
+        expect(() => {
+          return templates.jade({
+            dst: false,
+          });
+        }).toThrow();
+
+        expect(() => {
+          return templates.jade({
+            src: false,
+          });
+        }).toThrow();
       });
 
-      it('completes successfully', () => {
-        expect(gulp.tasks.templatesTest.done).toBe(true);
+      it('doesn\'t throw errors when it contains truthy paths', () => {
+        expect(() => {
+          templates.jade({
+            dst: '/',
+            src: '/',
+          });
+        }).not.toThrow();
+      });
+    });
+
+    describe('gulp task', () => {
+      it('completes successfully', (done) => {
+        templates.jade({
+          taskName: 'templatesJadeGulpTask',
+        });
+        /**
+         * Because the Gulp task is async, we need to use runSequence to execute
+         * the task and then call the `done` async callback.
+         */
+        runSequence('templatesJadeGulpTask', () => {
+          expect(gulp.tasks.templatesJadeGulpTask.done).toBe(true);
+          done();
+        });
       });
     });
   });

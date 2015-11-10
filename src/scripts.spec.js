@@ -1,71 +1,75 @@
 
-describe('Scripts Gulp Task Module', () => {
-  const gulp = require('gulp');
-  const scripts = require('./scripts.js');
+const gulp = require('gulp');
+const scripts = require('./scripts.js');
 
-  it('is an object', () => {
-    expect(typeof scripts).toBe('object');
-  });
-
-  describe('Browserify/Watchify Gulp Task Declaration', () => {
+describe('scripts module', () => {
+  describe('browserifyAndWatchify method', () => {
     it('is a function', () => {
       expect(typeof scripts.browserifyAndWatchify).toBe('function');
     });
 
-    it('can not be called with an invalid configuration', () => {
-      expect(() => {
-        return scripts.browserifyAndWatchify({
-          dst: false,
-        });
-      }).toThrow();
-
-      expect(() => {
-        return scripts.browserifyAndWatchify({
-          src: false,
-        });
-      }).toThrow();
+    it('registers 2 gulp tasks', () => {
+      scripts.browserifyAndWatchify({
+        taskName: 'scriptsBrowserifyAndWatchifyReigstration',
+      });
+      expect(gulp.tasks.scriptsBrowserifyAndWatchifyReigstration).toBeDefined();
+      expect(gulp.tasks.scriptsBrowserifyAndWatchifyReigstrationThenWatch).toBeDefined();
     });
 
-    it('can be called with a valid configuration', () => {
-      expect(() => {
-        scripts.browserifyAndWatchify({
-          dst: './shouldNotExist/dist/js',
-          src: './shouldNotExist/src/index.js',
-          taskName: 'scriptsTest',
-        });
-      }).not.toThrow();
-    });
+    describe('configuration', () => {
+      it('throws errors when it contains falsy paths', () => {
+        expect(() => {
+          scripts.browserifyAndWatchify({
+            dst: false,
+          });
+        }).toThrow();
 
-    it('registers two gulp tasks', () => {
-      expect(gulp.tasks.scriptsTest).toBeDefined();
-      expect(gulp.tasks.scriptsTestThenWatch).toBeDefined();
+        expect(() => {
+          scripts.browserifyAndWatchify({
+            src: false,
+          });
+        }).toThrow();
+      });
+
+      it('doesn\'t throw errors when it contains truthy paths', () => {
+        expect(() => {
+          scripts.browserifyAndWatchify({
+            dst: '/',
+            src: '/',
+          });
+        }).not.toThrow();
+      });
     });
   });
 
-  describe('Uglify Gulp Task Declaration', () => {
+  describe('uglify method', () => {
     it('is a function', () => {
       expect(typeof scripts.uglify).toBe('function');
     });
 
-    it('can not be called with an invalid configuration', () => {
-      expect(() => {
-        return scripts.uglify({
-          src: false,
-        });
-      }).toThrow();
-    });
-
-    it('can be called with a valid configuration', () => {
-      expect(() => {
-        scripts.uglify({
-          src: './shouldNotExist/dist/js',
-          taskName: 'minifyScriptsTest',
-        });
-      }).not.toThrow();
-    });
-
     it('registers a gulp task', () => {
-      expect(gulp.tasks.minifyScriptsTest).toBeDefined();
+      scripts.uglify({
+        taskName: 'scriptsUglifyRegistration',
+      });
+      expect(gulp.tasks.scriptsUglifyRegistration).toBeDefined();
+    });
+
+    describe('configuration', () => {
+      it('throws errors when it contains falsy paths', () => {
+        expect(() => {
+          scripts.uglify({
+            src: false,
+          });
+        }).toThrow();
+      });
+
+      it('doesn\'t throw errors when it contains truthy paths', () => {
+        expect(() => {
+          scripts.uglify({
+            src: '/',
+          });
+        }).not.toThrow();
+      });
     });
   });
 });

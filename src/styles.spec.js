@@ -1,74 +1,78 @@
 
-describe('Styles Gulp Task Module', () => {
-  const gulp = require('gulp');
-  const styles = require('./styles.js');
+const gulp = require('gulp');
+const styles = require('./styles.js');
 
-  it('is an object', () => {
-    expect(typeof styles).toBe('object');
-  });
-
-  describe('Compass/Postcss Gulp Task Declaration', () => {
+describe('styles module', () => {
+  describe('compassAndPostcss method', () => {
     it('is a function', () => {
       expect(typeof styles.compassAndPostcss).toBe('function');
     });
 
-    it('can not be called with an invalid configuration', () => {
-      expect(() => {
-        return styles.compassAndPostcss({
-          dst: false,
-        });
-      }).toThrow();
-
-      expect(() => {
-        return styles.compassAndPostcss({
-          src: false,
-        });
-      }).toThrow();
+    it('registers 5 gulp tasks', () => {
+      styles.compassAndPostcss({
+        taskName: 'stylesCompassAndPostcssRegistration',
+      });
+      expect(gulp.tasks.stylesCompassAndPostcssRegistration).toBeDefined();
+      expect(gulp.tasks['stylesCompassAndPostcssRegistration:compass']).toBeDefined();
+      expect(gulp.tasks['stylesCompassAndPostcssRegistration:postCss']).toBeDefined();
+      expect(gulp.tasks['stylesCompassAndPostcssRegistration:renameDstIndexCss']).toBeDefined();
+      expect(gulp.tasks['stylesCompassAndPostcssRegistration:deleteDstIndexCss']).toBeDefined();
     });
 
-    it('can be called with a valid configuration', () => {
-      expect(() => {
-        styles.compassAndPostcss({
-          dst: './shouldNotExist/dist/css',
-          src: './shouldNotExist/src/**/*.scss',
-          taskName: 'stylesTest',
-        });
-      }).not.toThrow();
-    });
+    describe('configuration', () => {
+      it('throws errors when it contains falsy paths', () => {
+        expect(() => {
+          styles.compassAndPostcss({
+            dst: false,
+          });
+        }).toThrow();
 
-    it('registers five gulp tasks', () => {
-      expect(gulp.tasks.stylesTest).toBeDefined();
-      expect(gulp.tasks['stylesTest:compass']).toBeDefined();
-      expect(gulp.tasks['stylesTest:postCss']).toBeDefined();
-      expect(gulp.tasks['stylesTest:renameDstIndexCss']).toBeDefined();
-      expect(gulp.tasks['stylesTest:deleteDstIndexCss']).toBeDefined();
+        expect(() => {
+          styles.compassAndPostcss({
+            src: false,
+          });
+        }).toThrow();
+      });
+
+      it('doesn\'t throw errors when it contains truthy paths', () => {
+        expect(() => {
+          styles.compassAndPostcss({
+            dst: '/',
+            src: '/',
+          });
+        }).not.toThrow();
+      });
     });
   });
 
-  describe('clean-css Gulp Task Declaration', () => {
+  describe('minifyCss method', () => {
     it('is a function', () => {
       expect(typeof styles.minifyCss).toBe('function');
     });
 
-    it('can not be called with an invalid configuration', () => {
-      expect(() => {
-        return styles.minifyCss({
-          src: false,
-        });
-      }).toThrow();
-    });
-
-    it('can be called with a valid configuration', () => {
-      expect(() => {
-        styles.minifyCss({
-          src: './shouldNotExist/dist/css',
-          taskName: 'minifyStylesTest',
-        });
-      }).not.toThrow();
-    });
-
     it('registers a gulp task', () => {
-      expect(gulp.tasks.minifyStylesTest).toBeDefined();
+      styles.minifyCss({
+        taskName: 'stylesMinifyCssRegistration',
+      });
+      expect(gulp.tasks.stylesMinifyCssRegistration).toBeDefined();
+    });
+
+    describe('configuration', () => {
+      it('throws errors when it contains falsy paths', () => {
+        expect(() => {
+          styles.minifyCss({
+            src: false,
+          });
+        }).toThrow();
+      });
+
+      it('doesn\'t throw errors when it contains truthy paths', () => {
+        expect(() => {
+          styles.minifyCss({
+            src: '/',
+          });
+        }).not.toThrow();
+      });
     });
   });
 });
