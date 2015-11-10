@@ -1,7 +1,7 @@
 
 describe('Deploy Gulp Task Module', () => {
-  var deploy = require('./deploy.js');
-  var gulp = require('gulp');
+  const deploy = require('./deploy.js');
+  const gulp = require('gulp');
 
   it('is an object', () => {
     expect(typeof deploy).toBe('object');
@@ -15,7 +15,7 @@ describe('Deploy Gulp Task Module', () => {
     it('can not be called with an invalid configuration', () => {
       expect(() => {
         return deploy.awsS3({
-          src: false
+          src: false,
         });
       }).toThrow();
     });
@@ -25,7 +25,7 @@ describe('Deploy Gulp Task Module', () => {
         deploy.awsS3({
           bucketEnv: 'SHOULD_NOT_EXIST',
           src: './shouldNotExist/dist/**/*.*',
-          taskName: 'deployTest'
+          taskName: 'deployTest',
         });
       }).not.toThrow();
     });

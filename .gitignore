@@ -1,1 +1,7 @@
 node_modules
+demoDist
+.DS_Store
+.sass-cache
+reports
+tests-e2e/dist
+*.log

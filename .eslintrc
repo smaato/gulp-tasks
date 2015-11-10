@@ -3,8 +3,9 @@
   "env": {
     "jasmine": true
   },
-  "extends": "eslint-config-airbnb-es5",
+  "extends": "airbnb",
   "rules": {
+    "indent": [2, 2, {"SwitchCase": 1}],
     "jsx-quotes": [2, "prefer-double"],
     "react/jsx-quotes": 0
   }

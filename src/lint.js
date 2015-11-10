@@ -5,12 +5,12 @@
 
 // ESLint
 module.exports.eslint = (config) => {
-  var gulp = require('gulp');
-  var gulpEslint = require('gulp-eslint');
+  const gulp = require('gulp');
+  const gulpEslint = require('gulp-eslint');
 
-  var LINT_CONFIG = Object.assign({
+  const LINT_CONFIG = Object.assign({
     src: './src/**/*.js',
-    taskName: 'lint'
+    taskName: 'lint',
   }, config);
 
   if (!LINT_CONFIG.src) {

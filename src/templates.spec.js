@@ -1,8 +1,8 @@
 
 describe('Templates Gulp Task Module', () => {
-  var gulp = require('gulp');
-  var runSequence = require('run-sequence');
-  var templates = require('./templates.js');
+  const gulp = require('gulp');
+  const runSequence = require('run-sequence');
+  const templates = require('./templates.js');
 
   it('is an object', () => {
     expect(typeof templates).toBe('object');
@@ -16,13 +16,13 @@ describe('Templates Gulp Task Module', () => {
     it('can not be called with an invalid configuration', () => {
       expect(() => {
         return templates.jade({
-          dst: false
+          dst: false,
         });
       }).toThrow();
 
       expect(() => {
         return templates.jade({
-          src: false
+          src: false,
         });
       }).toThrow();
     });
@@ -32,7 +32,7 @@ describe('Templates Gulp Task Module', () => {
         templates.jade({
           dst: './shouldNotExist/dist',
           src: './shouldNotExist/src/**/*.jade',
-          taskName: 'templatesTest'
+          taskName: 'templatesTest',
         });
       }).not.toThrow();
     });

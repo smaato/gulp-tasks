@@ -5,22 +5,28 @@
 
 // Compass and PostCSS
 module.exports.compassAndPostcss = (config) => {
-  var autoprefixer = require('autoprefixer');
-  var cssMqpacker = require('css-mqpacker');
-  var del = require('del');
-  var gulp = require('gulp');
-  var gulpCompass = require('gulp-compass');
-  var gulpConnect = require('gulp-connect');
-  var gulpPostcss = require('gulp-postcss');
-  var gulpRename = require('gulp-rename');
-  var gulpReplace = require('gulp-replace');
-  var runSequence = require('run-sequence');
+  const autoprefixer = require('autoprefixer');
+  const cssMqpacker = require('css-mqpacker');
+  const del = require('del');
+  const gulp = require('gulp');
+  const gulpCompass = require('gulp-compass');
+  const gulpConnect = require('gulp-connect');
+  const gulpPostcss = require('gulp-postcss');
+  const gulpRename = require('gulp-rename');
+  const gulpReplace = require('gulp-replace');
+  const runSequence = require('run-sequence');
 
-  var STYLES_CONFIG = Object.assign({
+  const STYLES_CONFIG = Object.assign({
     dst: './dist/css',
     src: './src/**/*.scss',
-    taskName: 'styles'
+    taskName: 'styles',
   }, config);
+
+  const COMPASS_SASS_DIR = (() => {
+    // Compass needs to know where the SASS files are housed.
+    const stylesPath = STYLES_CONFIG.src.split('/');
+    return stylesPath.slice(0, 2).join('/');
+  }());
 
   if (!STYLES_CONFIG.dst || !STYLES_CONFIG.src) {
     throw new Error('Invalid configuration: value of dst needs to be a path and value of src needs to be a glob or an array of globs.');
@@ -31,8 +37,8 @@ module.exports.compassAndPostcss = (config) => {
       .pipe(gulpCompass({
         css: STYLES_CONFIG.dst,
         import_path: './node_modules',
-        sass: './app',
-        sourcemap: true
+        sass: COMPASS_SASS_DIR,
+        sourcemap: true,
       }))
       .on('error', () => {
         throw new Error('Compass failed');
@@ -44,9 +50,9 @@ module.exports.compassAndPostcss = (config) => {
     return gulp.src((STYLES_CONFIG.dst + '/index.css'))
       .pipe(gulpPostcss([
         autoprefixer({
-          browsers: ['last 2 versions']
+          browsers: ['last 2 versions'],
         }),
-        cssMqpacker
+        cssMqpacker,
       ]))
       .pipe(gulp.dest(STYLES_CONFIG.dst));
   });
@@ -83,13 +89,13 @@ module.exports.compassAndPostcss = (config) => {
 
 // Minifying styles with clean-css
 module.exports.minifyCss = (config) => {
-  var gulp = require('gulp');
-  var gulpCssmin = require('gulp-cssmin');
-  var gulpRename = require('gulp-rename');
+  const gulp = require('gulp');
+  const gulpCssmin = require('gulp-cssmin');
+  const gulpRename = require('gulp-rename');
 
-  var STYLES_CONFIG = Object.assign({
+  const STYLES_CONFIG = Object.assign({
     src: './dist/css',
-    taskName: 'minifyStyles'
+    taskName: 'minifyStyles',
   }, config);
 
   if (!STYLES_CONFIG.src) {

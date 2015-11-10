@@ -1,0 +1,21 @@
+doctype html
+html(lang='en')
+  head
+    meta(
+      charset='utf-8'
+    )
+    meta(
+      name='viewport'
+      content='width=device-width'
+    )
+    title Gulp Tasks Demo
+    link(
+      type='text/css'
+      rel='stylesheet'
+      media='all'
+      href='/css/dist.css?v=#{DATE_TIME}'
+    )
+  body
+    h1 Hello, world!
+    img(src='/assets/images/playful_kitten.jpg')
+    script(src='/js/dist.js?v=#{DATE_TIME}')

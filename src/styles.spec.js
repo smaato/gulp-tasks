@@ -1,7 +1,7 @@
 
 describe('Styles Gulp Task Module', () => {
-  var gulp = require('gulp');
-  var styles = require('./styles.js');
+  const gulp = require('gulp');
+  const styles = require('./styles.js');
 
   it('is an object', () => {
     expect(typeof styles).toBe('object');
@@ -15,13 +15,13 @@ describe('Styles Gulp Task Module', () => {
     it('can not be called with an invalid configuration', () => {
       expect(() => {
         return styles.compassAndPostcss({
-          dst: false
+          dst: false,
         });
       }).toThrow();
 
       expect(() => {
         return styles.compassAndPostcss({
-          src: false
+          src: false,
         });
       }).toThrow();
     });
@@ -31,7 +31,7 @@ describe('Styles Gulp Task Module', () => {
         styles.compassAndPostcss({
           dst: './shouldNotExist/dist/css',
           src: './shouldNotExist/src/**/*.scss',
-          taskName: 'stylesTest'
+          taskName: 'stylesTest',
         });
       }).not.toThrow();
     });
@@ -53,7 +53,7 @@ describe('Styles Gulp Task Module', () => {
     it('can not be called with an invalid configuration', () => {
       expect(() => {
         return styles.minifyCss({
-          src: false
+          src: false,
         });
       }).toThrow();
     });
@@ -62,7 +62,7 @@ describe('Styles Gulp Task Module', () => {
       expect(() => {
         styles.minifyCss({
           src: './shouldNotExist/dist/css',
-          taskName: 'minifyStylesTest'
+          taskName: 'minifyStylesTest',
         });
       }).not.toThrow();
     });

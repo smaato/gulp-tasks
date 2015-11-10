@@ -1,7 +1,7 @@
 
 describe('Scripts Gulp Task Module', () => {
-  var gulp = require('gulp');
-  var scripts = require('./scripts.js');
+  const gulp = require('gulp');
+  const scripts = require('./scripts.js');
 
   it('is an object', () => {
     expect(typeof scripts).toBe('object');
@@ -15,13 +15,13 @@ describe('Scripts Gulp Task Module', () => {
     it('can not be called with an invalid configuration', () => {
       expect(() => {
         return scripts.browserifyAndWatchify({
-          dst: false
+          dst: false,
         });
       }).toThrow();
 
       expect(() => {
         return scripts.browserifyAndWatchify({
-          src: false
+          src: false,
         });
       }).toThrow();
     });
@@ -31,7 +31,7 @@ describe('Scripts Gulp Task Module', () => {
         scripts.browserifyAndWatchify({
           dst: './shouldNotExist/dist/js',
           src: './shouldNotExist/src/index.js',
-          taskName: 'scriptsTest'
+          taskName: 'scriptsTest',
         });
       }).not.toThrow();
     });
@@ -50,7 +50,7 @@ describe('Scripts Gulp Task Module', () => {
     it('can not be called with an invalid configuration', () => {
       expect(() => {
         return scripts.uglify({
-          src: false
+          src: false,
         });
       }).toThrow();
     });
@@ -59,7 +59,7 @@ describe('Scripts Gulp Task Module', () => {
       expect(() => {
         scripts.uglify({
           src: './shouldNotExist/dist/js',
-          taskName: 'minifyScriptsTest'
+          taskName: 'minifyScriptsTest',
         });
       }).not.toThrow();
     });

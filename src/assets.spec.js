@@ -1,8 +1,8 @@
 
 describe('Assets Gulp Task Module', () => {
-  var assets = require('./assets.js');
-  var gulp = require('gulp');
-  var runSequence = require('run-sequence');
+  const assets = require('./assets.js');
+  const gulp = require('gulp');
+  const runSequence = require('run-sequence');
 
   it('is an object', () => {
     expect(typeof assets).toBe('object');
@@ -16,13 +16,13 @@ describe('Assets Gulp Task Module', () => {
     it('can not be called with an invalid configuration', () => {
       expect(() => {
         return assets.copy({
-          dst: false
+          dst: false,
         });
       }).toThrow();
 
       expect(() => {
         return assets.copy({
-          src: false
+          src: false,
         });
       }).toThrow();
     });
@@ -32,7 +32,7 @@ describe('Assets Gulp Task Module', () => {
         assets.copy({
           dst: './shouldNotExist/dist/assets',
           src: './shouldNotExist/src/assets/**/*',
-          taskName: 'assetsTest'
+          taskName: 'assetsTest',
         });
       }).not.toThrow();
     });

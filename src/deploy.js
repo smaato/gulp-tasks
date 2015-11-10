@@ -5,14 +5,14 @@
 
 // AWS SDK
 module.exports.awsS3 = (config) => {
-  var gulp = require('gulp');
-  var gulpAwspublish = require('gulp-awspublish');
-  var minimist = require('minimist');
+  const gulp = require('gulp');
+  const gulpAwspublish = require('gulp-awspublish');
+  const minimist = require('minimist');
 
-  var DEPLOY_CONFIG = Object.assign({
+  const DEPLOY_CONFIG = Object.assign({
     bucketEnv: 'AWS_S3_BUCKET',
     src: './dist/**/*.*',
-    taskName: 'deploy'
+    taskName: 'deploy',
   }, config);
 
   if (!DEPLOY_CONFIG.src) {
@@ -35,13 +35,13 @@ module.exports.awsS3 = (config) => {
     - AWS_SECRET_ACCESS_KEY
     - the environment variable for the bucket is set via the bucketEnv argument
     */
-    var commandLineArguments = minimist(process.argv.slice(2));
-    var publisher = gulpAwspublish.create({
+    const commandLineArguments = minimist(process.argv.slice(2));
+    const publisher = gulpAwspublish.create({
       accessKeyId: commandLineArguments.accessKeyId || process.env.AWS_ACCESS_KEY_ID,
       params: {
-        Bucket: commandLineArguments.bucket || process.env[DEPLOY_CONFIG.bucketEnv]
+        Bucket: commandLineArguments.bucket || process.env[DEPLOY_CONFIG.bucketEnv],
       },
-      secretAccessKey: commandLineArguments.secretAccessKey || process.env.AWS_SECRET_ACCESS_KEY
+      secretAccessKey: commandLineArguments.secretAccessKey || process.env.AWS_SECRET_ACCESS_KEY,
     });
     return gulp.src(DEPLOY_CONFIG.src)
       .pipe(publisher.publish())

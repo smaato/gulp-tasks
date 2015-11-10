@@ -1,7 +1,7 @@
 
 describe('Local Web Server Gulp Task Module', () => {
-  var gulp = require('gulp');
-  var localWebServer = require('./localWebServer.js');
+  const gulp = require('gulp');
+  const localWebServer = require('./localWebServer.js');
 
   it('is an object', () => {
     expect(typeof localWebServer).toBe('object');
@@ -15,7 +15,7 @@ describe('Local Web Server Gulp Task Module', () => {
     it('can be called with a valid configuration', () => {
       expect(() => {
         localWebServer.connect({
-          taskName: 'localWebServerTest'
+          taskName: 'localWebServerTest',
         });
       }).not.toThrow();
     });
