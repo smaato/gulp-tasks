@@ -1,6 +1,9 @@
 
 const gulp = require('gulp');
 const styles = require('./styles.js');
+const runSequence = require('run-sequence');
+const rimraf = require('rimraf');
+const lstat = require('fs').lstat;
 
 describe('styles module', () => {
   describe('compassAndPostcss method', () => {
@@ -43,6 +46,40 @@ describe('styles module', () => {
         }).not.toThrow();
       });
     });
+
+    describe('gulp task', () => {
+      beforeEach(done => {
+        // rm -rf the dist folder.
+        rimraf('./demo/dist', done);
+      });
+
+      it('compiles a CSS file and source map', (done) => {
+        styles.compassAndPostcss({
+          taskName: 'stylesCompassAndPostcssGulpTask',
+          src: './demo/src/**/*.scss',
+          dst: './demo/dist/css',
+          compassSassDir: './demo/src',
+        });
+
+        /**
+         * Because the Gulp task is async, we need to use runSequence to execute
+         * the task and then call the `done` async callback.
+         */
+        runSequence('stylesCompassAndPostcssGulpTask', () => {
+          expect(gulp.tasks.stylesCompassAndPostcssGulpTask.done).toBe(true);
+
+          lstat('./demo/dist/css/dist.css', (err, stats) => {
+            if (err) throw err;
+            expect(stats.isFile()).toBe(true);
+            lstat('./demo/dist/css/dist.css.map', (err2, stats2) => {
+              if (err2) throw err2;
+              expect(stats2.isFile()).toBe(true);
+              done();
+            });
+          });
+        });
+      });
+    });
   });
 
   describe('minifyCss method', () => {
@@ -72,6 +109,40 @@ describe('styles module', () => {
             src: '/',
           });
         }).not.toThrow();
+      });
+    });
+
+    describe('gulp task', () => {
+      beforeEach(done => {
+        // rm -rf the dist folder.
+        rimraf('./demo/dist', done);
+      });
+
+      it('minifies a compiled CSS file', (done) => {
+        styles.compassAndPostcss({
+          taskName: 'stylesMinifyCssGulpTask:compile',
+          src: './demo/src/**/*.scss',
+          dst: './demo/dist/css',
+          compassSassDir: './demo/src',
+        });
+
+        styles.minifyCss({
+          taskName: 'stylesMinifyCssGulpTask',
+          src: './demo/dist/css',
+        });
+
+        /**
+         * Because the Gulp task is async, we need to use runSequence to execute
+         * the task and then call the `done` async callback.
+         */
+        runSequence('stylesMinifyCssGulpTask:compile', 'stylesMinifyCssGulpTask', () => {
+          expect(gulp.tasks.stylesMinifyCssGulpTask.done).toBe(true);
+          lstat('./demo/dist/css/dist.min.css', (err, stats) => {
+            if (err) throw err;
+            expect(stats.isFile()).toBe(true);
+            done();
+          });
+        });
       });
     });
   });

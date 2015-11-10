@@ -2,6 +2,8 @@
 const gulp = require('gulp');
 const runSequence = require('run-sequence');
 const templates = require('./templates.js');
+const rimraf = require('rimraf');
+const lstat = require('fs').lstat;
 
 describe('templates module', () => {
   describe('jade method', () => {
@@ -42,17 +44,29 @@ describe('templates module', () => {
     });
 
     describe('gulp task', () => {
-      it('completes successfully', (done) => {
+      beforeEach(done => {
+        // rm -rf the dist folder.
+        rimraf('./demo/dist', done);
+      });
+
+      it('compiles an HTML file', (done) => {
         templates.jade({
           taskName: 'templatesJadeGulpTask',
+          src: './demo/src/index.jade',
+          dst: './demo/dist',
         });
+
         /**
          * Because the Gulp task is async, we need to use runSequence to execute
          * the task and then call the `done` async callback.
          */
         runSequence('templatesJadeGulpTask', () => {
           expect(gulp.tasks.templatesJadeGulpTask.done).toBe(true);
-          done();
+          lstat('./demo/dist/index.html', (err, stats) => {
+            if (err) throw err;
+            expect(stats.isFile()).toBe(true);
+            done();
+          });
         });
       });
     });
