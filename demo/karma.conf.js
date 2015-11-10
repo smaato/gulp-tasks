@@ -14,8 +14,8 @@ module.exports = (config) => {
       // For a React project, you will need these dependencies.
       // 'node_modules/react/dist/react-with-addons.js',
       // 'node_modules/babel-core/browser-polyfill.js',
-      // 'demoSrc/**/*.jsx',
-      'demoSrc/**/*.js',
+      // 'src/**/*.jsx',
+      'src/**/*.js',
     ],
     exclude: [
       // For a React project, you will have a root file which you'll want to
@@ -40,8 +40,8 @@ module.exports = (config) => {
     // files.
     preprocessors: {
       // For a React project you will need to preprocess JSX files, too.
-      // 'demoSrc/**/*.jsx': ['browserify'],
-      'demoSrc/**/*.js': ['browserify'],
+      // 'src/**/*.jsx': ['browserify'],
+      'src/**/*.js': ['browserify'],
     },
     // Configuration for the above `browserify` preprocessor.
     browserify: {

@@ -27,7 +27,7 @@ On the command line:
 npm install
 ```
 
-Refer to `demoGulpfile.js` for a thorough example of how to use all of the
+Refer to `demo/gulpfile.js` for a thorough example of how to use all of the
 tasks. Feel free to copy, paste, and customize in your own projects.
 
 In brief, you'll need to use the tasks like this:
@@ -63,8 +63,7 @@ See below for more information on available tasks.
 
 ## Maintenance
 
-There is a `demoSrc` directory and a `demoGulpfile.js`. The tasks registered
-in the demoGulpfile are required by the default Gulpfile, so they are all
-available on the command line.
+There is a `demo/src` directory and a `demo/gulpfile.js`. To use the demo
+gulpfile from the command line, first cd into the demo dir.
 
-You can use these tasks to test them out, refactor, make changes, and additions.
+You can use these tasks to test them out, refactor, and make changes and additions.

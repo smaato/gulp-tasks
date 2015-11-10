@@ -13,23 +13,23 @@ const fs = require('fs');
 
 /**
  * Here's how you can require individual tasks into your Gulpfile. Instead of
- * './src/task-name' you would write 'gulp-tasks/task-name'.
+ * '../src/task-name' you would write 'gulp-tasks/task-name'.
  */
 
-const assets = require('./src/assets');
-// const deploy = require('./src/deploy');
-const lint = require('./src/lint');
-const localWebServer = require('./src/localWebServer');
-const scripts = require('./src/scripts');
-const styles = require('./src/styles');
-const templates = require('./src/templates');
-const tests = require('./src/tests');
+const assets = require('../src/assets');
+// const deploy = require('../src/deploy');
+const lint = require('../src/lint');
+const localWebServer = require('../src/localWebServer');
+const scripts = require('../src/scripts');
+const styles = require('../src/styles');
+const templates = require('../src/templates');
+const tests = require('../src/tests');
 
 /**
  * Source constants.
  */
 
-const SOURCE_DIR = './demoSrc';
+const SOURCE_DIR = './src';
 const ASSETS_SRC = [
   `${SOURCE_DIR}/assets/**/*`, // UI Framework assets
 ];
@@ -40,7 +40,7 @@ const TEMPLATES_SRC = `${SOURCE_DIR}/index.jade`;
  * Distribution constants.
  */
 
-const DISTRIBUTION_DIR = './demoDist';
+const DISTRIBUTION_DIR = './dist';
 const SCRIPTS_DST = `${DISTRIBUTION_DIR}/js`;
 const STYLES_DST = `${DISTRIBUTION_DIR}/css`;
 
@@ -49,8 +49,8 @@ const STYLES_DST = `${DISTRIBUTION_DIR}/css`;
  */
 
 assets.copy({
-  taskName: 'copyAssets',
-  dst: './demoDist/assets',
+  taskName: 'demoCopyAssets',
+  dst: './dist/assets',
   src: ASSETS_SRC,
 });
 
@@ -62,7 +62,7 @@ assets.copy({
 // deploy.awsS3({
 //   taskName: 'deploy',
 //   bucketEnv: 'AWS_BUCKET_BUYER_TOOLS',
-//   src: './demoDist/**/*.*'
+//   src: './dist/**/*.*'
 // });
 
 /**
@@ -70,7 +70,7 @@ assets.copy({
  */
 
 localWebServer.connect({
-  taskName: 'serveLocally',
+  taskName: 'demoServeLocally',
   fallback: `${DISTRIBUTION_DIR}/index.html`,
   livereload: true,
   port: 8002,
@@ -82,9 +82,9 @@ localWebServer.connect({
  */
 
 lint.eslint({
-  taskName: 'lintJs',
+  taskName: 'demoLintJs',
   src: [
-    './demoSrc/**/*.js',
+    './src/**/*.js',
   ],
 });
 
@@ -93,9 +93,9 @@ lint.eslint({
  */
 
 scripts.browserifyAndWatchify({
-  taskName: 'compileJs',
+  taskName: 'demoCompileJs',
   dst: SCRIPTS_DST,
-  src: './demoSrc/index.js',
+  src: './src/index.js',
 });
 
 /**
@@ -103,7 +103,7 @@ scripts.browserifyAndWatchify({
  */
 
 scripts.uglify({
-  taskName: 'minifyJs',
+  taskName: 'demoMinifyJs',
   src: SCRIPTS_DST,
 });
 
@@ -112,9 +112,10 @@ scripts.uglify({
  */
 
 styles.compassAndPostcss({
-  taskName: 'compileCss',
+  taskName: 'demoCompileCss',
   dst: STYLES_DST,
   src: STYLES_SRC,
+  compassImportPath: '../node_modules',
 });
 
 /**
@@ -122,7 +123,7 @@ styles.compassAndPostcss({
  */
 
 styles.minifyCss({
-  taskName: 'minifyCss',
+  taskName: 'demoMinifyCss',
   src: STYLES_DST,
 });
 
@@ -131,7 +132,7 @@ styles.minifyCss({
  */
 
 templates.jade({
-  taskName: 'compileHtml',
+  taskName: 'demoCompileHtml',
   dst: DISTRIBUTION_DIR,
   src: TEMPLATES_SRC,
 });
@@ -141,7 +142,7 @@ templates.jade({
  */
 
 tests.karma({
-  taskName: 'testUnits',
+  taskName: 'demoTestUnits',
   configFile: `${__dirname}/karma.conf.js`,
   singleRun: true,
 });
@@ -151,9 +152,9 @@ tests.karma({
  */
 
 const karmaPhantomJsShimScript =
-  fs.readFileSync('./node_modules/karma-phantomjs-shim/shim.js');
+  fs.readFileSync('../node_modules/karma-phantomjs-shim/shim.js');
 tests.nightwatch({
-  taskName: 'testE2e',
+  taskName: 'demoTestE2e',
   connect: {
     fallback: `${DISTRIBUTION_DIR}/index.html`,
     port: 9000,
@@ -169,19 +170,19 @@ tests.nightwatch({
 
 const gulp = require('gulp');
 
-gulp.task('watch', [
-  'serveLocally',
-  'compileHtml',
-  'copyAssets',
-  'compileCss',
-  'compileJsThenWatch',
+gulp.task('demoWatch', [
+  'demoServeLocally',
+  'demoCompileHtml',
+  'demoCopyAssets',
+  'demoCompileCss',
+  'demoCompileJsThenWatch',
 ], () => {
-  gulp.watch([TEMPLATES_SRC], ['compileHtml']);
-  gulp.watch([ASSETS_SRC], ['copyAssets']);
-  gulp.watch([STYLES_SRC], ['compileCss']);
+  gulp.watch([TEMPLATES_SRC], ['demoCompileHtml']);
+  gulp.watch([ASSETS_SRC], ['demoCopyAssets']);
+  gulp.watch([STYLES_SRC], ['demoCompileCss']);
 });
 
 gulp.task('default', () => {
   process.env.NODE_ENV = 'developmentWithHmr';
-  gulp.start('watch');
+  gulp.start('demoWatch');
 });

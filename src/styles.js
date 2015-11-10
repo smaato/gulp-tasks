@@ -20,6 +20,7 @@ module.exports.compassAndPostcss = (config) => {
     dst: './dist/css',
     src: './src/**/*.scss',
     taskName: 'styles',
+    compassImportPath: './node_modules',
   }, config);
 
   const COMPASS_SASS_DIR = (() => {
@@ -36,7 +37,7 @@ module.exports.compassAndPostcss = (config) => {
     return gulp.src(STYLES_CONFIG.src)
       .pipe(gulpCompass({
         css: STYLES_CONFIG.dst,
-        import_path: './node_modules',
+        import_path: STYLES_CONFIG.compassImportPath,
         sass: COMPASS_SASS_DIR,
         sourcemap: true,
       }))

@@ -16,6 +16,3 @@ gulp.task('test', ['lint'], () => {
       verbose: true,
     }));
 });
-
-// Include the demo Gulpfile so we can execute its tasks easily from the CL.
-require(`./demoGulpfile`);
