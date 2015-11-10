@@ -5,13 +5,13 @@
 
 // Copy and trigger live reload
 module.exports.copy = (config) => {
-  var gulp = require('gulp');
-  var gulpConnect = require('gulp-connect');
+  const gulp = require('gulp');
+  const gulpConnect = require('gulp-connect');
 
-  var ASSETS_CONFIG = Object.assign({
+  const ASSETS_CONFIG = Object.assign({
     dst: './dist/assets',
     src: './src/assets/**/*',
-    taskName: 'assets'
+    taskName: 'assets',
   }, config);
 
   if (!ASSETS_CONFIG.dst || !ASSETS_CONFIG.src) {

@@ -5,11 +5,11 @@
 
 // Connect
 module.exports.connect = (config) => {
-  var gulp = require('gulp');
-  var gulpConnect = require('gulp-connect');
+  const gulp = require('gulp');
+  const gulpConnect = require('gulp-connect');
 
-  var CONNECT_CONFIG = Object.assign({
-    taskName: 'serveLocally'
+  const CONNECT_CONFIG = Object.assign({
+    taskName: 'serveLocally',
   }, config);
 
   gulp.task(CONNECT_CONFIG.taskName, () => {

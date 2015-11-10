@@ -1,8 +1,8 @@
 
 describe('Lint Gulp Task Module', () => {
-  var gulp = require('gulp');
-  var lint = require('./lint.js');
-  var runSequence = require('run-sequence');
+  const gulp = require('gulp');
+  const lint = require('./lint.js');
+  const runSequence = require('run-sequence');
 
   it('is an object', () => {
     expect(typeof lint).toBe('object');
@@ -16,7 +16,7 @@ describe('Lint Gulp Task Module', () => {
     it('can not be called with an invalid configuration', () => {
       expect(() => {
         return lint.eslint({
-          src: false
+          src: false,
         });
       }).toThrow();
     });
@@ -25,7 +25,7 @@ describe('Lint Gulp Task Module', () => {
       expect(() => {
         lint.eslint({
           src: './shouldNotExist/src/**/*.js',
-          taskName: 'lintTest'
+          taskName: 'lintTest',
         });
       }).not.toThrow();
     });

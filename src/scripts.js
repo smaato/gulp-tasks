@@ -5,26 +5,26 @@
 
 // Browserify, Browserify-HMR, Babelify, Watchify
 module.exports.browserifyAndWatchify = (config) => {
-  var babelify = require('babelify');
-  var browserify = require('browserify');
-  var browserifyHmr = require('browserify-hmr');
-  var gulp = require('gulp');
-  var gulpUtil = require('gulp-util');
-  var vinylSourceStream = require('vinyl-source-stream');
-  var watchify = require('watchify');
+  const babelify = require('babelify');
+  const browserify = require('browserify');
+  const browserifyHmr = require('browserify-hmr');
+  const gulp = require('gulp');
+  const gulpUtil = require('gulp-util');
+  const vinylSourceStream = require('vinyl-source-stream');
+  const watchify = require('watchify');
 
-  var BROWSERIFY_CONFIG = {};
-  var SCRIPTS_CONFIG = Object.assign({
+  const BROWSERIFY_CONFIG = {};
+  const SCRIPTS_CONFIG = Object.assign({
     dst: './dist/js',
     src: './src/index.js',
-    taskName: 'scripts'
+    taskName: 'scripts',
   }, config);
 
   if (!SCRIPTS_CONFIG.dst || !SCRIPTS_CONFIG.src) {
     throw new Error('Invalid configuration: value of dst needs to be a path and value of src needs to be a glob or an array of globs.');
   }
 
-  var bundleUsingBrowserify = (withWatchify) => {
+  const bundleUsingBrowserify = (withWatchify) => {
     /*
     Watchify, a watch mode for browserify builds, will be enabled if
     withWatchify is true. The task will not exit and if a source file is changed
@@ -34,13 +34,11 @@ module.exports.browserifyAndWatchify = (config) => {
     If withWatchify is false the scripts will only be written once and the task
     will exit.
     */
-    var writeScriptsFromBundle = (bundle) => {
+    const writeScriptsFromBundle = (bundle) => {
       return bundle
         .pipe(vinylSourceStream('dist.js'))
         .pipe(gulp.dest(SCRIPTS_CONFIG.dst));
     };
-    var bundler;
-    var startTime;
 
     if (withWatchify) {
       BROWSERIFY_CONFIG = watchify.args;
@@ -48,7 +46,7 @@ module.exports.browserifyAndWatchify = (config) => {
 
     BROWSERIFY_CONFIG.debug = (process.env.NODE_ENV !== 'production');
 
-    bundler = browserify(SCRIPTS_CONFIG.src, BROWSERIFY_CONFIG);
+    const bundler = browserify(SCRIPTS_CONFIG.src, BROWSERIFY_CONFIG);
 
     if (withWatchify) {
       bundler.plugin(browserifyHmr);
@@ -60,7 +58,7 @@ module.exports.browserifyAndWatchify = (config) => {
     if (withWatchify) {
       bundler.on('update', () => {
         gulpUtil.log('Starting to update scripts');
-        startTime = (new Date().getTime());
+        const startTime = (new Date().getTime());
 
         writeScriptsFromBundle(bundler.bundle())
           .on('end', () => {
@@ -83,13 +81,13 @@ module.exports.browserifyAndWatchify = (config) => {
 
 // UglifyJS
 module.exports.uglify = (config) => {
-  var gulp = require('gulp');
-  var gulpRename = require('gulp-rename');
-  var gulpUglify = require('gulp-uglify');
+  const gulp = require('gulp');
+  const gulpRename = require('gulp-rename');
+  const gulpUglify = require('gulp-uglify');
 
-  var SCRIPTS_CONFIG = Object.assign({
+  const SCRIPTS_CONFIG = Object.assign({
     src: './dist/js',
-    taskName: 'minifyScripts'
+    taskName: 'minifyScripts',
   }, config);
 
   if (!SCRIPTS_CONFIG.src) {
@@ -99,7 +97,7 @@ module.exports.uglify = (config) => {
   gulp.task(SCRIPTS_CONFIG.taskName, () => {
     return gulp.src((SCRIPTS_CONFIG.src + '/dist.js'))
       .pipe(gulpUglify({
-        mangle: true
+        mangle: true,
       }))
       .pipe(gulpRename('dist.min.js'))
       .pipe(gulp.dest(SCRIPTS_CONFIG.src));

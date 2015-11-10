@@ -1,7 +1,7 @@
 
 describe('Tests Gulp Task Module', () => {
-  var gulp = require('gulp');
-  var tests = require('./tests.js');
+  const gulp = require('gulp');
+  const tests = require('./tests.js');
 
   it('is an object', () => {
     expect(typeof tests).toBe('object');
@@ -15,7 +15,7 @@ describe('Tests Gulp Task Module', () => {
     it('can be called with a valid configuration', () => {
       expect(() => {
         tests.karma({
-          taskName: 'unitTest'
+          taskName: 'unitTest',
         });
       }).not.toThrow();
     });
@@ -33,13 +33,13 @@ describe('Tests Gulp Task Module', () => {
     it('can not be called with an invalid configuration', () => {
       expect(() => {
         return tests.nightwatch({
-          connect: false
+          connect: false,
         });
       }).toThrow();
 
       expect(() => {
         return tests.nightwatch({
-          dir: false
+          dir: false,
         });
       }).toThrow();
     });
@@ -48,11 +48,11 @@ describe('Tests Gulp Task Module', () => {
       expect(() => {
         tests.nightwatch({
           connect: {
-            root: './shouldNotExist/dist'
+            root: './shouldNotExist/dist',
           },
           dir: './shouldNotExist/e2e/',
           shim: '<script></script>',
-          taskName: 'e2eTest'
+          taskName: 'e2eTest',
         });
       }).not.toThrow();
     });

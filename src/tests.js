@@ -5,11 +5,11 @@
 
 // Karma
 module.exports.karma = (config) => {
-  var gulp = require('gulp');
-  var karmaServer = require('karma').Server;
+  const gulp = require('gulp');
+  const karmaServer = require('karma').Server;
 
-  var KARMA_CONFIG = Object.assign({
-    taskName: 'unit'
+  const KARMA_CONFIG = Object.assign({
+    taskName: 'unit',
   }, config);
 
   gulp.task(KARMA_CONFIG.taskName, (callback) => {
@@ -25,21 +25,21 @@ module.exports.karma = (config) => {
 
 // Nightwatch
 module.exports.nightwatch = (config) => {
-  var del = require('del');
-  var gulp = require('gulp');
-  var gulpBabel = require('gulp-babel');
-  var gulpConnect = require('gulp-connect');
-  var gulpNightwatch = require('gulp-nightwatch');
-  var gulpReplace = require('gulp-replace');
-  var runSequence = require('run-sequence');
+  const del = require('del');
+  const gulp = require('gulp');
+  const gulpBabel = require('gulp-babel');
+  const gulpConnect = require('gulp-connect');
+  const gulpNightwatch = require('gulp-nightwatch');
+  const gulpReplace = require('gulp-replace');
+  const runSequence = require('run-sequence');
 
-  var NIGHTWATCH_CONFIG = Object.assign({
+  const NIGHTWATCH_CONFIG = Object.assign({
     connect: {
-      root: './dist'
+      root: './dist',
     },
     dir: './e2e/',
     shim: false,
-    taskName: 'e2e'
+    taskName: 'e2e',
   }, config);
 
   if (!NIGHTWATCH_CONFIG.connect || !NIGHTWATCH_CONFIG.dir) {
@@ -53,7 +53,7 @@ module.exports.nightwatch = (config) => {
   gulp.task((NIGHTWATCH_CONFIG.taskName + ':clean'), (callback) => {
     return del([
       NIGHTWATCH_CONFIG.dir + 'dist/**/*',
-      NIGHTWATCH_CONFIG.dir + 'dist/'
+      NIGHTWATCH_CONFIG.dir + 'dist/',
     ], callback);
   });
 
@@ -76,7 +76,7 @@ module.exports.nightwatch = (config) => {
     return gulp.src('')
       .pipe(gulpNightwatch({
         configFile: NIGHTWATCH_CONFIG.dir + 'config/nightwatch.json',
-        cliArgs: ['--env phantomjs']
+        cliArgs: ['--env phantomjs'],
       }))
       .on('error', () => {
         // If there's an error we need to complete the task and remove the shim
