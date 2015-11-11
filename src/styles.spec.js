@@ -4,6 +4,7 @@ const styles = require('./styles.js');
 const runSequence = require('run-sequence');
 const rimraf = require('rimraf');
 const lstat = require('fs').lstat;
+const lstatSync = require('fs').lstatSync;
 
 describe('styles module', () => {
   describe('compassAndPostcss method', () => {
@@ -68,15 +69,13 @@ describe('styles module', () => {
         runSequence('stylesCompassAndPostcssGulpTask', () => {
           expect(gulp.tasks.stylesCompassAndPostcssGulpTask.done).toBe(true);
 
-          lstat('./demo/dist/css/dist.css', (err, stats) => {
-            if (err) throw err;
-            expect(stats.isFile()).toBe(true);
-            lstat('./demo/dist/css/dist.css.map', (err2, stats2) => {
-              if (err2) throw err2;
-              expect(stats2.isFile()).toBe(true);
-              done();
-            });
-          });
+          const cssFile = lstatSync('./demo/dist/css/dist.css');
+          expect(cssFile.isFile()).toBe(true);
+
+          const cssMapFile = lstatSync('./demo/dist/css/dist.css.map');
+          expect(cssMapFile.isFile()).toBe(true);
+
+          done();
         });
       });
     });
