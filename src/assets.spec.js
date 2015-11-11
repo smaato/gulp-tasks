@@ -2,6 +2,8 @@
 const gulp = require('gulp');
 const assets = require('./assets.js');
 const runSequence = require('run-sequence');
+const rimraf = require('rimraf');
+const lstat = require('fs').lstat;
 
 describe('assets module', () => {
   describe('copy method', () => {
@@ -47,17 +49,29 @@ describe('assets module', () => {
     });
 
     describe('gulp task', () => {
-      it('completes successfully', (done) => {
+      beforeEach(done => {
+        // rm -rf the dist folder.
+        rimraf('./demo/dist', done);
+      });
+
+      it('recurisvely copies the paths matching the src glob to the dst directory', (done) => {
         assets.copy({
           taskName: 'assetsCopyGulpTask',
+          src: './demo/src/assets/**/*',
+          dst: './demo/dist/assets',
         });
+
         /**
          * Because the Gulp task is async, we need to use runSequence to execute
          * the task and then call the `done` async callback.
          */
         runSequence('assetsCopyGulpTask', () => {
           expect(gulp.tasks.assetsCopyGulpTask.done).toBe(true);
-          done();
+          lstat('./demo/dist/assets/images/playful_kitten.jpg', (err, stats) => {
+            if (err) throw err;
+            expect(stats.isFile()).toBe(true);
+            done();
+          });
         });
       });
     });

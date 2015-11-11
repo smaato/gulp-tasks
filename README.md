@@ -87,6 +87,8 @@ executed.
 * **Avoid task name collisions!** Because we can't unregister gulp tasks,
 there is no way to clean up after executing a spec. So make sure all tasks are
 registered with unique names.
+* **Test the file output of tasks** where possible. Don't forget to clean up
+the `dist` directory *before* executing the task.
 * **Use `describe` blocks** to clearly group and sub-group like-minded specs. Name
 these blocks in such a way so that the resulting assertion reads like a sentence.
 * **Name expectations explicitly** and remove any content within a test that doesn't

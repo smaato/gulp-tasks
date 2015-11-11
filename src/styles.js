@@ -19,11 +19,12 @@ module.exports.compassAndPostcss = (config) => {
   const STYLES_CONFIG = Object.assign({
     dst: './dist/css',
     src: './src/**/*.scss',
+    compassSassDir: './src',
     taskName: 'styles',
     compassImportPath: './node_modules',
   }, config);
 
-  const COMPASS_SASS_DIR = (() => {
+  const COMPASS_SASS_DIR = STYLES_CONFIG.compassSassDir || (() => {
     // Compass needs to know where the SASS files are housed.
     const stylesPath = STYLES_CONFIG.src.split('/');
     return stylesPath.slice(0, 2).join('/');
