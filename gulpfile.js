@@ -1,14 +1,14 @@
 
 const gulp = require('gulp');
 const gulpJasmine = require('gulp-jasmine');
-const lint = require('./src/lint');
+const lintJs = require('./index').lintJs;
 
-lint.eslint({
+gulp.task('lint', lintJs({
   src: [
     './*.js',
     './src/**/*.js',
   ],
-});
+}).task);
 
 gulp.task('unit', () => {
   return gulp.src('./src/**/*.js')
