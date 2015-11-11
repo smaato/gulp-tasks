@@ -1,63 +1,78 @@
 
-describe('Assets Gulp Task Module', () => {
-  const assets = require('./assets.js');
-  const gulp = require('gulp');
-  const runSequence = require('run-sequence');
+const gulp = require('gulp');
+const assets = require('./assets.js');
+const runSequence = require('run-sequence');
+const rimraf = require('rimraf');
+const lstat = require('fs').lstat;
 
-  it('is an object', () => {
-    expect(typeof assets).toBe('object');
-  });
-
-  describe('Copy Gulp Task Declaration', () => {
+describe('assets module', () => {
+  describe('copy method', () => {
     it('is a function', () => {
       expect(typeof assets.copy).toBe('function');
     });
 
-    it('can not be called with an invalid configuration', () => {
-      expect(() => {
-        return assets.copy({
-          dst: false,
-        });
-      }).toThrow();
-
-      expect(() => {
-        return assets.copy({
-          src: false,
-        });
-      }).toThrow();
-    });
-
-    it('can be called with a valid configuration', () => {
-      expect(() => {
-        assets.copy({
-          dst: './shouldNotExist/dist/assets',
-          src: './shouldNotExist/src/assets/**/*',
-          taskName: 'assetsTest',
-        });
-      }).not.toThrow();
-    });
-
     it('registers a gulp task', () => {
-      expect(gulp.tasks.assetsTest).toBeDefined();
+      assets.copy({
+        taskName: 'assetsCopyGulpTaskRegistration',
+      });
+      expect(gulp.tasks.assetsCopyGulpTaskRegistration).toBeDefined();
     });
 
-    describe('Copy Gulp Task', () => {
-      beforeEach((done) => {
-        /*
-        The provided done function has to be called to proceed and therefore
-        allows to do async operations here
-        runSequence runs gulp tasks in order and accepts a callback as the last
-        argument which is used to ensure that the gulp task finished before
-        assertions are evaluated
-        */
-        runSequence(
-          'assetsTest',
-          done
-        );
+    describe('configuration', () => {
+      it('throws errors when it contains falsy paths', () => {
+        expect(() => {
+          assets.copy({
+            dst: false,
+          });
+        }).toThrow();
+
+        expect(() => {
+          assets.copy({
+            src: false,
+          });
+        }).toThrow();
       });
 
-      it('completes successfully', () => {
-        expect(gulp.tasks.assetsTest.done).toBe(true);
+      it('doesn\'t throw errors when it contains truthy paths', () => {
+        expect(() => {
+          assets.copy({
+            dst: '/',
+          });
+        }).not.toThrow();
+
+        expect(() => {
+          assets.copy({
+            src: '/',
+          });
+        }).not.toThrow();
+      });
+    });
+
+    describe('gulp task', () => {
+      beforeEach(done => {
+        // rm -rf the dist folder.
+        rimraf('./demo/dist', done);
+      });
+
+      it('recurisvely copies the paths matching the src glob to the dst directory', (done) => {
+        assets.copy({
+          taskName: 'assetsCopyGulpTask',
+          src: './demo/src/assets/**/*',
+          dst: './demo/dist/assets',
+        });
+
+        /**
+         * Because the Gulp task is async, we need to use runSequence to execute
+         * the task and then call the `done` async callback.
+         */
+        runSequence('assetsCopyGulpTask', () => {
+          expect(gulp.tasks.assetsCopyGulpTask.done).toBe(true);
+          lstat('./demo/dist/assets/images/playful_kitten.jpg', (err, stats) => {
+            if (err) throw err;
+            expect(stats.isFile()).toBe(true);
+            done();
+          });
+        });
       });
     });
   });

@@ -1,37 +1,36 @@
 
-describe('Deploy Gulp Task Module', () => {
-  const deploy = require('./deploy.js');
-  const gulp = require('gulp');
+const gulp = require('gulp');
+const deploy = require('./deploy.js');
 
-  it('is an object', () => {
-    expect(typeof deploy).toBe('object');
-  });
-
-  describe('AWS S3 Gulp Task Declaration', () => {
+describe('deploy module', () => {
+  describe('awsS3 method', () => {
     it('is a function', () => {
       expect(typeof deploy.awsS3).toBe('function');
     });
 
-    it('can not be called with an invalid configuration', () => {
-      expect(() => {
-        return deploy.awsS3({
-          src: false,
-        });
-      }).toThrow();
-    });
-
-    it('can be called with a valid configuration', () => {
-      expect(() => {
-        deploy.awsS3({
-          bucketEnv: 'SHOULD_NOT_EXIST',
-          src: './shouldNotExist/dist/**/*.*',
-          taskName: 'deployTest',
-        });
-      }).not.toThrow();
-    });
-
     it('registers a gulp task', () => {
-      expect(gulp.tasks.deployTest).toBeDefined();
+      deploy.awsS3({
+        taskName: 'deployAws3GulpTaskRegistration',
+      });
+      expect(gulp.tasks.deployAws3GulpTaskRegistration).toBeDefined();
+    });
+
+    describe('configuration', () => {
+      it('throws errors when it contains falsy paths', () => {
+        expect(() => {
+          return deploy.awsS3({
+            src: false,
+          });
+        }).toThrow();
+      });
+
+      it('doesn\'t throw errors when it contains truthy paths', () => {
+        expect(() => {
+          deploy.awsS3({
+            src: '/',
+          });
+        }).not.toThrow();
+      });
     });
   });
 });

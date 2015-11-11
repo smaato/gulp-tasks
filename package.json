@@ -46,6 +46,7 @@
     "minimist": "1.2.0",
     "phantomjs": "1.9.18",
     "pre-commit": "1.1.1",
+    "rimraf": "2.4.3",
     "run-sequence": "1.1.4",
     "selenium-standalone": "4.7.0",
     "vinyl-source-stream": "1.1.0",
