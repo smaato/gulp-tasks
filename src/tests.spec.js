@@ -1,71 +1,65 @@
 
-describe('Tests Gulp Task Module', () => {
-  const gulp = require('gulp');
-  const tests = require('./tests.js');
+const gulp = require('gulp');
+const tests = require('./tests.js');
 
-  it('is an object', () => {
-    expect(typeof tests).toBe('object');
-  });
-
-  describe('Karma Gulp Task Declaration', () => {
+describe('tests module', () => {
+  describe('karma method', () => {
     it('is a function', () => {
       expect(typeof tests.karma).toBe('function');
     });
 
-    it('can be called with a valid configuration', () => {
-      expect(() => {
-        tests.karma({
-          taskName: 'unitTest',
-        });
-      }).not.toThrow();
-    });
-
     it('registers a gulp task', () => {
-      expect(gulp.tasks.unitTest).toBeDefined();
+      tests.karma({
+        taskName: 'testsKarmaRegistration',
+      });
+      expect(gulp.tasks.testsKarmaRegistration).toBeDefined();
     });
   });
 
-  describe('Nightwatch Gulp Task Declaration', () => {
+  describe('nightwatch method', () => {
     it('is a function', () => {
       expect(typeof tests.nightwatch).toBe('function');
     });
 
-    it('can not be called with an invalid configuration', () => {
-      expect(() => {
-        return tests.nightwatch({
-          connect: false,
-        });
-      }).toThrow();
-
-      expect(() => {
-        return tests.nightwatch({
-          dir: false,
-        });
-      }).toThrow();
+    it('registers 8 gulp tasks', () => {
+      tests.nightwatch({
+        taskName: 'testsNightwatchRegistration',
+      });
+      expect(gulp.tasks.testsNightwatchRegistration).toBeDefined();
+      expect(gulp.tasks['testsNightwatchRegistration:startConnect']).toBeDefined();
+      expect(gulp.tasks['testsNightwatchRegistration:clean']).toBeDefined();
+      expect(gulp.tasks['testsNightwatchRegistration:compileTests']).toBeDefined();
+      expect(gulp.tasks['testsNightwatchRegistration:addShim']).toBeDefined();
+      expect(gulp.tasks['testsNightwatchRegistration:nightwatch']).toBeDefined();
+      expect(gulp.tasks['testsNightwatchRegistration:removeShim']).toBeDefined();
+      expect(gulp.tasks['testsNightwatchRegistration:stopConnect']).toBeDefined();
     });
 
-    it('can be called with a valid configuration', () => {
-      expect(() => {
-        tests.nightwatch({
-          connect: {
-            root: './shouldNotExist/dist',
-          },
-          dir: './shouldNotExist/e2e/',
-          shim: '<script></script>',
-          taskName: 'e2eTest',
-        });
-      }).not.toThrow();
-    });
+    describe('configuration', () => {
+      it('throws errors when it contains falsy paths', () => {
+        expect(() => {
+          return tests.nightwatch({
+            connect: false,
+          });
+        }).toThrow();
 
-    it('registers eight gulp tasks', () => {
-      expect(gulp.tasks.e2eTest).toBeDefined();
-      expect(gulp.tasks['e2eTest:startConnect']).toBeDefined();
-      expect(gulp.tasks['e2eTest:clean']).toBeDefined();
-      expect(gulp.tasks['e2eTest:compileTests']).toBeDefined();
-      expect(gulp.tasks['e2eTest:addShim']).toBeDefined();
-      expect(gulp.tasks['e2eTest:nightwatch']).toBeDefined();
-      expect(gulp.tasks['e2eTest:removeShim']).toBeDefined();
-      expect(gulp.tasks['e2eTest:stopConnect']).toBeDefined();
+        expect(() => {
+          return tests.nightwatch({
+            dir: false,
+          });
+        }).toThrow();
+      });
+
+      it('doesn\'t throw errors when it contains truthy paths', () => {
+        expect(() => {
+          tests.nightwatch({
+            connect: {
+              root: '/',
+            },
+            dir: '/',
+          });
+        }).not.toThrow();
+      });
     });
   });
 });

@@ -1,71 +1,139 @@
 
-describe('Scripts Gulp Task Module', () => {
-  const gulp = require('gulp');
-  const scripts = require('./scripts.js');
+const gulp = require('gulp');
+const scripts = require('./scripts.js');
+const runSequence = require('run-sequence');
+const rimraf = require('rimraf');
+const lstat = require('fs').lstat;
 
-  it('is an object', () => {
-    expect(typeof scripts).toBe('object');
-  });
-
-  describe('Browserify/Watchify Gulp Task Declaration', () => {
+describe('scripts module', () => {
+  describe('browserifyAndWatchify method', () => {
     it('is a function', () => {
       expect(typeof scripts.browserifyAndWatchify).toBe('function');
     });
 
-    it('can not be called with an invalid configuration', () => {
-      expect(() => {
-        return scripts.browserifyAndWatchify({
-          dst: false,
-        });
-      }).toThrow();
-
-      expect(() => {
-        return scripts.browserifyAndWatchify({
-          src: false,
-        });
-      }).toThrow();
+    it('registers 2 gulp tasks', () => {
+      scripts.browserifyAndWatchify({
+        taskName: 'scriptsBrowserifyAndWatchifyReigstration',
+      });
+      expect(gulp.tasks.scriptsBrowserifyAndWatchifyReigstration).toBeDefined();
+      expect(gulp.tasks.scriptsBrowserifyAndWatchifyReigstrationThenWatch).toBeDefined();
     });
 
-    it('can be called with a valid configuration', () => {
-      expect(() => {
+    describe('configuration', () => {
+      it('throws errors when it contains falsy paths', () => {
+        expect(() => {
+          scripts.browserifyAndWatchify({
+            dst: false,
+          });
+        }).toThrow();
+
+        expect(() => {
+          scripts.browserifyAndWatchify({
+            src: false,
+          });
+        }).toThrow();
+      });
+
+      it('doesn\'t throw errors when it contains truthy paths', () => {
+        expect(() => {
+          scripts.browserifyAndWatchify({
+            dst: '/',
+            src: '/',
+          });
+        }).not.toThrow();
+      });
+    });
+
+    describe('gulp task', () => {
+      beforeEach(done => {
+        // rm -rf the dist folder.
+        rimraf('./demo/dist', done);
+      });
+
+      it('compiles a JS file', (done) => {
         scripts.browserifyAndWatchify({
-          dst: './shouldNotExist/dist/js',
-          src: './shouldNotExist/src/index.js',
-          taskName: 'scriptsTest',
+          taskName: 'scriptsBrowserifyAndWatchifyGulpTask',
+          src: './demo/src/index.js',
+          dst: './demo/dist/js',
         });
-      }).not.toThrow();
-    });
 
-    it('registers two gulp tasks', () => {
-      expect(gulp.tasks.scriptsTest).toBeDefined();
-      expect(gulp.tasks.scriptsTestThenWatch).toBeDefined();
+        /**
+         * Because the Gulp task is async, we need to use runSequence to execute
+         * the task and then call the `done` async callback.
+         */
+        runSequence('scriptsBrowserifyAndWatchifyGulpTask', () => {
+          expect(gulp.tasks.scriptsBrowserifyAndWatchifyGulpTask.done).toBe(true);
+          lstat('./demo/dist/js/dist.js', (err, stats) => {
+            if (err) throw err;
+            expect(stats.isFile()).toBe(true);
+            done();
+          });
+        });
+      });
     });
   });
 
-  describe('Uglify Gulp Task Declaration', () => {
+  describe('uglify method', () => {
     it('is a function', () => {
       expect(typeof scripts.uglify).toBe('function');
     });
 
-    it('can not be called with an invalid configuration', () => {
-      expect(() => {
-        return scripts.uglify({
-          src: false,
-        });
-      }).toThrow();
-    });
-
-    it('can be called with a valid configuration', () => {
-      expect(() => {
-        scripts.uglify({
-          src: './shouldNotExist/dist/js',
-          taskName: 'minifyScriptsTest',
-        });
-      }).not.toThrow();
-    });
-
     it('registers a gulp task', () => {
-      expect(gulp.tasks.minifyScriptsTest).toBeDefined();
+      scripts.uglify({
+        taskName: 'scriptsUglifyRegistration',
+      });
+      expect(gulp.tasks.scriptsUglifyRegistration).toBeDefined();
+    });
+
+    describe('configuration', () => {
+      it('throws errors when it contains falsy paths', () => {
+        expect(() => {
+          scripts.uglify({
+            src: false,
+          });
+        }).toThrow();
+      });
+
+      it('doesn\'t throw errors when it contains truthy paths', () => {
+        expect(() => {
+          scripts.uglify({
+            src: '/',
+          });
+        }).not.toThrow();
+      });
+    });
+
+    describe('gulp task', () => {
+      beforeEach(done => {
+        // rm -rf the dist folder.
+        rimraf('./demo/dist', done);
+      });
+
+      it('minifies a compiled JS file', (done) => {
+        scripts.browserifyAndWatchify({
+          taskName: 'scriptsUglifyGulpTask:compile',
+          src: './demo/src/index.js',
+          dst: './demo/dist/js',
+        });
+
+        scripts.uglify({
+          taskName: 'scriptsUglifyGulpTask',
+          src: './demo/dist/js',
+        });
+
+        /**
+         * Because the Gulp task is async, we need to use runSequence to execute
+         * the task and then call the `done` async callback.
+         */
+        runSequence('scriptsUglifyGulpTask:compile', 'scriptsUglifyGulpTask', () => {
+          expect(gulp.tasks.scriptsUglifyGulpTask.done).toBe(true);
+          lstat('./demo/dist/js/dist.min.js', (err, stats) => {
+            if (err) throw err;
+            expect(stats.isFile()).toBe(true);
+            done();
+          });
+        });
+      });
     });
   });
 });

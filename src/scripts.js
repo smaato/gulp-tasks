@@ -1,3 +1,4 @@
+'use strict'; // eslint-disable-line strict
 
 /**
  * @description Script related tasks
@@ -13,7 +14,7 @@ module.exports.browserifyAndWatchify = (config) => {
   const vinylSourceStream = require('vinyl-source-stream');
   const watchify = require('watchify');
 
-  const BROWSERIFY_CONFIG = {};
+  let BROWSERIFY_CONFIG = {};
   const SCRIPTS_CONFIG = Object.assign({
     dst: './dist/js',
     src: './src/index.js',
@@ -46,7 +47,7 @@ module.exports.browserifyAndWatchify = (config) => {
 
     BROWSERIFY_CONFIG.debug = (process.env.NODE_ENV !== 'production');
 
-    const bundler = browserify(SCRIPTS_CONFIG.src, BROWSERIFY_CONFIG);
+    let bundler = browserify(SCRIPTS_CONFIG.src, BROWSERIFY_CONFIG);
 
     if (withWatchify) {
       bundler.plugin(browserifyHmr);

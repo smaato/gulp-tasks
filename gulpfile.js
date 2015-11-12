@@ -10,9 +10,11 @@ lint.eslint({
   ],
 });
 
-gulp.task('test', ['lint'], () => {
+gulp.task('unit', () => {
   return gulp.src('./src/**/*.js')
     .pipe(gulpJasmine({
       verbose: true,
     }));
 });
+
+gulp.task('test', ['lint', 'unit']);
