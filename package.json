@@ -3,6 +3,12 @@
   "private": true,
   "version": "0.1.0",
   "description": "Collection of reusable gulp tasks",
+  "main": "./index.js",
+  "browserify": {
+    "transform": [
+      "babelify"
+    ]
+  },
   "scripts": {
     "postinstall": "node ./node_modules/selenium-standalone/bin/selenium-standalone install",
     "test": "gulp test"

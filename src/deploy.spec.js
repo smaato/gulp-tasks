@@ -1,36 +1,43 @@
 
-const gulp = require('gulp');
-const deploy = require('./deploy.js');
+const deploy = require('../index').deploy;
 
-describe('deploy module', () => {
-  describe('awsS3 method', () => {
-    it('is a function', () => {
-      expect(typeof deploy.awsS3).toBe('function');
+describe('deploy method', () => {
+  it('returns a config and a task', () => {
+    const result = deploy({
+      bucketEnv: 'BUCKET',
+    });
+    expect(result).toEqual({
+      config: jasmine.any(Object),
+      task: jasmine.any(Function),
+    });
+  });
+
+  describe('configuration', () => {
+    it('has defaults', () => {
+      const result = deploy({
+        bucketEnv: 'BUCKET',
+      });
+      expect(result.config).toEqual({
+        src: './dist/**/*.*',
+        bucketEnv: 'BUCKET',
+      });
     });
 
-    it('registers a gulp task', () => {
-      deploy.awsS3({
-        taskName: 'deployAws3GulpTaskRegistration',
-      });
-      expect(gulp.tasks.deployAws3GulpTaskRegistration).toBeDefined();
+    it('throws errors when it contains falsy paths', () => {
+      expect(() => {
+        return deploy({
+          src: false,
+          bucketEnv: 'BUCKET',
+        });
+      }).toThrow();
     });
 
-    describe('configuration', () => {
-      it('throws errors when it contains falsy paths', () => {
-        expect(() => {
-          return deploy.awsS3({
-            src: false,
-          });
-        }).toThrow();
-      });
-
-      it('doesn\'t throw errors when it contains truthy paths', () => {
-        expect(() => {
-          deploy.awsS3({
-            src: '/',
-          });
-        }).not.toThrow();
-      });
+    it('throws errors when it doesn\'t contain a bucket', () => {
+      expect(() => {
+        return deploy({
+          src: '/',
+        });
+      }).toThrow();
     });
   });
 });
