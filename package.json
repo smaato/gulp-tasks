@@ -1,7 +1,7 @@
 {
   "name": "gulp-tasks",
   "private": true,
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Collection of reusable gulp tasks",
   "main": "./index.js",
   "browserify": {

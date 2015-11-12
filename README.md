@@ -45,7 +45,7 @@ gulp.task('demoLintJs', gulpTasks.lintJs({
 }).task);
 ```
 
-## Modules and methods
+## Task-creation methods
 
 ### copy
 
