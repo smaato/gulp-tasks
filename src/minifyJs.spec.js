@@ -26,10 +26,10 @@ describe('minifyJs method', () => {
 
     it('throws errors when it contains falsy paths', () => {
       expect(() => {
-        scripts.uglify({
+        minifyJs({
           src: false,
         });
-      }).toThrow();
+      }).toThrowError('Invalid configuration: value of src needs to be a glob or an array of globs.');
     });
   });
 

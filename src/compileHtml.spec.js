@@ -28,13 +28,13 @@ describe('compileHtml method', () => {
         return compileHtml({
           dst: false,
         });
-      }).toThrow();
+      }).toThrowError('Invalid configuration: value of dst needs to be a path.');
 
       expect(() => {
         return compileHtml({
           src: false,
         });
-      }).toThrow();
+      }).toThrowError('Invalid configuration: value of src needs to be a glob or an array of globs.');
     });
   });
 

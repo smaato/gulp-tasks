@@ -28,7 +28,7 @@ describe('minifyCss method', () => {
         minifyCss({
           src: false,
         });
-      }).toThrow();
+      }).toThrowError('Invalid configuration: value of src needs to be a glob or an array of globs.');
     });
   });
 

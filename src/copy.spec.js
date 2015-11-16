@@ -25,16 +25,16 @@ describe('copy method', () => {
 
     it('throws errors when it contains falsy paths', () => {
       expect(() => {
-        assets.copy({
+        copy({
           dst: false,
         });
-      }).toThrow();
+      }).toThrowError('Invalid configuration: value of dst needs to be a path.');
 
       expect(() => {
-        assets.copy({
+        copy({
           src: false,
         });
-      }).toThrow();
+      }).toThrowError('Invalid configuration: value of src needs to be a glob or an array of globs.');
     });
   });
 

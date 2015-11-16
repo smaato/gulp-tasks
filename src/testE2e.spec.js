@@ -31,25 +31,25 @@ describe('testE2e method', () => {
         return testE2e({
           dir: false,
         });
-      }).toThrow();
+      }).toThrowError('Invalid configuration: value of dir needs to be a path.');
 
       expect(() => {
         return testE2e({
           src: false,
         });
-      }).toThrow();
+      }).toThrowError('Invalid configuration: value of src needs to be a glob or an array of globs.');
 
       expect(() => {
         return testE2e({
           dst: false,
         });
-      }).toThrow();
+      }).toThrowError('Invalid configuration: value of dst needs to be a path.');
 
       expect(() => {
         return testE2e({
           connect: false,
         });
-      }).toThrow();
+      }).toThrowError('Invalid configuration: value of connect needs to be an object.');
     });
   });
 

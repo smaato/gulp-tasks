@@ -29,7 +29,7 @@ describe('deploy method', () => {
           src: false,
           bucketEnv: 'BUCKET',
         });
-      }).toThrow();
+      }).toThrowError('Invalid configuration: value of src needs to be a glob or an array of globs.');
     });
 
     it('throws errors when it doesn\'t contain a bucket', () => {
@@ -37,7 +37,7 @@ describe('deploy method', () => {
         return deploy({
           src: '/',
         });
-      }).toThrow();
+      }).toThrowError('Invalid configuration: value of bucketEnv needs to be an AWS S3 bucket name.');
     });
   });
 });
