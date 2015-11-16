@@ -17,7 +17,7 @@ module.exports = customConfig => {
     dst: './dist/css',
     compassSassDir: './src',
     compassImportPath: './node_modules',
-    sourceMap: true,
+    sourceMap: (process.env.NODE_ENV !== 'production'),
   }, customConfig);
 
   if (!config.src) {
