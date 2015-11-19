@@ -27,6 +27,13 @@ describe('compileCss method', () => {
       });
     });
 
+    it('derives compassSassDir from src', () => {
+      const result = compileCss({
+        src: './app/**/*.scss',
+      });
+      expect(result.config.compassSassDir).toEqual('./app');
+    });
+
     it('throws errors when it contains falsy paths', () => {
       expect(() => {
         compileCss({

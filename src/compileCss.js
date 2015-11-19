@@ -15,7 +15,7 @@ module.exports = customConfig => {
     subTaskPrefix: 'compileCss',
     src: './src/**/*.scss',
     dst: './dist/css',
-    compassSassDir: './src',
+    compassSassDir: undefined,
     compassImportPath: './node_modules',
     sourceMap: (process.env.NODE_ENV !== 'production'),
   }, customConfig);
@@ -31,18 +31,18 @@ module.exports = customConfig => {
   // Compile SCSS with Compass.
   const compileScss = `${config.subTaskPrefix}:compass`;
 
-  const compassSassDir = config.compassSassDir || (() => {
+  config.compassSassDir = config.compassSassDir || (() => {
     // Compass needs to know where the SCSS files are housed.
     const stylesPath = config.src.split('/');
     return stylesPath.slice(0, 2).join('/');
-  }());
+  })();
 
   gulp.task(compileScss, () => {
     return gulp.src(config.src)
       .pipe(gulpCompass({
         css: config.dst,
         import_path: config.compassImportPath,
-        sass: compassSassDir,
+        sass: config.compassSassDir,
         sourcemap: config.sourceMap,
       }))
       .on('error', () => {
