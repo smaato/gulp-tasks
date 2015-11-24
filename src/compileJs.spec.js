@@ -21,6 +21,7 @@ describe('compileJs method', () => {
         src: './src/index.js',
         dst: './dist/js',
         watch: false,
+        hmrPort: 3123,
       });
     });
 
