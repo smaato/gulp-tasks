@@ -13,6 +13,7 @@ module.exports = customConfig => {
     src: './src/index.js',
     dst: './dist/js',
     watch: false,
+    hmrPort: 3123,
   }, customConfig);
 
   if (!config.src) {
@@ -46,7 +47,9 @@ module.exports = customConfig => {
   // Build bundle with browserify configuration.
   let bundler = browserify(config.src, browserifyConfig);
   if (config.watch) {
-    bundler.plugin(browserifyHmr);
+    bundler.plugin(browserifyHmr, {
+      port: config.hmrPort,
+    });
     bundler = watchify(bundler);
   }
   bundler.transform(babelify);
