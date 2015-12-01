@@ -45,8 +45,9 @@ module.exports = customConfig => {
         sass: config.compassSassDir,
         sourcemap: config.sourceMap,
       }))
-      .on('error', () => {
-        throw new Error('Compass failed');
+      .on('error', function onCompileScssError() {
+        // Continue watching when an error occurs.
+        this.emit('end');
       })
       .pipe(gulp.dest(config.dst));
   });
@@ -62,6 +63,10 @@ module.exports = customConfig => {
         }),
         cssMqpacker,
       ]))
+      .on('error', function onPostCssError() {
+        // Continue watching when an error occurs.
+        this.emit('end');
+      })
       .pipe(gulp.dest(config.dst));
   });
 
