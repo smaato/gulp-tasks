@@ -58,6 +58,10 @@ module.exports = customConfig => {
   function compileJs() {
     const bundle = bundler.bundle();
     return bundle
+      .on('error', function onCompileJsError(error) {
+        gulpUtil.log(gulpUtil.colors.red(error.message));
+        this.emit('end');
+      })
       .pipe(vinylSourceStream('dist.js'))
       .pipe(gulp.dest(config.dst));
   }
