@@ -51,7 +51,7 @@ module.exports = customConfig => {
       // Start HMR on this port
       port: config.hmrPort,
       // Tell client side the url of HMR server
-      url: 'http://localhost:' + config.hmrPort,
+      url: `http://localhost:${config.hmrPort}`,
     });
     bundler = watchify(bundler);
   }
