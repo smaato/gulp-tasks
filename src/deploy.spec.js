@@ -67,7 +67,7 @@ describe('deploy method', () => {
           bucketName: '-',
           accessKeyId: '-',
         });
-      }).toThrowError('Invalid configuration: value of bucketEnv needs to be an AWS S3 bucket name.');
+      }).toThrow();
     });
   });
 });
