@@ -48,7 +48,10 @@ module.exports = customConfig => {
   let bundler = browserify(config.src, browserifyConfig);
   if (config.watch) {
     bundler.plugin(browserifyHmr, {
+      // Start HMR on this port
       port: config.hmrPort,
+      // Tell client side the url of HMR server
+      url: `http://localhost:${config.hmrPort}`,
     });
     bundler = watchify(bundler);
   }
