@@ -28,25 +28,25 @@ describe('testE2e method', () => {
 
     it('throws errors when it contains falsy paths and objects', () => {
       expect(() => {
-        return testE2e({
+        testE2e({
           dir: false,
         });
       }).toThrowError('Invalid configuration: value of dir needs to be a path.');
 
       expect(() => {
-        return testE2e({
+        testE2e({
           src: false,
         });
       }).toThrowError('Invalid configuration: value of src needs to be a glob or an array of globs.');
 
       expect(() => {
-        return testE2e({
+        testE2e({
           dst: false,
         });
       }).toThrowError('Invalid configuration: value of dst needs to be a path.');
 
       expect(() => {
-        return testE2e({
+        testE2e({
           connect: false,
         });
       }).toThrowError('Invalid configuration: value of connect needs to be an object.');

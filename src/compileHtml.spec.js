@@ -25,13 +25,13 @@ describe('compileHtml method', () => {
 
     it('throws errors when it contains falsy paths', () => {
       expect(() => {
-        return compileHtml({
+        compileHtml({
           dst: false,
         });
       }).toThrowError('Invalid configuration: value of dst needs to be a path.');
 
       expect(() => {
-        return compileHtml({
+        compileHtml({
           src: false,
         });
       }).toThrowError('Invalid configuration: value of src needs to be a glob or an array of globs.');
