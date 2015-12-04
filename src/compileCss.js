@@ -4,7 +4,6 @@ const cssMqpacker = require('css-mqpacker');
 const del = require('del');
 const gulp = require('gulp');
 const gulpCompass = require('gulp-compass');
-const gulpConnect = require('gulp-connect');
 const gulpPostcss = require('gulp-postcss');
 const gulpRename = require('gulp-rename');
 const gulpReplace = require('gulp-replace');
@@ -81,8 +80,7 @@ module.exports = customConfig => {
       .pipe(gulpRename((path) => {
         path.basename = path.basename.replace('index', 'dist');
       }))
-      .pipe(gulp.dest(config.dst))
-      .pipe(gulpConnect.reload());
+      .pipe(gulp.dest(config.dst));
   });
 
   // Delete the original compiled CSS files.
