@@ -73,6 +73,10 @@ Deploy to an AWS S3 bucket.
 
 Lint JS with ESLint.
 
+### lintScss
+
+Lint SCSS with scss_lint.
+
 ### minifyCss
 
 Minify CSS with clean-css.
