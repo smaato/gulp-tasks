@@ -53,8 +53,8 @@ Copy assets from one location to another.
 
 ### compileCss
 
-Compile SCSS with Compass, and run the compiled CSS through PostCSS with
-Autoprefixer.
+Compile SCSS with Compass RubyGem (gem install compass), and run the compiled
+CSS through PostCSS with Autoprefixer.
 
 ### compileHtml
 
@@ -75,7 +75,7 @@ Lint JS with ESLint.
 
 ### lintScss
 
-Lint SCSS with scss_lint.
+Lint SCSS with scss_lint RubyGem (gem install scss_lint).
 
 ### minifyCss
 
