@@ -12,6 +12,7 @@ module.exports.deploy = require('./src/deploy');
 
 // Linting
 module.exports.lintJs = require('./src/lintJs');
+module.exports.lintScss = require('./src/lintScss');
 
 // Minification
 module.exports.minifyCss = require('./src/minifyCss');
