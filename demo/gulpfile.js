@@ -110,6 +110,15 @@ gulp.task('demoLintJs', gulpTasks.lintJs({
 }).task);
 
 /**
+ * Lint SCSS.
+ */
+
+gulp.task('demoLintScss', gulpTasks.lintScss({
+  file: './scss-config.yml',
+  src: `${SOURCE_DIR}/**/*.scss`,
+}).task);
+
+/**
  *  Run unit tests.
  */
 

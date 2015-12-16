@@ -18,7 +18,7 @@ module.exports = customConfig => {
       .pipe(gulpEslint.format())
       .pipe(gulpEslint.failAfterError())
       .on('error', () => {
-        throw new Error('Linting failed');
+        throw new Error('JS Linting failed');
       });
   }
 

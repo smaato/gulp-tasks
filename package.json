@@ -1,7 +1,7 @@
 {
   "name": "gulp-tasks",
   "private": true,
-  "version": "0.3.0",
+  "version": "0.3.1",
   "description": "Collection of reusable gulp tasks",
   "main": "./index.js",
   "browserify": {
@@ -29,6 +29,7 @@
     "gulp-postcss": "6.0.1",
     "gulp-rename": "1.2.2",
     "gulp-replace": "0.5.4",
+    "gulp-scss-lint": "0.3.8",
     "gulp-uglify": "1.4.2",
     "gulp-util": "3.0.7",
     "run-sequence": "1.1.4",
