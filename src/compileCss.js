@@ -8,6 +8,7 @@ const gulpPostcss = require('gulp-postcss');
 const gulpRename = require('gulp-rename');
 const gulpReplace = require('gulp-replace');
 const runSequence = require('run-sequence');
+const cssWebSocketServer = require('./cssWebSocketServer');
 
 module.exports = customConfig => {
   const config = Object.assign({
@@ -17,6 +18,7 @@ module.exports = customConfig => {
     compassSassDir: undefined,
     compassImportPath: './node_modules',
     sourceMap: (process.env.NODE_ENV !== 'production'),
+    wsPort: 4000,
   }, customConfig);
 
   if (!config.src) {
@@ -26,6 +28,8 @@ module.exports = customConfig => {
   if (!config.dst) {
     throw new Error('Invalid configuration: value of dst needs to be a path.');
   }
+
+  cssWebSocketServer.start(config.wsPort);
 
   // Compile SCSS with Compass.
   const compileScss = `${config.subTaskPrefix}:compass`;
@@ -73,7 +77,7 @@ module.exports = customConfig => {
   const renameCompiledCss = `${config.subTaskPrefix}:renameDstIndexCss`;
 
   gulp.task(renameCompiledCss, () => {
-    return gulp.src(`${config.dst}/*`)
+    const stream = gulp.src(`${config.dst}/*`)
       // Replace occurences of index.css with dist.css inside of files
       .pipe(gulpReplace('index.css', 'dist.css'))
       // Rename files from *index*.* to *dist*.*
@@ -81,6 +85,14 @@ module.exports = customConfig => {
         path.basename = path.basename.replace('index', 'dist');
       }))
       .pipe(gulp.dest(config.dst));
+
+    stream.on('finish', () => {
+      // In case you have site opened in numerous browsers or tabs/windows
+      // there will be many clients connected, so send update to all
+      cssWebSocketServer.instance.clients.forEach(client => client.send());
+    });
+
+    return stream;
   });
 
   // Delete the original compiled CSS files.

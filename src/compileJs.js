@@ -56,11 +56,6 @@ module.exports = customConfig => {
     bundler = watchify(bundler);
   }
   bundler.transform(babelify);
-  bundler.transform('browserify-css', {
-    // Disable adding styles to page automatically, since it is harder to
-    // manage with HMR (it was not designed to support it)
-    autoInject: false,
-  });
 
   // Compile the JS, using the bundle.
   function compileJs() {
