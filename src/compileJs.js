@@ -3,8 +3,10 @@
 const babelify = require('babelify');
 const browserify = require('browserify');
 const browserifyHmr = require('browserify-hmr');
+const fs  = require('fs');
 const gulp = require('gulp');
 const gulpUtil = require('gulp-util');
+const path  = require('path');
 const vinylSourceStream = require('vinyl-source-stream');
 const watchify = require('watchify');
 
@@ -14,6 +16,7 @@ module.exports = customConfig => {
     dst: './dist/js',
     watch: false,
     hmrPort: 3123,
+    cssWsClientFolder: './src/',
   }, customConfig);
 
   if (!config.src) {
@@ -56,6 +59,47 @@ module.exports = customConfig => {
     bundler = watchify(bundler);
   }
   bundler.transform(babelify);
+
+  // CSS WebSocket Client Side /// START
+
+  // Basically that's the way to pass config arguments to client side
+
+  // This file is like a template for future JS file
+  const lines = fs.readFileSync(path.join(config.cssWsClientFolder, 'cssWebSocketClientSide.txt'))
+    .toString()
+    .split('\n');
+
+  function writeLines(fd) {
+    const line = lines.shift();
+
+    // Here the variables from config are supplied to final JS
+    // TODO: path styles wsPort and css dist to compileJs
+    const lineReplaced = line.toString()
+      .replace('#cssHref', '/css/dist.css')
+      .replace('#port', 4000)
+      .concat('\n');
+
+    fs.writeSync(fd, lineReplaced);
+
+    if (lines.length > 0) {
+      writeLines(fd);
+    }
+  }
+
+  const cssWebSocketFilePath = path.join(
+    config.cssWsClientFolder,
+    'cssWebSocketClientSide.js'
+  );
+
+  // This creates JS file from template
+  fs.open(cssWebSocketFilePath, 'w', (err, fd) => {
+    writeLines(fd);
+  });
+
+  // Here the configured JS is added to bundle
+  bundler.add(cssWebSocketFilePath);
+
+  // CSS WebSocket Client Side /// END
 
   // Compile the JS, using the bundle.
   function compileJs() {
