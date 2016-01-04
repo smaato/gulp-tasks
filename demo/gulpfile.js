@@ -71,6 +71,7 @@ gulp.task('demoCompileCss', gulpTasks.compileCss({
   src: STYLES_SRC,
   dst: STYLES_DST,
   compassImportPath: '../node_modules',
+  wsPort: 5000,
 }).task);
 
 /**
