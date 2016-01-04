@@ -53,7 +53,6 @@ gulp.task('demoCompileJsAndWatch', gulpTasks.compileJs({
   dst: SCRIPTS_DST,
   watch: true,
   hmrPort: 3000,
-  cssWsClientFolder: '../src/'
 }).task);
 
 /**

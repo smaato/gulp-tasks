@@ -1,12 +1,14 @@
 
 /* eslint-disable */
 
+import ReconnectingWebSocket from 'reconnectingwebsocket';
+
 // These variables will be supplied from config on build step
 const cssHref = '#cssHref';
 const port = '#port';
 
 const host = window.document.location.host.replace(/:.*/, '');
-const ws = new WebSocket('ws://' + host + ':' + port);
+const ws = new ReconnectingWebSocket('ws://' + host + ':' + port);
 
 ws.onmessage = () => {
   document.querySelector("link[href^='" + cssHref +"']")

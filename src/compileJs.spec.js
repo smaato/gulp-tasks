@@ -22,7 +22,6 @@ describe('compileJs method', () => {
         dst: './dist/js',
         watch: false,
         hmrPort: 3123,
-        cssWsClientFolder: './src/',
       });
     });
 
