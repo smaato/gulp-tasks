@@ -1,16 +1,13 @@
 
 const autoprefixer = require('autoprefixer');
 const cssMqpacker = require('css-mqpacker');
-const cssWebSocketServer = require('./cssWebSocketServer');
+const cssWsServer = require('./cssWebsocket/server');
 const del = require('del');
-const fs  = require('fs');
 const gulp = require('gulp');
 const gulpCompass = require('gulp-compass');
 const gulpPostcss = require('gulp-postcss');
 const gulpRename = require('gulp-rename');
 const gulpReplace = require('gulp-replace');
-const mkdirp = require('mkdirp');
-const path  = require('path');
 const runSequence = require('run-sequence');
 
 module.exports = customConfig => {
@@ -21,7 +18,6 @@ module.exports = customConfig => {
     compassSassDir: undefined,
     compassImportPath: './node_modules',
     sourceMap: (process.env.NODE_ENV !== 'production'),
-    wsPort: 4000,
   }, customConfig);
 
   if (!config.src) {
@@ -31,50 +27,6 @@ module.exports = customConfig => {
   if (!config.dst) {
     throw new Error('Invalid configuration: value of dst needs to be a path.');
   }
-
-  cssWebSocketServer.start(config.wsPort);
-
-  function configureClientSideWs() {
-    // This file is like a template for future JS file
-    const lines = fs.readFileSync(__dirname + '/cssWebSocketClientSide.txt')
-      .toString()
-      .split('\n');
-
-    function writeLines(fd) {
-      const line = lines.shift();
-
-      // Here the variables from config are supplied to final JS
-      const lineReplaced = line.toString()
-        .replace('#{cssHref}', '/css/dist.css') // TODO: remove hardcode
-        .replace('#{port}', config.wsPort)
-        .concat('\n');
-
-      fs.writeSync(fd, lineReplaced);
-
-      if (lines.length > 0) {
-        writeLines(fd);
-      }
-    }
-
-    const cssWebSocketFolder = path.join(
-      __dirname,
-      '../dist'
-    );
-
-    mkdirp.sync(cssWebSocketFolder);
-
-    const cssWebSocketFile = path.join(
-      cssWebSocketFolder,
-      'cssWebSocketClientSide.js'
-    );
-
-    // This creates JS file from template
-    fs.open(cssWebSocketFile, 'w', (err, fd) => {
-      writeLines(fd);
-    });
-  }
-
-  configureClientSideWs();
 
   // Compile SCSS with Compass.
   const compileScss = `${config.subTaskPrefix}:compass`;
@@ -131,11 +83,7 @@ module.exports = customConfig => {
       }))
       .pipe(gulp.dest(config.dst));
 
-    stream.on('finish', () => {
-      // In case you have site opened in numerous browsers or tabs/windows
-      // there will be many clients connected, so send update to all
-      cssWebSocketServer.instance.clients.forEach(client => client.send());
-    });
+    stream.on('finish', cssWsServer.sendUpdate);
 
     return stream;
   });

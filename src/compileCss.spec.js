@@ -24,7 +24,6 @@ describe('compileCss method', () => {
         compassSassDir: './src',
         compassImportPath: './node_modules',
         sourceMap: true,
-        wsPort: 4000,
       });
     });
 

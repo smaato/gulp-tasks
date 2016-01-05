@@ -3,9 +3,10 @@
 const babelify = require('babelify');
 const browserify = require('browserify');
 const browserifyHmr = require('browserify-hmr');
+const cssWsConfigureClient = require('./cssWebsocket/configureClient');
+const cssWsServer = require('./cssWebsocket/server');
 const gulp = require('gulp');
 const gulpUtil = require('gulp-util');
-const path  = require('path');
 const vinylSourceStream = require('vinyl-source-stream');
 const watchify = require('watchify');
 
@@ -15,6 +16,8 @@ module.exports = customConfig => {
     dst: './dist/js',
     watch: false,
     hmrPort: 3123,
+    cssReloadPort: 4000,
+    cssReloadPath: '/css/dist.css',
   }, customConfig);
 
   if (!config.src) {
@@ -59,12 +62,9 @@ module.exports = customConfig => {
   bundler.transform(babelify);
 
   if (config.watch) {
-    // Here the configured JS is added to bundle
-    const cssWebSocketFile = path.join(
-      __dirname,
-      '../dist/cssWebSocketClientSide.js'
-    );
-    bundler.add(cssWebSocketFile);
+    cssWsServer.start(config.cssReloadPort);
+    cssWsConfigureClient(config.cssReloadPort, config.cssReloadPath);
+    bundler.add(__dirname + '/cssWebsocket/client.js');
   }
 
   // Compile the JS, using the bundle.

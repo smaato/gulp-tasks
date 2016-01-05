@@ -2,7 +2,6 @@
 const gulp = require('gulp');
 const gulpJasmine = require('gulp-jasmine');
 const lintJs = require('./index').lintJs;
-const cssWebSocketServer = require('./src/cssWebSocketServer');
 
 gulp.task('lint', lintJs({
   src: [
@@ -12,12 +11,10 @@ gulp.task('lint', lintJs({
 }).task);
 
 gulp.task('unit', () => {
-  return gulp.src('./src/**/*.js')
+  return gulp.src(['./src/**/*.js', '!./src/cssWebsocket/*'])
     .pipe(gulpJasmine({
       verbose: true,
     }));
 });
 
-gulp.task('test', ['lint', 'unit'], () => {
-  cssWebSocketServer.stop();
-});
+gulp.task('test', ['lint', 'unit']);

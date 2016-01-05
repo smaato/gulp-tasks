@@ -22,6 +22,8 @@ describe('compileJs method', () => {
         dst: './dist/js',
         watch: false,
         hmrPort: 3123,
+        cssReloadPort: 4000,
+        cssReloadPath: '/css/dist.css',
       });
     });
 
