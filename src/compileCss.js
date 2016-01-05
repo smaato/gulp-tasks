@@ -78,8 +78,8 @@ module.exports = customConfig => {
       // Replace occurences of index.css with dist.css inside of files
       .pipe(gulpReplace('index.css', 'dist.css'))
       // Rename files from *index*.* to *dist*.*
-      .pipe(gulpRename((pathToRename) => {
-        pathToRename.basename = pathToRename.basename.replace('index', 'dist');
+      .pipe(gulpRename((path) => {
+        path.basename = path.basename.replace('index', 'dist');
       }))
       .pipe(gulp.dest(config.dst));
 

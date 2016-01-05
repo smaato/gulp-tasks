@@ -1,7 +1,7 @@
 
 import ReconnectingWebSocket from 'reconnectingwebsocket';
 
-// These variables will be supplied from config on build step
+// These variables will be supplied from gulp task config on the build step
 const cssHref = '#{cssHref}';
 const port = '#{port}';
 
