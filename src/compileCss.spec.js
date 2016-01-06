@@ -23,7 +23,6 @@ describe('compileCss method', () => {
         dst: './dist/css',
         compassSassDir: './src',
         compassImportPath: './node_modules',
-        sourceMap: true,
       });
     });
 
