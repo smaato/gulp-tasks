@@ -52,6 +52,7 @@ gulp.task('demoCompileJsAndWatch', gulpTasks.compileJs({
   src: `${SOURCE_DIR}/index.js`,
   dst: SCRIPTS_DST,
   watch: true,
+  hmrPort: 3000,
 }).task);
 
 /**

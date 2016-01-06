@@ -1,10 +1,10 @@
 
 const autoprefixer = require('autoprefixer');
 const cssMqpacker = require('css-mqpacker');
+const cssWsServer = require('./cssWebsocket/server');
 const del = require('del');
 const gulp = require('gulp');
 const gulpCompass = require('gulp-compass');
-const gulpConnect = require('gulp-connect');
 const gulpPostcss = require('gulp-postcss');
 const gulpRename = require('gulp-rename');
 const gulpReplace = require('gulp-replace');
@@ -74,15 +74,18 @@ module.exports = customConfig => {
   const renameCompiledCss = `${config.subTaskPrefix}:renameDstIndexCss`;
 
   gulp.task(renameCompiledCss, () => {
-    return gulp.src(`${config.dst}/*`)
+    const stream = gulp.src(`${config.dst}/*`)
       // Replace occurences of index.css with dist.css inside of files
       .pipe(gulpReplace('index.css', 'dist.css'))
       // Rename files from *index*.* to *dist*.*
       .pipe(gulpRename((path) => {
         path.basename = path.basename.replace('index', 'dist');
       }))
-      .pipe(gulp.dest(config.dst))
-      .pipe(gulpConnect.reload());
+      .pipe(gulp.dest(config.dst));
+
+    stream.on('finish', cssWsServer.sendUpdate);
+
+    return stream;
   });
 
   // Delete the original compiled CSS files.

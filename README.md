@@ -54,7 +54,8 @@ Copy assets from one location to another.
 ### compileCss
 
 Compile SCSS with Compass RubyGem (gem install compass), and run the compiled
-CSS through PostCSS with Autoprefixer.
+CSS through PostCSS with Autoprefixer. Also starts WebSocket server to update
+styles in browser without full page reload after styles are recompiled.
 
 ### compileHtml
 

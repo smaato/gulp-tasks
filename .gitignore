@@ -4,3 +4,4 @@ dist
 .sass-cache
 reports
 *.log
+src/cssWebsocket/client.js

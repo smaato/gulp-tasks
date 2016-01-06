@@ -3,6 +3,8 @@
 const babelify = require('babelify');
 const browserify = require('browserify');
 const browserifyHmr = require('browserify-hmr');
+const cssWsConfigureClient = require('./cssWebsocket/configureClient');
+const cssWsServer = require('./cssWebsocket/server');
 const gulp = require('gulp');
 const gulpUtil = require('gulp-util');
 const vinylSourceStream = require('vinyl-source-stream');
@@ -14,6 +16,8 @@ module.exports = customConfig => {
     dst: './dist/js',
     watch: false,
     hmrPort: 3123,
+    cssReloadPort: 4000,
+    cssReloadPath: '/css/dist.css',
   }, customConfig);
 
   if (!config.src) {
@@ -57,9 +61,17 @@ module.exports = customConfig => {
   }
   bundler.transform(babelify);
 
+  if (config.watch) {
+    cssWsConfigureClient(config.cssReloadPort, config.cssReloadPath);
+    bundler.add(__dirname + '/cssWebsocket/client.js');
+  }
+
   // Compile the JS, using the bundle.
   function compileJs() {
     const bundle = bundler.bundle();
+    if (config.watch) {
+      cssWsServer.start(config.cssReloadPort);
+    }
     return bundle
       .on('error', function onCompileJsError(error) {
         gulpUtil.log(gulpUtil.colors.red(error.message));

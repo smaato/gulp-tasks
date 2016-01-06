@@ -11,7 +11,7 @@ gulp.task('lint', lintJs({
 }).task);
 
 gulp.task('unit', () => {
-  return gulp.src('./src/**/*.js')
+  return gulp.src(['./src/**/*.js', '!./src/cssWebsocket/*'])
     .pipe(gulpJasmine({
       verbose: true,
     }));
