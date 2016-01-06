@@ -62,7 +62,6 @@ module.exports = customConfig => {
   bundler.transform(babelify);
 
   if (config.watch) {
-    cssWsServer.start(config.cssReloadPort);
     cssWsConfigureClient(config.cssReloadPort, config.cssReloadPath);
     bundler.add(__dirname + '/cssWebsocket/client.js');
   }
@@ -70,6 +69,9 @@ module.exports = customConfig => {
   // Compile the JS, using the bundle.
   function compileJs() {
     const bundle = bundler.bundle();
+    if (config.watch) {
+      cssWsServer.start(config.cssReloadPort);
+    }
     return bundle
       .on('error', function onCompileJsError(error) {
         gulpUtil.log(gulpUtil.colors.red(error.message));
