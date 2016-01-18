@@ -151,8 +151,8 @@ gulp.task('demoDeploy', gulpTasks.deploy({
   src: `${DISTRIBUTION_DIR}/**/*.*`,
   // Deploys to http://gulp-tasks-test.smaatolabs.net/
   bucketName: 'smt-gulp-tasks-test',
-  accessKeyId: process.env.GULP_TASKS_AWS_ACCESS_KEY_ID,
-  secretAccessKey: process.env.GULP_TASKS_AWS_SECRET_ACCESS_KEY,
+  accessKeyId: process.env.GULP_TASKS_AWS_ACCESS_KEY_ID || 'No ENV',
+  secretAccessKey: process.env.GULP_TASKS_AWS_SECRET_ACCESS_KEY || 'No ENV',
 }).task);
 
 /**
