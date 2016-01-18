@@ -5,6 +5,7 @@ const browserify = require('browserify');
 const browserifyHmr = require('browserify-hmr');
 const cssWsConfigureClient = require('./cssWebsocket/configureClient');
 const cssWsServer = require('./cssWebsocket/server');
+const envify = require('envify');
 const gulp = require('gulp');
 const gulpUtil = require('gulp-util');
 const vinylSourceStream = require('vinyl-source-stream');
@@ -60,6 +61,7 @@ module.exports = customConfig => {
     bundler = watchify(bundler);
   }
   bundler.transform(babelify);
+  bundler.transform(envify);
 
   if (config.watch) {
     cssWsConfigureClient(config.cssReloadPort, config.cssReloadPath);
