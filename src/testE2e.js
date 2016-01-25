@@ -11,6 +11,8 @@ module.exports = customConfig => {
   const config = Object.assign({
     subTaskPrefix: 'testE2e',
     dir: './e2e',
+    // Test with Chrome and Firefox by default.
+    cliArgs: ['--env chrome,firefox'],
     src: '/src/**/*.js',
     dst: '/dist',
     connect: {
@@ -79,12 +81,11 @@ module.exports = customConfig => {
   gulp.task(runTests, () => {
     return gulp.src('')
       .pipe(gulpNightwatch({
-        configFile: `${config.dir}/config/nightwatch.json`,
-        cliArgs: ['--env phantomjs'],
+        configFile: `${config.dir}/nightwatch.json`,
+        cliArgs: config.cliArgs,
       }))
-      .on('error', () => {
-        // If there's an error we need to complete the task and remove the shim
-        config.wasNightwatchFailing = true;
+      .on('error', function onRunE2eTestsError() {
+        // If there's an error we need to complete the task and remove the shim.
         this.emit('end');
       });
   });
@@ -108,8 +109,8 @@ module.exports = customConfig => {
     gulpConnect.serverClose();
   });
 
-  // Run tests with Nightwatch in PhantomJS.
-  function testE2e(callback) {
+  // Run tests with Nightwatch.
+  function testE2e(done) {
     runSequence(
       startServer,
       cleanDist,
@@ -118,11 +119,8 @@ module.exports = customConfig => {
       runTests,
       unshimKarma,
       stopServer,
-      (error) => {
-        if (config.wasNightwatchFailing) {
-          throw new Error('E2E testing failed');
-        }
-        callback(error);
+      err => {
+        done(err);
       }
     );
   }
