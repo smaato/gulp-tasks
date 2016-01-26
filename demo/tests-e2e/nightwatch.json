@@ -8,7 +8,7 @@
 
   "selenium": {
     "start_process": true,
-    "server_path": "../node_modules/selenium-standalone/.selenium/selenium-server/2.47.1-server.jar",
+    "server_path": "../node_modules/selenium-standalone/.selenium/selenium-server/2.48.2-server.jar",
     "log_path": "reports",
     "host": "127.0.0.1",
     "port": 4444,
@@ -23,7 +23,7 @@
         "enabled": true,
         "on_failure": true,
         "on_error": false,
-        "path": "screenshots/_errorLog"
+        "path": "reports/screenshots/_errorLog"
       }
     },
 
@@ -40,6 +40,15 @@
         "browserName": "chrome",
         "javascriptEnabled": true,
         "acceptSslCerts": true
+      }
+    },
+
+    "phantomjs" : {
+      "desiredCapabilities": {
+        "browserName": "phantomjs",
+        "javascriptEnabled": true,
+        "acceptSslCerts": true,
+        "phantomjs.binary.path": "../node_modules/phantomjs/bin/phantomjs"
       }
     }
   }

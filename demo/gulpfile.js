@@ -151,7 +151,7 @@ gulp.task('demoTestE2e', gulpTasks.testE2e({
   connect: {
     root: DISTRIBUTION_DIR,
     fallback: `${DISTRIBUTION_DIR}/index.html`,
-    port: PORT,
+    port: 9000,
   },
   shim: (`<script>${karmaPhantomJsShim}</script>`),
 }).task);

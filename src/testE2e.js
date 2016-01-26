@@ -12,7 +12,7 @@ module.exports = customConfig => {
     subTaskPrefix: 'testE2e',
     dir: './e2e',
     // Test with Chrome and Firefox by default.
-    cliArgs: ['--env chrome,firefox'],
+    cliArgs: ['--env chrome,firefox,phantomjs'],
     src: '/src/**/*.js',
     dst: '/dist',
     connect: {
@@ -85,6 +85,7 @@ module.exports = customConfig => {
         cliArgs: config.cliArgs,
       }))
       .on('error', function onRunE2eTestsError() {
+        config.wasNightwatchFailing = true;
         // If there's an error we need to complete the task and remove the shim.
         this.emit('end');
       });
@@ -120,6 +121,10 @@ module.exports = customConfig => {
       unshimKarma,
       stopServer,
       err => {
+        // We need to throw an error here so that our pre-commit hook will fail.
+        if (config.wasNightwatchFailing) {
+          throw new Error('E2E testing failed');
+        }
         done(err);
       }
     );
