@@ -8,12 +8,19 @@
 const fs = require('fs');
 const gulp = require('gulp');
 const rimraf = require('rimraf');
+const runSequence = require('run-sequence');
 
 /**
  * Require the gulpTasks module with `require('gulp-tasks')` in your own project.
  */
 
 const gulpTasks = require('../index');
+
+/**
+ * Server constants.
+ */
+
+const PORT = 8002;
 
 /**
  * Source constants.
@@ -47,6 +54,12 @@ gulp.task('demoCopyAssets', gulpTasks.copy({
 /**
  * Compile JS.
  */
+
+gulp.task('demoCompileJs', gulpTasks.compileJs({
+  src: `${SOURCE_DIR}/index.js`,
+  dst: SCRIPTS_DST,
+  watch: false,
+}).task);
 
 gulp.task('demoCompileJsAndWatch', gulpTasks.compileJs({
   src: `${SOURCE_DIR}/index.js`,
@@ -97,7 +110,7 @@ gulp.task('demoCompileHtml', gulpTasks.compileHtml({
 gulp.task('demoServe', gulpTasks.serve({
   root: DISTRIBUTION_DIR,
   fallback: `${DISTRIBUTION_DIR}/index.html`,
-  port: 8002,
+  port: PORT,
   livereload: true,
 }).task);
 
@@ -154,6 +167,35 @@ gulp.task('demoDeploy', gulpTasks.deploy({
   accessKeyId: process.env.GULP_TASKS_AWS_ACCESS_KEY_ID || 'No ENV',
   secretAccessKey: process.env.GULP_TASKS_AWS_SECRET_ACCESS_KEY || 'No ENV',
 }).task);
+
+/**
+ *  Compile everything.
+ */
+
+gulp.task('demoBuild', done => {
+  runSequence(
+    'demoCompileHtml',
+    'demoCopyAssets',
+    'demoCompileCss',
+    'demoCompileJs',
+    done
+  );
+});
+
+/**
+ *  Compile and test, e.g. called by pre-commit hook.
+ */
+
+gulp.task('demoTest', done => {
+  runSequence(
+    'demoLintJs',
+    'demoLintScss',
+    'demoBuild',
+    'demoTestUnit',
+    'demoTestE2e',
+    done
+  );
+});
 
 /**
  *  Compile everything and start watching for changes.

@@ -17,6 +17,7 @@ describe('testE2e method', () => {
       expect(result.config).toEqual({
         subTaskPrefix: 'testE2e',
         dir: './e2e',
+        cliArgs: ['--env chrome,firefox,phantomjs'],
         src: '/src/**/*.js',
         dst: '/dist',
         connect: {
