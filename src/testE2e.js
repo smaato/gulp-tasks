@@ -11,7 +11,7 @@ module.exports = customConfig => {
   const config = Object.assign({
     subTaskPrefix: 'testE2e',
     dir: './e2e',
-    // Test with Chrome and Firefox by default.
+    // Test with Chrome, Firefox, and PhantomJS by default.
     cliArgs: ['--env chrome,firefox,phantomjs'],
     src: '/src/**/*.js',
     dst: '/dist',
