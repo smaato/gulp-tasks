@@ -2,7 +2,8 @@
 const gulp = require('gulp');
 const runSequence = require('run-sequence');
 const rimraf = require('rimraf');
-const lstat = require('fs').lstat;
+const fs = require('fs');
+const lstat = fs.lstat;
 const compileJs = require('../index').compileJs;
 const minifyJs = require('../index').minifyJs;
 
@@ -20,6 +21,7 @@ describe('minifyJs method', () => {
       const result = minifyJs();
       expect(result.config).toEqual({
         src: './dist/js',
+        dropConsole: true,
         mangle: true,
       });
     });
@@ -34,33 +36,42 @@ describe('minifyJs method', () => {
   });
 
   describe('gulp task', () => {
+    gulp.task('testMinifyJs:compile', compileJs({
+      src: './demo/src/index.js',
+      dst: './demo/dist/js',
+    }).task);
+
+    gulp.task('testMinifyJs', minifyJs({
+      src: './demo/dist/js',
+    }).task);
+
     beforeEach(done => {
       // rm -rf the dist folder.
-      rimraf('./demo/dist', done);
+      rimraf('./demo/dist', () => {
+        /**
+        * Because the Gulp task is async, we need to use runSequence to execute
+        * the task and then call the `done` async callback.
+        */
+        runSequence('testMinifyJs:compile', 'testMinifyJs', done);
+      });
     });
 
     it('minifies a compiled JS file', (done) => {
-      gulp.task('testMinifyJs:compile', compileJs({
-        src: './demo/src/index.js',
-        dst: './demo/dist/js',
-      }).task);
-
-      gulp.task('testMinifyJs', minifyJs({
-        src: './demo/dist/js',
-      }).task);
-
-      /**
-       * Because the Gulp task is async, we need to use runSequence to execute
-       * the task and then call the `done` async callback.
-       */
-      runSequence('testMinifyJs:compile', 'testMinifyJs', () => {
-        expect(gulp.tasks.testMinifyJs.done).toBe(true);
-        lstat('./demo/dist/js/dist.min.js', (err, stats) => {
-          if (err) throw err;
-          expect(stats.isFile()).toBe(true);
-          done();
-        });
+      expect(gulp.tasks.testMinifyJs.done).toBe(true);
+      lstat('./demo/dist/js/dist.min.js', (err, stats) => {
+        if (err) throw err;
+        expect(stats.isFile()).toBe(true);
+        done();
       });
+    });
+
+    it('removes console.log statements by default', () => {
+      const dist = fs.readFileSync('./demo/dist/js/dist.js');
+      const distMin = fs.readFileSync('./demo/dist/js/dist.min.js');
+      const consoleLogStatement = 'console.log(\'Hello, world!\'';
+
+      expect(dist).toContain(consoleLogStatement);
+      expect(distMin).not.toContain(consoleLogStatement);
     });
   });
 });
