@@ -6,6 +6,7 @@ const gulpUglify = require('gulp-uglify');
 module.exports = customConfig => {
   const config = Object.assign({
     src: './dist/js',
+    dropConsole: true,
     mangle: true,
   }, customConfig);
 
@@ -17,6 +18,9 @@ module.exports = customConfig => {
   function minifyJs() {
     return gulp.src(`${config.src}/dist.js`)
       .pipe(gulpUglify({
+        compress: {
+          drop_console: config.dropConsole,
+        },
         mangle: config.mangle,
       }))
       .pipe(gulpRename('dist.min.js'))
