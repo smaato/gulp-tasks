@@ -4,8 +4,8 @@ const deploy = require('../index').deploy;
 describe('deploy method', () => {
   it('returns a config and a task', () => {
     const result = deploy({
-      bucketName: '-',
       accessKeyId: '-',
+      bucketName: '-',
       secretAccessKey: '-',
     });
     expect(result).toEqual({
@@ -17,57 +17,59 @@ describe('deploy method', () => {
   describe('configuration', () => {
     it('has defaults', () => {
       const result = deploy({
-        bucketName: '-',
         accessKeyId: '-',
+        bucketName: '-',
         secretAccessKey: '-',
       });
       expect(result.config).toEqual({
-        src: './dist/**/*.*',
-        bucketName: '-',
         accessKeyId: '-',
+        bucketName: '-',
+        folder: undefined,
         secretAccessKey: '-',
+        src: './dist/**/*.*',
+        sync: true,
       });
     });
 
-    it('throws errors when it contains falsy paths', () => {
+    it('throws an error when it doesn\'t contain an access key ID', () => {
       expect(() => {
         deploy({
-          src: false,
           bucketName: '-',
+          secretAccessKey: '-',
+          src: '/',
+        });
+      }).toThrowError('Invalid configuration: value of accessKeyId needs to be a string.');
+    });
+
+    it('throws an error when it doesn\'t contain a bucket name', () => {
+      expect(() => {
+        deploy({
           accessKeyId: '-',
           secretAccessKey: '-',
+          src: '/',
+        });
+      }).toThrowError('Invalid configuration: value of bucketName needs to be an AWS S3 bucket name.');
+    });
+
+    it('throws an error when it doesn\'t contain a secret access key', () => {
+      expect(() => {
+        deploy({
+          accessKeyId: '-',
+          bucketName: '-',
+          src: '/',
+        });
+      }).toThrowError('Invalid configuration: value of secretAccessKey needs to be a string.');
+    });
+
+    it('throws an error when it contains falsy paths', () => {
+      expect(() => {
+        deploy({
+          accessKeyId: '-',
+          bucketName: '-',
+          secretAccessKey: '-',
+          src: false,
         });
       }).toThrowError('Invalid configuration: value of src needs to be a glob or an array of globs.');
-    });
-
-    it('throws errors when it doesn\'t contain a bucket name', () => {
-      expect(() => {
-        deploy({
-          src: '/',
-          accessKeyId: '-',
-          secretAccessKey: '-',
-        });
-      }).toThrow();
-    });
-
-    it('throws errors when it doesn\'t contain an access key ID', () => {
-      expect(() => {
-        deploy({
-          src: '/',
-          bucketName: '-',
-          secretAccessKey: '-',
-        });
-      }).toThrow();
-    });
-
-    it('throws errors when it doesn\'t contain a secret access key', () => {
-      expect(() => {
-        deploy({
-          src: '/',
-          bucketName: '-',
-          accessKeyId: '-',
-        });
-      }).toThrow();
     });
   });
 });

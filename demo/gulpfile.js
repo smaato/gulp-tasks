@@ -161,11 +161,11 @@ gulp.task('demoTestE2e', gulpTasks.testE2e({
  */
 
 gulp.task('demoDeploy', gulpTasks.deploy({
-  src: `${DISTRIBUTION_DIR}/**/*.*`,
   // Deploys to http://gulp-tasks-test.smaatolabs.net/
+  accessKeyId: process.env.AWS_ACCESS_KEY_ID || 'No ENV',
   bucketName: 'smt-gulp-tasks-test',
-  accessKeyId: process.env.GULP_TASKS_AWS_ACCESS_KEY_ID || 'No ENV',
-  secretAccessKey: process.env.GULP_TASKS_AWS_SECRET_ACCESS_KEY || 'No ENV',
+  secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY || 'No ENV',
+  src: `${DISTRIBUTION_DIR}/**/*.*`,
 }).task);
 
 /**
