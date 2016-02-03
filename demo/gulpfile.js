@@ -168,6 +168,16 @@ gulp.task('demoDeploy', gulpTasks.deploy({
   src: `${DISTRIBUTION_DIR}/**/*.*`,
 }).task);
 
+gulp.task('demoDeployFolder', gulpTasks.deploy({
+  // Deploys to http://gulp-tasks-test.smaatolabs.net/folder/index.html
+  accessKeyId: process.env.AWS_ACCESS_KEY_ID || 'No ENV',
+  bucketName: 'smt-gulp-tasks-test',
+  folder: 'folder',
+  secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY || 'No ENV',
+  src: `${DISTRIBUTION_DIR}/**/*.*`,
+  sync: false,
+}).task);
+
 /**
  *  Compile everything.
  */

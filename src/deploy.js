@@ -42,9 +42,11 @@ module.exports = customConfig => {
 
     return gulp.src(config.src)
       .pipe(gulpIf(Boolean(config.folder), gulpRename(path => {
+        // Prepend the folder to all source files
         path.dirname = `${config.folder}/${path.dirname}`;
       })))
       .pipe(publisher.publish())
+      // publisher.sync() deletes all other files than the uploaded
       .pipe(gulpIf(config.sync, publisher.sync()))
       .pipe(gulpAwspublish.reporter());
   }
