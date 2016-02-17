@@ -6,6 +6,7 @@ const fs = require('fs');
 const lstat = fs.lstat;
 const compileJs = require('../index').compileJs;
 const minifyJs = require('../index').minifyJs;
+const TextUtils = require('./services/TextUtils');
 
 describe('minifyJs method', () => {
   it('returns a config and a task', () => {
@@ -31,7 +32,10 @@ describe('minifyJs method', () => {
         minifyJs({
           src: false,
         });
-      }).toThrowError('Invalid configuration: value of src needs to be a glob or an array of globs.');
+      }).toThrowError(TextUtils.cleanString(
+        `Invalid configuration: value of src needs to be a glob or an array
+        of globs.`
+      ));
     });
   });
 

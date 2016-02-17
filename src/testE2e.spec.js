@@ -1,6 +1,7 @@
 
 const gulp = require('gulp');
 const testE2e = require('../index').testE2e;
+const TextUtils = require('./services/TextUtils');
 
 describe('testE2e method', () => {
   it('returns a config and a task', () => {
@@ -32,25 +33,34 @@ describe('testE2e method', () => {
         testE2e({
           dir: false,
         });
-      }).toThrowError('Invalid configuration: value of dir needs to be a path.');
+      }).toThrowError(
+        'Invalid configuration: value of dir needs to be a path.'
+      );
 
       expect(() => {
         testE2e({
           src: false,
         });
-      }).toThrowError('Invalid configuration: value of src needs to be a glob or an array of globs.');
+      }).toThrowError(TextUtils.cleanString(
+        `Invalid configuration: value of src needs to be a glob or an array
+        of globs.`
+      ));
 
       expect(() => {
         testE2e({
           dst: false,
         });
-      }).toThrowError('Invalid configuration: value of dst needs to be a path.');
+      }).toThrowError(
+        'Invalid configuration: value of dst needs to be a path.'
+      );
 
       expect(() => {
         testE2e({
           connect: false,
         });
-      }).toThrowError('Invalid configuration: value of connect needs to be an object.');
+      }).toThrowError(
+        'Invalid configuration: value of connect needs to be an object.'
+      );
     });
   });
 

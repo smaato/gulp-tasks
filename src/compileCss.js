@@ -9,6 +9,7 @@ const gulpPostcss = require('gulp-postcss');
 const gulpRename = require('gulp-rename');
 const gulpReplace = require('gulp-replace');
 const runSequence = require('run-sequence');
+const TextUtils = require('./services/TextUtils');
 
 module.exports = customConfig => {
   const config = Object.assign({
@@ -20,7 +21,10 @@ module.exports = customConfig => {
   }, customConfig);
 
   if (!config.src) {
-    throw new Error('Invalid configuration: value of src needs to be a glob or an array of globs.');
+    throw new Error(TextUtils.cleanString(
+      `Invalid configuration: value of src needs to be a glob or an array
+      of globs.`
+    ));
   }
 
   if (!config.dst) {
@@ -36,8 +40,8 @@ module.exports = customConfig => {
     return stylesPath.slice(0, 2).join('/');
   })();
 
-  gulp.task(compileScss, () => {
-    return gulp.src(config.src)
+  gulp.task(compileScss, () =>
+    gulp.src(config.src)
       .pipe(gulpCompass({
         css: config.dst,
         import_path: config.compassImportPath,
@@ -48,14 +52,14 @@ module.exports = customConfig => {
         // Continue watching when an error occurs.
         this.emit('end');
       })
-      .pipe(gulp.dest(config.dst));
-  });
+      .pipe(gulp.dest(config.dst))
+  );
 
   // Run compiled CSS through PostCSS with Autoprefixer.
   const applyPostCss = `${config.subTaskPrefix}:postCss`;
 
-  gulp.task(applyPostCss, () => {
-    return gulp.src(`${config.dst}/index.css`)
+  gulp.task(applyPostCss, () =>
+    gulp.src(`${config.dst}/index.css`)
       .pipe(gulpPostcss([
         autoprefixer({
           browsers: ['last 2 versions'],
@@ -66,8 +70,8 @@ module.exports = customConfig => {
         // Continue watching when an error occurs.
         this.emit('end');
       })
-      .pipe(gulp.dest(config.dst));
-  });
+      .pipe(gulp.dest(config.dst))
+  );
 
   // Rename the compiled CSS file.
   const renameCompiledCss = `${config.subTaskPrefix}:renameDstIndexCss`;
@@ -78,7 +82,9 @@ module.exports = customConfig => {
       .pipe(gulpReplace('index.css', 'dist.css'))
       // Rename files from *index*.* to *dist*.*
       .pipe(gulpRename((path) => {
+        /* eslint-disable no-param-reassign */
         path.basename = path.basename.replace('index', 'dist');
+        /* eslint-enable no-param-reassign */
       }))
       .pipe(gulp.dest(config.dst));
 
@@ -90,12 +96,12 @@ module.exports = customConfig => {
   // Delete the original compiled CSS files.
   const deleteOriginalCss = `${config.subTaskPrefix}:deleteDstIndexCss`;
 
-  gulp.task(deleteOriginalCss, () => {
-    return del([
+  gulp.task(deleteOriginalCss, () =>
+    del([
       `${config.dst}/index.css`,
       `${config.dst}/index.css.map`,
-    ]);
-  });
+    ])
+  );
 
   // Compile CSS with Compass and PostCSS.
   function compileCss(callback) {

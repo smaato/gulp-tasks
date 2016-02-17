@@ -2,6 +2,7 @@
 const gulp = require('gulp');
 const runSequence = require('run-sequence');
 const lintJs = require('../index').lintJs;
+const TextUtils = require('./services/TextUtils');
 
 describe('lintJs method', () => {
   it('returns a config and a task', () => {
@@ -18,7 +19,10 @@ describe('lintJs method', () => {
         lintJs({
           src: false,
         });
-      }).toThrowError('Invalid configuration: value of src needs to be a glob or an array of globs.');
+      }).toThrowError(TextUtils.cleanString(
+        `Invalid configuration: value of src needs to be a glob or an array
+        of globs.`
+      ));
     });
   });
 

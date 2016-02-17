@@ -6,6 +6,7 @@ const gulpConnect = require('gulp-connect');
 const gulpNightwatch = require('gulp-nightwatch');
 const gulpReplace = require('gulp-replace');
 const runSequence = require('run-sequence');
+const TextUtils = require('./services/TextUtils');
 
 module.exports = customConfig => {
   const config = Object.assign({
@@ -26,7 +27,10 @@ module.exports = customConfig => {
   }
 
   if (!config.src) {
-    throw new Error('Invalid configuration: value of src needs to be a glob or an array of globs.');
+    throw new Error(TextUtils.cleanString(
+      `Invalid configuration: value of src needs to be a glob or an array
+      of globs.`
+    ));
   }
 
   if (!config.dst) {
@@ -34,7 +38,9 @@ module.exports = customConfig => {
   }
 
   if (!config.connect) {
-    throw new Error('Invalid configuration: value of connect needs to be an object.');
+    throw new Error(
+      'Invalid configuration: value of connect needs to be an object.'
+    );
   }
 
   // Start server.
@@ -47,21 +53,21 @@ module.exports = customConfig => {
   // Clean the dist directory.
   const cleanDist = `${config.subTaskPrefix}:cleanDist`;
 
-  gulp.task(cleanDist, (callback) => {
-    return del([
+  gulp.task(cleanDist, (callback) =>
+    del([
       `${config.dir}${config.dst}/**/*`,
       `${config.dir}${config.dst}/`,
-    ], callback);
-  });
+    ], callback)
+  );
 
   // Compile the JS for the tests.
   const compileTests = `${config.subTaskPrefix}:compileTests`;
 
-  gulp.task(compileTests, () => {
-    return gulp.src(`${config.dir}${config.src}`)
+  gulp.task(compileTests, () =>
+    gulp.src(`${config.dir}${config.src}`)
       .pipe(gulpBabel())
-      .pipe(gulp.dest(`${config.dir}${config.dst}`));
-  });
+      .pipe(gulp.dest(`${config.dir}${config.dst}`))
+  );
 
   // Shim functions so Karma can run in PhantomJS.
   const shimKarma = `${config.subTaskPrefix}:shimKarma`;
@@ -78,8 +84,8 @@ module.exports = customConfig => {
   // Run tests with Nightwatch.
   const runTests = `${config.subTaskPrefix}:runTests`;
 
-  gulp.task(runTests, () => {
-    return gulp.src('')
+  gulp.task(runTests, () =>
+    gulp.src('')
       .pipe(gulpNightwatch({
         configFile: `${config.dir}/nightwatch.json`,
         cliArgs: config.cliArgs,
@@ -88,8 +94,8 @@ module.exports = customConfig => {
         config.wasNightwatchFailing = true;
         // If there's an error we need to complete the task and remove the shim.
         this.emit('end');
-      });
-  });
+      })
+  );
 
   // Remove Karma shim.
   const unshimKarma = `${config.subTaskPrefix}:unshimKarma`;

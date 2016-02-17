@@ -1,4 +1,4 @@
-
+/*eslint-disable */
 import ReconnectingWebSocket from 'reconnectingwebsocket';
 
 // These variables will be supplied from gulp task config on the build step
@@ -12,3 +12,4 @@ ws.onmessage = () => {
   document.querySelector("link[href^='" + cssHref + "']")
     .setAttribute('href', cssHref + '?v=' + new Date().getTime());
 };
+/*eslint-enable */

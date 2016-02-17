@@ -4,6 +4,7 @@ const runSequence = require('run-sequence');
 const rimraf = require('rimraf');
 const lstat = require('fs').lstat;
 const copy = require('../index').copy;
+const TextUtils = require('./services/TextUtils');
 
 describe('copy method', () => {
   it('returns a config and a task', () => {
@@ -28,13 +29,18 @@ describe('copy method', () => {
         copy({
           dst: false,
         });
-      }).toThrowError('Invalid configuration: value of dst needs to be a path.');
+      }).toThrowError(
+        'Invalid configuration: value of dst needs to be a path.'
+      );
 
       expect(() => {
         copy({
           src: false,
         });
-      }).toThrowError('Invalid configuration: value of src needs to be a glob or an array of globs.');
+      }).toThrowError(TextUtils.cleanString(
+        `Invalid configuration: value of src needs to be a glob or an array
+        of globs.`
+      ));
     });
   });
 
@@ -44,25 +50,30 @@ describe('copy method', () => {
       rimraf('./demo/dist', done);
     });
 
-    it('recurisvely copies the paths matching the src glob to the dst directory', (done) => {
-      gulp.task('testCopy', copy({
-        taskName: 'assetsCopyGulpTask',
-        src: './demo/src/assets/**/*',
-        dst: './demo/dist/assets',
-      }).task);
+    it(
+      'recurisvely copies the paths matching the src glob to the dst directory',
+      (done) => {
+        gulp.task('testCopy', copy({
+          taskName: 'assetsCopyGulpTask',
+          src: './demo/src/assets/**/*',
+          dst: './demo/dist/assets',
+        }).task);
 
-      /**
-       * Because the Gulp task is async, we need to use runSequence to execute
-       * the task and then call the `done` async callback.
-       */
-      runSequence('testCopy', () => {
-        expect(gulp.tasks.testCopy.done).toBe(true);
-        lstat('./demo/dist/assets/images/playful_kitten.jpg', (err, stats) => {
-          if (err) throw err;
-          expect(stats.isFile()).toBe(true);
-          done();
+        /**
+         * Because the Gulp task is async, we need to use runSequence to execute
+         * the task and then call the `done` async callback.
+         */
+        runSequence('testCopy', () => {
+          expect(gulp.tasks.testCopy.done).toBe(true);
+          lstat(
+            './demo/dist/assets/images/playful_kitten.jpg',
+            (err, stats) => {
+              if (err) throw err;
+              expect(stats.isFile()).toBe(true);
+              done();
+            });
         });
-      });
-    });
+      }
+    );
   });
 });

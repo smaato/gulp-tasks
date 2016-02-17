@@ -2,6 +2,7 @@
 const gulp = require('gulp');
 const gulpCssmin = require('gulp-cssmin');
 const gulpRename = require('gulp-rename');
+const TextUtils = require('./services/TextUtils');
 
 module.exports = customConfig => {
   const config = Object.assign({
@@ -9,7 +10,10 @@ module.exports = customConfig => {
   }, customConfig);
 
   if (!config.src) {
-    throw new Error('Invalid configuration: value of src needs to be a glob or an array of globs.');
+    throw new Error(TextUtils.cleanString(
+      `Invalid configuration: value of src needs to be a glob or an array
+      of globs.`
+    ));
   }
 
   // Minify CSS with clean-css.
