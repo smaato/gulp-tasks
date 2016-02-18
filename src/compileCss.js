@@ -40,8 +40,8 @@ module.exports = customConfig => {
     return stylesPath.slice(0, 2).join('/');
   })();
 
-  gulp.task(compileScss, () =>
-    gulp.src(config.src)
+  gulp.task(compileScss, () => {
+    return gulp.src(config.src)
       .pipe(gulpCompass({
         css: config.dst,
         import_path: config.compassImportPath,
@@ -52,14 +52,14 @@ module.exports = customConfig => {
         // Continue watching when an error occurs.
         this.emit('end');
       })
-      .pipe(gulp.dest(config.dst))
-  );
+      .pipe(gulp.dest(config.dst));
+  });
 
   // Run compiled CSS through PostCSS with Autoprefixer.
   const applyPostCss = `${config.subTaskPrefix}:postCss`;
 
-  gulp.task(applyPostCss, () =>
-    gulp.src(`${config.dst}/index.css`)
+  gulp.task(applyPostCss, () => {
+    return gulp.src(`${config.dst}/index.css`)
       .pipe(gulpPostcss([
         autoprefixer({
           browsers: ['last 2 versions'],
@@ -70,8 +70,8 @@ module.exports = customConfig => {
         // Continue watching when an error occurs.
         this.emit('end');
       })
-      .pipe(gulp.dest(config.dst))
-  );
+      .pipe(gulp.dest(config.dst));
+  });
 
   // Rename the compiled CSS file.
   const renameCompiledCss = `${config.subTaskPrefix}:renameDstIndexCss`;
@@ -94,12 +94,12 @@ module.exports = customConfig => {
   // Delete the original compiled CSS files.
   const deleteOriginalCss = `${config.subTaskPrefix}:deleteDstIndexCss`;
 
-  gulp.task(deleteOriginalCss, () =>
-    del([
+  gulp.task(deleteOriginalCss, () => {
+    return del([
       `${config.dst}/index.css`,
       `${config.dst}/index.css.map`,
-    ])
-  );
+    ]);
+  });
 
   // Compile CSS with Compass and PostCSS.
   function compileCss(callback) {

@@ -53,21 +53,21 @@ module.exports = customConfig => {
   // Clean the dist directory.
   const cleanDist = `${config.subTaskPrefix}:cleanDist`;
 
-  gulp.task(cleanDist, (callback) =>
-    del([
+  gulp.task(cleanDist, (callback) => {
+    return del([
       `${config.dir}${config.dst}/**/*`,
       `${config.dir}${config.dst}/`,
-    ], callback)
-  );
+    ], callback);
+  });
 
   // Compile the JS for the tests.
   const compileTests = `${config.subTaskPrefix}:compileTests`;
 
-  gulp.task(compileTests, () =>
-    gulp.src(`${config.dir}${config.src}`)
+  gulp.task(compileTests, () => {
+    return gulp.src(`${config.dir}${config.src}`)
       .pipe(gulpBabel())
-      .pipe(gulp.dest(`${config.dir}${config.dst}`))
-  );
+      .pipe(gulp.dest(`${config.dir}${config.dst}`));
+  });
 
   // Shim functions so Karma can run in PhantomJS.
   const shimKarma = `${config.subTaskPrefix}:shimKarma`;
@@ -84,8 +84,8 @@ module.exports = customConfig => {
   // Run tests with Nightwatch.
   const runTests = `${config.subTaskPrefix}:runTests`;
 
-  gulp.task(runTests, () =>
-    gulp.src('')
+  gulp.task(runTests, () => {
+    return gulp.src('')
       .pipe(gulpNightwatch({
         configFile: `${config.dir}/nightwatch.json`,
         cliArgs: config.cliArgs,
@@ -94,8 +94,8 @@ module.exports = customConfig => {
         config.wasNightwatchFailing = true;
         // If there's an error we need to complete the task and remove the shim.
         this.emit('end');
-      })
-  );
+      });
+  });
 
   // Remove Karma shim.
   const unshimKarma = `${config.subTaskPrefix}:unshimKarma`;

@@ -10,11 +10,11 @@ gulp.task('lint', lintJs({
   ],
 }).task);
 
-gulp.task('unit', () =>
-  gulp.src(['./src/**/*.js', '!./src/cssWebsocket/*'])
+gulp.task('unit', () => {
+  return gulp.src(['./src/**/*.js', '!./src/cssWebsocket/*'])
     .pipe(gulpJasmine({
       verbose: true,
-    }))
-);
+    }));
+});
 
 gulp.task('test', ['lint', 'unit']);
