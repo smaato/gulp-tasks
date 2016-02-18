@@ -82,9 +82,7 @@ module.exports = customConfig => {
       .pipe(gulpReplace('index.css', 'dist.css'))
       // Rename files from *index*.* to *dist*.*
       .pipe(gulpRename((path) => {
-        /* eslint-disable no-param-reassign */
-        path.basename = path.basename.replace('index', 'dist');
-        /* eslint-enable no-param-reassign */
+        path.basename = path.basename.replace('index', 'dist'); // eslint-disable-line no-param-reassign
       }))
       .pipe(gulp.dest(config.dst));
 
