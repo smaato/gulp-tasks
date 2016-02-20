@@ -17,6 +17,7 @@ module.exports = customConfig => {
     dst: './dist/css',
     compassSassDir: undefined,
     compassImportPath: './node_modules',
+    makeSourceMaps: true,
   }, customConfig);
 
   if (!config.src) {
@@ -42,7 +43,7 @@ module.exports = customConfig => {
         css: config.dst,
         import_path: config.compassImportPath,
         sass: config.compassSassDir,
-        sourcemap: (process.env.NODE_ENV !== 'production'),
+        sourcemap: config.makeSourceMaps,
       }))
       .on('error', function onCompileScssError() {
         // Continue watching when an error occurs.

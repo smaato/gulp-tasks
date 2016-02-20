@@ -226,7 +226,6 @@ gulp.task('demoWatch', [
 gulp.task('default', () => {
   // Clean, then start.
   rimraf(DISTRIBUTION_DIR, () => {
-    process.env.NODE_ENV = 'developmentWithHmr';
     gulp.start('demoWatch');
   });
 });
