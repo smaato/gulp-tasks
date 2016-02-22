@@ -226,6 +226,12 @@ gulp.task('demoWatch', [
 gulp.task('default', () => {
   // Clean, then start.
   rimraf(DISTRIBUTION_DIR, () => {
+    /**
+     * Create a .babelrc file in your project root that matches the one in this
+     * demo dir, to use this environment variable to enable hot module
+     * replacement using https://github.com/gaearon/react-transform-hmr.
+     */
+    process.env.BABEL_ENV = 'developmentWithHmr';
     gulp.start('demoWatch');
   });
 });
