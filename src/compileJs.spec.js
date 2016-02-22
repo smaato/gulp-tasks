@@ -4,6 +4,7 @@ const runSequence = require('run-sequence');
 const rimraf = require('rimraf');
 const lstat = require('fs').lstat;
 const compileJs = require('../index').compileJs;
+const TextUtils = require('./services/TextUtils');
 
 describe('compileJs method', () => {
   it('returns a config and a task', () => {
@@ -32,13 +33,18 @@ describe('compileJs method', () => {
         compileJs({
           dst: false,
         });
-      }).toThrowError('Invalid configuration: value of dst needs to be a path.');
+      }).toThrowError(
+        'Invalid configuration: value of dst needs to be a path.'
+      );
 
       expect(() => {
         compileJs({
           src: false,
         });
-      }).toThrowError('Invalid configuration: value of src needs to be a glob or an array of globs.');
+      }).toThrowError(TextUtils.cleanString(
+        `Invalid configuration: value of src needs to be a glob or an array
+        of globs.`
+      ));
     });
   });
 

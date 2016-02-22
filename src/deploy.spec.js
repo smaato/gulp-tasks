@@ -1,5 +1,6 @@
 
 const deploy = require('../index').deploy;
+const TextUtils = require('./services/TextUtils');
 
 describe('deploy method', () => {
   it('returns a config and a task', () => {
@@ -38,7 +39,9 @@ describe('deploy method', () => {
           secretAccessKey: '-',
           src: '/',
         });
-      }).toThrowError('Invalid configuration: value of accessKeyId needs to be a string.');
+      }).toThrowError(
+        'Invalid configuration: value of accessKeyId needs to be a string.'
+      );
     });
 
     it('throws an error when it doesn\'t contain a bucket name', () => {
@@ -48,7 +51,10 @@ describe('deploy method', () => {
           secretAccessKey: '-',
           src: '/',
         });
-      }).toThrowError('Invalid configuration: value of bucketName needs to be an AWS S3 bucket name.');
+      }).toThrowError(TextUtils.cleanString(
+        `Invalid configuration: value of bucketName needs to be an AWS S3
+        bucket name.`
+      ));
     });
 
     it('throws an error when it doesn\'t contain a secret access key', () => {
@@ -58,7 +64,9 @@ describe('deploy method', () => {
           bucketName: '-',
           src: '/',
         });
-      }).toThrowError('Invalid configuration: value of secretAccessKey needs to be a string.');
+      }).toThrowError(
+        'Invalid configuration: value of secretAccessKey needs to be a string.'
+      );
     });
 
     it('throws an error when it contains falsy paths', () => {
@@ -69,7 +77,10 @@ describe('deploy method', () => {
           secretAccessKey: '-',
           src: false,
         });
-      }).toThrowError('Invalid configuration: value of src needs to be a glob or an array of globs.');
+      }).toThrowError(TextUtils.cleanString(
+        `Invalid configuration: value of src needs to be a glob or an array
+        of globs.`
+      ));
     });
   });
 });

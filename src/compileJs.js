@@ -10,6 +10,7 @@ const gulp = require('gulp');
 const gulpUtil = require('gulp-util');
 const vinylSourceStream = require('vinyl-source-stream');
 const watchify = require('watchify');
+const TextUtils = require('./services/TextUtils');
 
 module.exports = customConfig => {
   const config = Object.assign({
@@ -22,7 +23,10 @@ module.exports = customConfig => {
   }, customConfig);
 
   if (!config.src) {
-    throw new Error('Invalid configuration: value of src needs to be a glob or an array of globs.');
+    throw new Error(TextUtils.cleanString(
+      `Invalid configuration: value of src needs to be a glob or an array
+      of globs.`
+    ));
   }
 
   if (!config.dst) {
@@ -65,7 +69,7 @@ module.exports = customConfig => {
 
   if (config.watch) {
     cssWsConfigureClient(config.cssReloadPort, config.cssReloadPath);
-    bundler.add(__dirname + '/cssWebsocket/client.js');
+    bundler.add(`${__dirname}/cssWebsocket/client.js`);
   }
 
   // Compile the JS, using the bundle.
