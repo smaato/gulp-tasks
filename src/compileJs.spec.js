@@ -22,6 +22,7 @@ describe('compileJs method', () => {
         src: './src/index.js',
         dst: './dist/js',
         watch: false,
+        makeSourceMaps: true,
         hmrPort: 3123,
         cssReloadPort: 4000,
         cssReloadPath: '/css/dist.css',

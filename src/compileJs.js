@@ -17,6 +17,7 @@ module.exports = customConfig => {
     src: './src/index.js',
     dst: './dist/js',
     watch: false,
+    makeSourceMaps: true,
     hmrPort: 3123,
     cssReloadPort: 4000,
     cssReloadPath: '/css/dist.css',
@@ -51,7 +52,7 @@ module.exports = customConfig => {
   if (config.watch) {
     browserifyConfig = watchify.args;
   }
-  browserifyConfig.debug = (process.env.NODE_ENV !== 'production');
+  browserifyConfig.debug = config.makeSourceMaps;
 
   // Build bundle with browserify configuration.
   let bundler = browserify(config.src, browserifyConfig);

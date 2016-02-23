@@ -1,0 +1,20 @@
+// Set process.env.BABEL_ENV to "developmentWithHmr" to enable hot module
+// replacement through https://github.com/gaearon/react-transform-hmr.
+{
+  "env": {
+    "developmentWithHmr": {
+      "plugins": [
+        "react-transform"
+      ],
+      "extra": {
+        "react-transform": {
+          "transforms": [{
+            "transform": "react-transform-hmr",
+            "imports": ["react"],
+            "locals": ["module"]
+          }]
+        }
+      }
+    }
+  }
+}
