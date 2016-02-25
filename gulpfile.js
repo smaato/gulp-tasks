@@ -7,6 +7,7 @@ gulp.task('lint', lintJs({
   src: [
     './*.js',
     './src/**/*.js',
+    './dist/cssWebsocketClient.js',
   ],
 }).task);
 

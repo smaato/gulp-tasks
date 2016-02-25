@@ -70,7 +70,7 @@ module.exports = customConfig => {
 
   if (config.watch) {
     cssWsConfigureClient(config.cssReloadPort, config.cssReloadPath);
-    bundler.add(`${__dirname}/cssWebsocket/client.js`);
+    bundler.add(`${__dirname}/../dist/cssWebsocketClient.js`);
   }
 
   // Compile the JS, using the bundle.

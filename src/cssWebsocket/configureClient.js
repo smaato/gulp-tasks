@@ -7,7 +7,7 @@ module.exports = (cssReloadPort, cssReloadPath) => {
     .toString()
     .split('\n');
 
-  fs.open(`${__dirname}/client.js`, 'w', (err, fd) => {
+  fs.open(`${__dirname}/../../dist/cssWebsocketClient.js`, 'w', (err, fd) => {
     lines.forEach(line => {
       // Gulp task variables are supplied to a client JS file
       const lineReplaced = `\n${line}`
