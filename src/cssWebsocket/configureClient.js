@@ -1,9 +1,9 @@
 
 const fs = require('fs');
 
-function doesDirectoryExist(distPath) {
+function doesDirectoryExist(path) {
   try {
-    const stats = fs.lstatSync(distPath);
+    const stats = fs.lstatSync(path);
 
     return stats.isDirectory();
   } catch (e) {
