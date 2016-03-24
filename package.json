@@ -34,7 +34,7 @@
     "gulp-uglify": "1.4.2",
     "gulp-util": "3.0.7",
     "run-sequence": "1.1.4",
-    "selenium-standalone": "4.8.0"
+    "selenium-standalone": "5.1.0"
   },
   "devDependencies": {
     "babel-eslint": "4.1.7",
@@ -44,7 +44,6 @@
     "browserify-hmr": "0.3.1",
     "browserify-istanbul": "0.2.1",
     "envify": "3.4.0",
-    "chromedriver": "2.20.0",
     "eslint": "1.10.3",
     "eslint-config-airbnb": "5.0.0",
     "eslint-config-smaato": "git@github.com:SmaatoUI/eslint-config-smaato.git#v0.0.1",
