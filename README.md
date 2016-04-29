@@ -1,7 +1,11 @@
 
 # Gulp Tasks
 
-> Methods for easily creating common gulp tasks
+We use this repo to abstract away a lot of the implementation details behind
+our build process. This allows us to quickly set up a number of Gulp tasks
+using simple config objects, making our gulpfiles smaller and easier to read.
+As an added benefit, this also helps us ensure our build processes are similar
+throughout all of our projects.
 
 ## Usage
 
