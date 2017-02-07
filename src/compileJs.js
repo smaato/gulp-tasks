@@ -1,4 +1,4 @@
-'use strict'; // eslint-disable-line strict
+'use strict'; // eslint-disable-line
 
 const babelify = require('babelify');
 const browserify = require('browserify');
@@ -10,9 +10,8 @@ const gulp = require('gulp');
 const gulpUtil = require('gulp-util');
 const vinylSourceStream = require('vinyl-source-stream');
 const watchify = require('watchify');
-const TextUtils = require('./services/TextUtils');
 
-module.exports = customConfig => {
+module.exports = (customConfig) => {
   const config = Object.assign({
     src: './src/index.js',
     dst: './dist/js',
@@ -24,10 +23,10 @@ module.exports = customConfig => {
   }, customConfig);
 
   if (!config.src) {
-    throw new Error(TextUtils.cleanString(
-      `Invalid configuration: value of src needs to be a glob or an array
-      of globs.`
-    ));
+    throw new Error(
+      'Invalid configuration: value of src needs to be a glob or an array ' +
+      'of globs.'
+    );
   }
 
   if (!config.dst) {

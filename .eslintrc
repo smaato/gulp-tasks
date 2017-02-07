@@ -1,3 +1,17 @@
 {
-  "extends": "smaato"
+  "extends": "smaato",
+  "env": {
+    "browser": true,
+  },
+  "rules": {
+    "consistent-return": 0,
+    "comma-dangle": [2, {
+      "arrays": "always-multiline",
+      "objects": "always-multiline",
+      "imports": "always-multiline",
+      "exports": "always-multiline",
+      "functions": "ignore",
+    }],
+    "import/no-extraneous-dependencies": 0,
+  },
 }

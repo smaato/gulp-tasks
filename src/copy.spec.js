@@ -4,7 +4,6 @@ const runSequence = require('run-sequence');
 const rimraf = require('rimraf');
 const lstat = require('fs').lstat;
 const copy = require('../index').copy;
-const TextUtils = require('./services/TextUtils');
 
 describe('copy method', () => {
   it('returns a config and a task', () => {
@@ -37,15 +36,15 @@ describe('copy method', () => {
         copy({
           src: false,
         });
-      }).toThrowError(TextUtils.cleanString(
-        `Invalid configuration: value of src needs to be a glob or an array
-        of globs.`
-      ));
+      }).toThrowError(
+        'Invalid configuration: value of src needs to be a glob or an array ' +
+        'of globs.'
+      );
     });
   });
 
   describe('gulp task', () => {
-    beforeEach(done => {
+    beforeEach((done) => {
       // rm -rf the dist folder.
       rimraf('./demo/dist', done);
     });

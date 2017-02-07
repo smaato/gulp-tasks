@@ -1,10 +1,10 @@
 
+const cssWsConfigureClient = require('./src/cssWebsocket/configureClient');
 const gulp = require('gulp');
 const gulpJasmine = require('gulp-jasmine');
 const lintJs = require('./index').lintJs;
 
 gulp.task('cssWsConfigureClient', () => {
-  const cssWsConfigureClient = require('./src/cssWebsocket/configureClient');
   cssWsConfigureClient(4000, '/css/dist.css');
 });
 

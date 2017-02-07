@@ -9,9 +9,8 @@ const gulpPostcss = require('gulp-postcss');
 const gulpRename = require('gulp-rename');
 const gulpReplace = require('gulp-replace');
 const runSequence = require('run-sequence');
-const TextUtils = require('./services/TextUtils');
 
-module.exports = customConfig => {
+module.exports = (customConfig) => {
   const config = Object.assign({
     subTaskPrefix: 'compileCss',
     src: './src/**/*.scss',
@@ -22,10 +21,10 @@ module.exports = customConfig => {
   }, customConfig);
 
   if (!config.src) {
-    throw new Error(TextUtils.cleanString(
-      `Invalid configuration: value of src needs to be a glob or an array
-      of globs.`
-    ));
+    throw new Error(
+      'Invalid configuration: value of src needs to be a glob or an array ' +
+      'of globs.'
+    );
   }
 
   if (!config.dst) {
