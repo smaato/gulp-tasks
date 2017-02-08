@@ -26,7 +26,7 @@ const server = {
     // there will be many clients connected.
     // Send an update to all of them.
     server.instance.clients.forEach(
-      client => {
+      (client) => {
         client.send();
       }
     );

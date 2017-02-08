@@ -2,9 +2,8 @@
 const gulp = require('gulp');
 const gulpRename = require('gulp-rename');
 const gulpUglify = require('gulp-uglify');
-const TextUtils = require('./services/TextUtils');
 
-module.exports = customConfig => {
+module.exports = (customConfig) => {
   const config = Object.assign({
     src: './dist/js',
     dropConsole: true,
@@ -12,10 +11,10 @@ module.exports = customConfig => {
   }, customConfig);
 
   if (!config.src) {
-    throw new Error(TextUtils.cleanString(
-      `Invalid configuration: value of src needs to be a glob or an array
-      of globs.`
-    ));
+    throw new Error(
+      'Invalid configuration: value of src needs to be a glob or an array ' +
+      'of globs.'
+    );
   }
 
   // Use uglify to minify the JS.

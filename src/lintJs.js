@@ -1,18 +1,17 @@
 
 const gulp = require('gulp');
 const gulpEslint = require('gulp-eslint');
-const TextUtils = require('./services/TextUtils');
 
-module.exports = customConfig => {
+module.exports = (customConfig) => {
   const config = Object.assign({
     src: './src/**/*.js',
   }, customConfig);
 
   if (!config.src) {
-    throw new Error(TextUtils.cleanString(
-      `Invalid configuration: value of src needs to be a glob or an array
-      of globs.`
-    ));
+    throw new Error(
+      'Invalid configuration: value of src needs to be a glob or an array ' +
+      'of globs.'
+    );
   }
 
   // Lint JS with ESLint.

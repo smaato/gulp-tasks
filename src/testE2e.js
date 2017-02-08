@@ -6,9 +6,8 @@ const gulpConnect = require('gulp-connect');
 const gulpNightwatch = require('gulp-nightwatch');
 const gulpReplace = require('gulp-replace');
 const runSequence = require('run-sequence');
-const TextUtils = require('./services/TextUtils');
 
-module.exports = customConfig => {
+module.exports = (customConfig) => {
   const config = Object.assign({
     subTaskPrefix: 'testE2e',
     dir: './e2e',
@@ -27,10 +26,10 @@ module.exports = customConfig => {
   }
 
   if (!config.src) {
-    throw new Error(TextUtils.cleanString(
-      `Invalid configuration: value of src needs to be a glob or an array
-      of globs.`
-    ));
+    throw new Error(
+      'Invalid configuration: value of src needs to be a glob or an array ' +
+      'of globs.'
+    );
   }
 
   if (!config.dst) {
@@ -53,7 +52,7 @@ module.exports = customConfig => {
   // Clean the dist directory.
   const cleanDist = `${config.subTaskPrefix}:cleanDist`;
 
-  gulp.task(cleanDist, (callback) => (
+  gulp.task(cleanDist, callback => (
     del([
       `${config.dir}${config.dst}/**/*`,
       `${config.dir}${config.dst}/`,
@@ -126,7 +125,7 @@ module.exports = customConfig => {
       runTests,
       unshimKarma,
       stopServer,
-      err => {
+      (err) => {
         // We need to throw an error here so that our pre-commit hook will fail.
         if (config.wasNightwatchFailing) {
           throw new Error('E2E testing failed');

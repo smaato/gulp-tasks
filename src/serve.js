@@ -1,7 +1,7 @@
 
 const gulpConnect = require('gulp-connect');
 
-module.exports = customConfig => {
+module.exports = (customConfig) => {
   const config = Object.assign({
     root: './dist',
     fallback: './dist/index.html',

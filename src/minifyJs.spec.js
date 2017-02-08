@@ -1,12 +1,12 @@
 
-const gulp = require('gulp');
-const runSequence = require('run-sequence');
-const rimraf = require('rimraf');
-const fs = require('fs');
-const lstat = fs.lstat;
 const compileJs = require('../index').compileJs;
+const fs = require('fs');
+const gulp = require('gulp');
 const minifyJs = require('../index').minifyJs;
-const TextUtils = require('./services/TextUtils');
+const rimraf = require('rimraf');
+const runSequence = require('run-sequence');
+
+const lstat = fs.lstat;
 
 describe('minifyJs method', () => {
   it('returns a config and a task', () => {
@@ -32,10 +32,10 @@ describe('minifyJs method', () => {
         minifyJs({
           src: false,
         });
-      }).toThrowError(TextUtils.cleanString(
-        `Invalid configuration: value of src needs to be a glob or an array
-        of globs.`
-      ));
+      }).toThrowError(
+        'Invalid configuration: value of src needs to be a glob or an array ' +
+        'of globs.'
+      );
     });
   });
 
@@ -49,7 +49,7 @@ describe('minifyJs method', () => {
       src: './demo/dist/js',
     }).task);
 
-    beforeEach(done => {
+    beforeEach((done) => {
       // rm -rf the dist folder.
       rimraf('./demo/dist', () => {
         /**

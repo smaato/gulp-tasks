@@ -1,19 +1,18 @@
 
 const gulp = require('gulp');
 const gulpConnect = require('gulp-connect');
-const TextUtils = require('./services/TextUtils');
 
-module.exports = customConfig => {
+module.exports = (customConfig) => {
   const config = Object.assign({
     src: './src/assets/**/*',
     dst: './dist/assets',
   }, customConfig);
 
   if (!config.src) {
-    throw new Error(TextUtils.cleanString(
-      `Invalid configuration: value of src needs to be a glob or an array
-      of globs.`
-    ));
+    throw new Error(
+      'Invalid configuration: value of src needs to be a glob or an array ' +
+      'of globs.'
+    );
   }
 
   if (!config.dst) {

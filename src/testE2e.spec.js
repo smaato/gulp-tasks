@@ -1,7 +1,6 @@
 
 const gulp = require('gulp');
 const testE2e = require('../index').testE2e;
-const TextUtils = require('./services/TextUtils');
 
 describe('testE2e method', () => {
   it('returns a config and a task', () => {
@@ -41,10 +40,10 @@ describe('testE2e method', () => {
         testE2e({
           src: false,
         });
-      }).toThrowError(TextUtils.cleanString(
-        `Invalid configuration: value of src needs to be a glob or an array
-        of globs.`
-      ));
+      }).toThrowError(
+        'Invalid configuration: value of src needs to be a glob or an array ' +
+        'of globs.'
+      );
 
       expect(() => {
         testE2e({

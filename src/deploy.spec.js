@@ -1,6 +1,5 @@
 
 const deploy = require('../index').deploy;
-const TextUtils = require('./services/TextUtils');
 
 describe('deploy method', () => {
   it('returns a config and a task', () => {
@@ -51,10 +50,10 @@ describe('deploy method', () => {
           secretAccessKey: '-',
           src: '/',
         });
-      }).toThrowError(TextUtils.cleanString(
-        `Invalid configuration: value of bucketName needs to be an AWS S3
-        bucket name.`
-      ));
+      }).toThrowError(
+        'Invalid configuration: value of bucketName needs to be an AWS S3 ' +
+        'bucket name.'
+      );
     });
 
     it('throws an error when it doesn\'t contain a secret access key', () => {
@@ -77,10 +76,10 @@ describe('deploy method', () => {
           secretAccessKey: '-',
           src: false,
         });
-      }).toThrowError(TextUtils.cleanString(
-        `Invalid configuration: value of src needs to be a glob or an array
-        of globs.`
-      ));
+      }).toThrowError(
+        'Invalid configuration: value of src needs to be a glob or an array ' +
+        'of globs.'
+      );
     });
   });
 });

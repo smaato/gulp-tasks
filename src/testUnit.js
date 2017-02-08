@@ -1,7 +1,7 @@
 
 const karmaServer = require('karma').Server;
 
-module.exports = customConfig => {
+module.exports = (customConfig) => {
   const config = Object.assign({
     singleRun: true,
   }, customConfig);

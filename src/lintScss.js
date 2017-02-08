@@ -1,19 +1,18 @@
 
 const gulp = require('gulp');
 const gulpScssLint = require('gulp-scss-lint');
-const TextUtils = require('./services/TextUtils');
 
-module.exports = customConfig => {
+module.exports = (customConfig) => {
   const config = Object.assign({
     file: undefined,
     src: './src/**/*.scss',
   }, customConfig);
 
   if (!config.src) {
-    throw new Error(TextUtils.cleanString(
-      `Invalid configuration: value of src needs to be a glob or an array
-      of globs.`
-    ));
+    throw new Error(
+      'Invalid configuration: value of src needs to be a glob or an array ' +
+      'of globs.'
+    );
   }
 
   // Lint SCSS with scss_lint.
