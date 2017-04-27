@@ -9,6 +9,7 @@ module.exports = (customConfig) => {
     accessKeyId: undefined,
     bucketName: undefined,
     folder: undefined,
+    headers: undefined,
     secretAccessKey: undefined,
     src: './dist/**/*.*',
     sync: true,
