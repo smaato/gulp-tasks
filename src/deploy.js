@@ -9,6 +9,7 @@ module.exports = (customConfig) => {
     accessKeyId: undefined,
     bucketName: undefined,
     folder: undefined,
+    headers: undefined,
     secretAccessKey: undefined,
     src: './dist/**/*.*',
     sync: true,
@@ -55,7 +56,7 @@ module.exports = (customConfig) => {
         // Prepend the folder to all source files
         path.dirname = `${config.folder}/${path.dirname}`;// eslint-disable-line no-param-reassign
       })))
-      .pipe(publisher.publish())
+      .pipe(publisher.publish(config.headers))
       // publisher.sync() deletes all other files than the uploaded
       .pipe(gulpIf(config.sync, publisher.sync()))
       .pipe(gulpAwspublish.reporter());
