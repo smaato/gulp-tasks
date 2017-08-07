@@ -8,6 +8,7 @@ const cssWsServer = require('./cssWebsocket/server');
 const envify = require('envify');
 const gulp = require('gulp');
 const gulpUtil = require('gulp-util');
+const tsify = require('tsify');
 const vinylSourceStream = require('vinyl-source-stream');
 const watchify = require('watchify');
 
@@ -20,6 +21,7 @@ module.exports = (customConfig) => {
     hmrPort: 3123,
     cssReloadPort: 4000,
     cssReloadPath: '/css/dist.css',
+    typescript: false,
   }, customConfig);
 
   if (!config.src) {
@@ -55,6 +57,9 @@ module.exports = (customConfig) => {
 
   // Build bundle with browserify configuration.
   let bundler = browserify(config.src, browserifyConfig);
+  if (config.typescript) {
+    bundler.plugin(tsify, config.tsify);
+  }
   if (config.watch) {
     bundler.plugin(browserifyHmr, {
       // Start HMR on this port

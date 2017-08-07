@@ -25,6 +25,7 @@ describe('compileJs method', () => {
         hmrPort: 3123,
         cssReloadPort: 4000,
         cssReloadPath: '/css/dist.css',
+        typescript: false,
       });
     });
 

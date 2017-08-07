@@ -34,7 +34,9 @@
     "gulp-uglify": "1.4.2",
     "gulp-util": "3.0.7",
     "run-sequence": "1.1.4",
-    "selenium-standalone": "5.1.0"
+    "selenium-standalone": "5.1.0",
+    "tsify": "^3.0.1",
+    "typescript": "^2.4.2"
   },
   "devDependencies": {
     "babel-eslint": "4.1.7",

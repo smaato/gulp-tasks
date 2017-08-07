@@ -68,6 +68,26 @@ gulp.task('demoCompileJsAndWatch', gulpTasks.compileJs({
   hmrPort: 3000,
 }).task);
 
+
+/**
+ * Compile TS.
+ */
+
+gulp.task('demoCompileTs', gulpTasks.compileJs({
+  src: `${SOURCE_DIR}/index.ts`,
+  dst: SCRIPTS_DST,
+  watch: false,
+  typescript: true,
+}).task);
+
+gulp.task('demoCompileTsAndWatch', gulpTasks.compileJs({
+  src: `${SOURCE_DIR}/index.ts`,
+  dst: SCRIPTS_DST,
+  watch: true,
+  typescript: true,
+  hmrPort: 3000,
+}).task);
+
 /**
  * Minify JS.
  */
