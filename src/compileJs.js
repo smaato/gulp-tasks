@@ -71,6 +71,12 @@ module.exports = (customConfig) => {
   }
   bundler.transform(babelify);
   bundler.transform(envify);
+  if (config.typescript) {
+    bundler.transform(babelify.configure({
+      // Use all of the ES2015 spec
+      presets: ['es2015'],
+    }));
+  }
 
   if (config.watch) {
     cssWsConfigureClient(config.cssReloadPort, config.cssReloadPath);
