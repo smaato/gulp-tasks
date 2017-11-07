@@ -6,31 +6,17 @@ const gulpRename = require('gulp-rename');
 
 module.exports = (customConfig) => {
   const config = Object.assign({
-    accessKeyId: undefined,
     bucketName: undefined,
     folder: undefined,
     headers: undefined,
-    secretAccessKey: undefined,
     src: './dist/**/*.*',
     sync: true,
   }, customConfig);
-
-  if (!config.accessKeyId) {
-    throw new Error(
-      'Invalid configuration: value of accessKeyId needs to be a string.'
-    );
-  }
 
   if (!config.bucketName) {
     throw new Error(
       'Invalid configuration: value of bucketName needs to be an AWS S3 ' +
       'bucket name.'
-    );
-  }
-
-  if (!config.secretAccessKey) {
-    throw new Error(
-      'Invalid configuration: value of secretAccessKey needs to be a string.'
     );
   }
 
@@ -47,8 +33,6 @@ module.exports = (customConfig) => {
       params: {
         Bucket: config.bucketName,
       },
-      accessKeyId: config.accessKeyId,
-      secretAccessKey: config.secretAccessKey,
     });
 
     return gulp.src(config.src)

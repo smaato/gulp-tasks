@@ -4,9 +4,7 @@ const deploy = require('../index').deploy;
 describe('deploy method', () => {
   it('returns a config and a task', () => {
     const result = deploy({
-      accessKeyId: '-',
       bucketName: '-',
-      secretAccessKey: '-',
     });
     expect(result).toEqual({
       config: jasmine.any(Object),
@@ -17,31 +15,15 @@ describe('deploy method', () => {
   describe('configuration', () => {
     it('has defaults', () => {
       const result = deploy({
-        accessKeyId: '-',
         bucketName: '-',
-        secretAccessKey: '-',
       });
       expect(result.config).toEqual({
-        accessKeyId: '-',
         bucketName: '-',
         folder: undefined,
         headers: undefined,
-        secretAccessKey: '-',
         src: './dist/**/*.*',
         sync: true,
       });
-    });
-
-    it('throws an error when it doesn\'t contain an access key ID', () => {
-      expect(() => {
-        deploy({
-          bucketName: '-',
-          secretAccessKey: '-',
-          src: '/',
-        });
-      }).toThrowError(
-        'Invalid configuration: value of accessKeyId needs to be a string.'
-      );
     });
 
     it('throws an error when it doesn\'t contain a bucket name', () => {
@@ -54,18 +36,6 @@ describe('deploy method', () => {
       }).toThrowError(
         'Invalid configuration: value of bucketName needs to be an AWS S3 ' +
         'bucket name.'
-      );
-    });
-
-    it('throws an error when it doesn\'t contain a secret access key', () => {
-      expect(() => {
-        deploy({
-          accessKeyId: '-',
-          bucketName: '-',
-          src: '/',
-        });
-      }).toThrowError(
-        'Invalid configuration: value of secretAccessKey needs to be a string.'
       );
     });
 
