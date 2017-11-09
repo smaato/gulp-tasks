@@ -25,6 +25,7 @@ describe('deploy method', () => {
         accessKeyId: '-',
         bucketName: '-',
         folder: undefined,
+        headers: undefined,
         secretAccessKey: '-',
         src: './dist/**/*.*',
         sync: true,
