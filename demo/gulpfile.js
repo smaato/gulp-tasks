@@ -5,7 +5,6 @@
  * Feel free to copy and paste this file and customize it.
  */
 
-const fs = require('fs');
 const gulp = require('gulp');
 const rimraf = require('rimraf');
 const runSequence = require('run-sequence');
@@ -140,23 +139,6 @@ gulp.task('demoTestUnit', gulpTasks.testUnit({
 }).task);
 
 /**
- *  Run e2e tests.
- */
-
-const karmaPhantomJsShim =
-  fs.readFileSync('../node_modules/karma-phantomjs-shim/shim.js');
-
-gulp.task('demoTestE2e', gulpTasks.testE2e({
-  dir: './tests-e2e',
-  connect: {
-    root: DISTRIBUTION_DIR,
-    fallback: `${DISTRIBUTION_DIR}/index.html`,
-    port: 9000,
-  },
-  shim: (`<script>${karmaPhantomJsShim}</script>`),
-}).task);
-
-/**
  * Deploy to AWS.
  */
 
@@ -202,7 +184,6 @@ gulp.task('demoTest', done => {
     'demoLintScss',
     'demoBuild',
     'demoTestUnit',
-    'demoTestE2e',
     done
   );
 });

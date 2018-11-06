@@ -94,10 +94,6 @@ Minify JS with uglify.
 
 Serve files on localhost.
 
-### testE2e
-
-Run end-to-end tests with Nightwatch in PhantomJS.
-
 ### testUnit
 
 Run unit tests with Karma.
