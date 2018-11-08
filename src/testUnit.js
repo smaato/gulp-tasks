@@ -7,12 +7,10 @@ module.exports = (customConfig) => {
   }, customConfig);
 
   // Run unit tests with Karma.
-  function testUnit(callback) {
+  function testUnit() {
     return karmaServer.start(config, (exitStatus) => {
       if (exitStatus) {
         throw new Error('Unit testing failed');
-      } else {
-        callback(exitStatus);
       }
     });
   }
