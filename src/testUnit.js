@@ -1,5 +1,5 @@
 
-const karmaServer = require('karma').Server;
+const Server = require('karma').Server;
 
 module.exports = (customConfig) => {
   const config = Object.assign({
@@ -8,13 +8,17 @@ module.exports = (customConfig) => {
 
   // Run unit tests with Karma.
   function testUnit(callback) {
-    return karmaServer.start(config, (exitStatus) => {
+    const server = new Server(config, (exitStatus) => {
       if (exitStatus) {
         throw new Error('Unit testing failed');
       } else {
         callback(exitStatus);
       }
     });
+
+    server.start();
+
+    return server;
   }
 
   return {

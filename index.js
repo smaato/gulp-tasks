@@ -22,5 +22,4 @@ module.exports.minifyJs = require('./src/minifyJs');
 module.exports.serve = require('./src/serve');
 
 // Tests
-module.exports.testE2e = require('./src/testE2e');
 module.exports.testUnit = require('./src/testUnit');

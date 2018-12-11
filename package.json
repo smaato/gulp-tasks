@@ -10,7 +10,6 @@
     ]
   },
   "scripts": {
-    "postinstall": "node ./node_modules/selenium-standalone/bin/selenium-standalone install",
     "test": "gulp test"
   },
   "dependencies": {
@@ -19,22 +18,19 @@
     "del": "2.0.2",
     "gulp": "3.9.0",
     "gulp-awspublish": "3.0.1",
-    "gulp-babel": "5.3.0",
     "gulp-compass": "2.1.0",
     "gulp-connect": "2.2.0",
     "gulp-cssmin": "0.1.7",
     "gulp-eslint": "3.0.1",
     "gulp-if": "2.0.0",
     "gulp-jade": "1.1.0",
-    "gulp-nightwatch": "0.2.7",
     "gulp-postcss": "6.0.1",
     "gulp-rename": "1.2.2",
     "gulp-replace": "0.5.4",
     "gulp-scss-lint": "0.3.8",
     "gulp-uglify": "1.4.2",
     "gulp-util": "3.0.7",
-    "run-sequence": "1.1.4",
-    "selenium-standalone": "5.1.0"
+    "run-sequence": "1.1.4"
   },
   "devDependencies": {
     "babel-eslint": "4.1.7",
@@ -66,8 +62,8 @@
     "reconnectingwebsocket": "1.0.0",
     "rimraf": "2.4.3",
     "vinyl-source-stream": "1.1.0",
-    "watchify": "3.5.0",
-    "ws": "0.8.1"
+    "watchify": "^3.11.0",
+    "ws": "^6.1.2"
   },
   "pre-commit": [
     "test"
